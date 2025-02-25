@@ -39,7 +39,34 @@ export const BlogsLeftWrap = styled.div`
     align-items: start;
     justify-content: center;
     flex-direction: column;
+    gap: 10px;
 
+input{
+    width: 350px;
+    height: 60px;
+    background: var(--product-background, #F6F6F6);
+    padding: 20px;
+    border: none;
+}
+h1{
+    color: var(--Text-Color, #252525);
+    font-size: 30px;
+    font-weight: 600;
+}
+.categories-wrap{
+    display: flex;
+    gap: 180px;
+p{
+    color: black;
+    font-size: 19px;
+    font-weight: 500;
+}
+div{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+}
 `
 export const BlogsRightWrap = styled.div`
     display: flex;

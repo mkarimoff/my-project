@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
 export const FooterMain = styled.div`
@@ -82,8 +83,14 @@ button{
     cursor: pointer;
 }
 button:hover{
-    background-color: #928E8B;
-   
+    background-color: #928E8B; 
 }
 }
+`
+export const FooterLink = styled(NavLink)`
+    display: flex;
+    text-decoration:none;
+    &.active p {
+        color: #928E8B;
+     }
 `

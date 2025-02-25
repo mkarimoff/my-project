@@ -1,4 +1,4 @@
-import { FooterDivs, FooterHelp, FooterInPut, FooterMain, FooterWrapper } from "./style"
+import { FooterDivs, FooterHelp, FooterInPut, FooterLink, FooterMain, FooterWrapper } from "./style"
 import logo from "../../assets/svg/Logo.svg"
 const Footer = () => {
   return (
@@ -18,7 +18,9 @@ const Footer = () => {
             <p>Support</p>
             <p>Get Started</p>
             <p>Terms of Use</p>
-            <p>Privacy Policy</p>
+            <FooterLink to= {"/privacy-policy"}>
+              <p>Privacy Policy</p>
+            </FooterLink>
             <p>About Us</p>
         </FooterHelp>
         <FooterDivs>

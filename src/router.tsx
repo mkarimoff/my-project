@@ -9,6 +9,7 @@ import BlogsComponent from './components/pages/blogs/blogs'
 import FeaturedComponet from './components/pages/featured/featured'
 import ContactComponent from './components/pages/contact/contact'
 import CollectionComponent from './components/pages/shop/collection'
+import PrivacyPolicy from './components/footer/PrivacyPolicy/privacy'
 
 const RouterComponent = () => {
   return (
@@ -23,6 +24,7 @@ const RouterComponent = () => {
         <Route path='/featured' element= {<FeaturedComponet/>}/>
         <Route path='/contact' element= {<ContactComponent/>}/>
         <Route path='/collection' element= {<ShopComponent/>}/> 
+        <Route path='/privacy-policy' element= {<PrivacyPolicy/>}/> 
     </Routes>
     <Footer/>
     </>
