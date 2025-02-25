@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Baloo+2:wght@400..800&family=Baloo+Bhai+2:wght@400..800&family=Cantarell:ital,wght@0,400;0,700;1,400;1,700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+* {
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+    font-family: "Baloo 2", serif;
+}
+.bg-image-left {
+    background-image: url(./assets/svg/Background-left.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 600px;
+    width: 940px;
+}
+.collection-bg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-image: url(./assets/images/collectionback.png);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 250px;
+}
