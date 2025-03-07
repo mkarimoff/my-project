@@ -90,19 +90,3 @@ img{
     height: 680px;
 }
 `
-export const ProductImgs = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-.break{
-    width: 100%;
-    height: 140px;
-    background: var(--Home-2-Background, #EFEBE8);
-}    
-img{
-    width: 287px;
-    height: 350px;  
-    cursor: pointer;
-}    
-`

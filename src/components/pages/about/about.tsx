@@ -1,15 +1,14 @@
 import ReactPlayer from "react-player";
-import { AboutBgWrap, AboutCon, AboutTextWrap, MottoCon, ProductImgs } from "./style";
+import { AboutBgWrap, AboutCon, AboutTextWrap, MottoCon } from "./style";
 import arrow from '../../../assets/svg/smallarrow.svg'
 import granit from '../../../assets/images/granit.jpg'
 import blackchair from '../../../assets/images/bgbluechair.webp'
-import bgdecor from "../../../assets/images/bg-decor.jpg"
-import bglight from "../../../assets/images/bg-light.jpg"
-import drawer2 from "../../../assets/images/drawer2.webp"
 import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import SupportAgentOutlinedIcon from "@mui/icons-material/SupportAgentOutlined";
 import GppGoodOutlinedIcon from "@mui/icons-material/GppGoodOutlined";
 import CachedOutlinedIcon from "@mui/icons-material/CachedOutlined";
+import Carousel from "../home/carousel";
+import { ProductsImg } from "../home/style";
 
 const AboutComponent: React.FC = () => {
   return (
@@ -93,16 +92,9 @@ const AboutComponent: React.FC = () => {
          </div>
         </div>
        </AboutTextWrap>
-       <ProductImgs>
-          <div className="break"></div>
-          <div style={{display:'flex'}}>
-            <img src={drawer2} alt="products-img" />
-             <img src={blackchair} alt="products-img" />
-             <img src={bgdecor} alt="products-img" />
-             <img src={granit} alt="products-img" />
-             <img src={bglight} alt="products-img" />
-          </div>
-      </ProductImgs>
+       <ProductsImg>
+       <Carousel/>
+      </ProductsImg>
     </AboutCon>
   );
 };

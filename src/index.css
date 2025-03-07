@@ -24,5 +24,27 @@
     background-size: cover;
     background-repeat: no-repeat;
     width: 100%;
-    height: 250px;
+    height: 200px;
 }
+.error-wrapper{
+    background-image: url(./assets/svg/Shapes.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.carousel-container {
+    width: 80%; /* Carouselning kengligi */
+    margin: 0 auto; /* Markazlashtirish */
+  }
+  
+  .carousel-image {
+    width: 100%; /* Rasmlar to'liq kenglikda bo'ladi */
+    height: auto; /* Kenglik bo'yicha nisbiy balandlik */
+    object-fit: cover; /* Rasmlar maydonga to'g'ri keladi */
+  }
+  
+  .slick-slide {
+    padding: 0 10px; /* Rasmlar orasidagi bo'shliq */
+  }
+  

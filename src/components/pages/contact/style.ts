@@ -6,7 +6,7 @@ export const ContactMainCon = styled.div`
      flex-direction: column;
      align-items: center;
      justify-content: center;
-     gap: 150px;
+     gap: 100px;
 `
 export const ContactInfoWrap = styled.div`
      display: flex;
@@ -74,7 +74,7 @@ textarea{
 }
 .button{
     width: 111px;
-    height: 55px;
+    height: 50px;
     color: white;
     background-color: black;
     border: none;

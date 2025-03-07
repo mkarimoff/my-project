@@ -17,11 +17,15 @@ const Footer = () => {
             <b>Need Help?</b>
             <p>Support</p>
             <p>Get Started</p>
+            <FooterLink to= {"/terms-of-use"}>
             <p>Terms of Use</p>
+            </FooterLink>
             <FooterLink to= {"/privacy-policy"}>
               <p>Privacy Policy</p>
             </FooterLink>
-            <p>About Us</p>
+            <FooterLink to= {"/about"}>
+              <p>About Us</p>
+            </FooterLink>
         </FooterHelp>
         <FooterDivs>
             <b>Get in Touch</b>
