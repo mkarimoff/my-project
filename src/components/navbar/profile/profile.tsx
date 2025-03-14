@@ -1,0 +1,58 @@
+import { AboutBgWrap } from "../../pages/about/style";
+import arrow from "../../../assets/svg/smallarrow.svg";
+import { ProfileCon, ProfileWrap } from "./style";
+
+const Profile = () => {
+  return (
+    <ProfileCon>
+      <div className="collection-bg">
+        <AboutBgWrap>
+          <b>Profile</b>
+          <div
+            style={{
+              width: "900px",
+              height: "0.5px",
+              backgroundColor: "white",
+              marginBottom: "-25px",
+              marginRight: "-155px",
+            }}
+          ></div>
+          <div>
+            <p>Home</p>
+            <img src={arrow} alt="arrow" />
+            <p>Profile</p>
+          </div>
+        </AboutBgWrap>
+      </div>
+      <ProfileWrap>
+        <div className="edit-wrap">
+          <h2>Edit Your Profile</h2>
+          <div style={{ display: "flex", alignItems: "center", gap: "50px" }}>
+            <form action="">
+              <label htmlFor="">First Name</label>
+              <input type="text" placeholder="Enter Your First Name" />
+              <label htmlFor="">Email</label>
+              <input type="email" placeholder="Enter Your Email" />
+              <label htmlFor="">Address</label>
+              <input type="address"placeholder="Enter Your Address" />
+            </form>
+            <form action="">
+              <label htmlFor="">Last Name</label>
+              <input type="text" placeholder="Enter Your Last Name"/>
+              <label htmlFor="">Password</label>
+              <input type="Password" placeholder="Enter Your Password"/>
+              <label htmlFor="">Zip Code</label>
+              <input type="text" placeholder="Enter Zip Code"/>
+            </form>
+          </div>
+          <div style={{display:'flex',justifyContent:"end",gap:'10px'}}>
+            <button>Cancel</button>
+            <button>Save</button>
+          </div>
+        </div>
+      </ProfileWrap>
+    </ProfileCon>
+  );
+};
+
+export default Profile;

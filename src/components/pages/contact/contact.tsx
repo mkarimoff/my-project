@@ -1,7 +1,7 @@
 import { AboutBgWrap } from "../about/style"
 import arrow from '../../../assets/svg/smallarrow.svg'
 import { ContactInfoWrap, ContactMainCon } from "./style"
-import BasicMap from "./map/map"
+// import BasicMap from "./map/map"
 import { ContactUs } from "./contactUs"
 
 
@@ -43,7 +43,7 @@ const ContactComponent = () => {
           </div>
        </ContactInfoWrap>
        <ContactUs />
-       <BasicMap />
+       {/* <BasicMap /> */}
     </ContactMainCon>
   )
 }
