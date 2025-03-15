@@ -11,12 +11,12 @@ import PrivacyPolicy from './components/footer/PrivacyPolicy/privacy'
 import TermsOfUse from './components/footer/TermsOfUse/terms'
 import ScrollToTop from './scollToTop'
 import ErrorPage from './components/404/404'
-import ShopComponent from './components/pages/shop'
 import BlogDetail from './components/pages/blogs/detail-page/blog.detail'
 import CartComponent from './components/pages/cart/cart'
 import Profile from './components/navbar/profile/profile'
 import Signin from './components/signin/signin'
 import Signup from './components/signup/signup'
+import ShopComponent from './components/pages/shop'
 
 
 const RouterComponent = () => {

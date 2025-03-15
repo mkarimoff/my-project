@@ -55,12 +55,12 @@ const PagesComponet = () => {
         <div className="components">
           <img src={wedo} alt="img" />
           <h2>What we really do?</h2>
-          <p>Many desktop publishing packages and web page editors now use Lorem Ipsum.</p>
+          <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit.</p>
         </div>
         <div className="components">
           <img src={beginning} alt="img" />
-          <h2>OUR VISION</h2>
-          <p>Many desktop publishing packages and web page editors now use Lorem Ipsum.</p>
+          <h2>HISTORY OF BEGINNING</h2>
+          <p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe.</p>
         </div>
       </HistoryWrap>
     </PagesCon>
