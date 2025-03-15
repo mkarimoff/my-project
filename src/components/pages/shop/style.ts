@@ -31,10 +31,10 @@ export const CollectFilter = styled.div`
      display: flex;
      align-items: center;
      justify-content: center;
-     gap: 20px;
+     gap: 30px;
 p{
     color: var(--Accent-Color, #5F9999);
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 700;
 }     
 `
@@ -42,11 +42,15 @@ export const GridsWrap = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 720px;
+    gap: 850px;
     margin-top: 20px;
+    b{
+      font-size: 22px;
+      font-weight: 700;
+    }
 p{
     color: var(--Text-Color, #333);
-    font-size: 19px;
+    font-size: 20px;
     font-weight: 500;
 }    
 ` 
@@ -54,7 +58,7 @@ export const ShopCon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 50px;
+  margin-top: 20px;
   gap: 50px;
   margin-bottom: 100px;
 

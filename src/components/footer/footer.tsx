@@ -18,7 +18,7 @@ const Footer = () => {
             <p>Support</p>
             <p>Get Started</p>
             <FooterLink to= {"/terms-of-use"}>
-            <p>Terms of Use</p>
+            <p>Terms of Sale & Use</p>
             </FooterLink>
             <FooterLink to= {"/privacy-policy"}>
               <p>Privacy Policy</p>

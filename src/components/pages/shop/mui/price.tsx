@@ -8,7 +8,7 @@ import Select from '@mui/material/Select';
 export default function GroupedSelect() {
   return (
     <div>
-      <FormControl sx={{ m: 1, minWidth: 120 }}>
+      <FormControl sx={{ m: 1, minWidth: 300 }}>
         <InputLabel htmlFor="grouped-select">Price</InputLabel>
         <Select defaultValue="" id="grouped-select" label="Price">
           <MenuItem value="">

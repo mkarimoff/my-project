@@ -30,19 +30,19 @@ const Profile = () => {
           <div style={{ display: "flex", alignItems: "center", gap: "50px" }}>
             <form action="">
               <label htmlFor="">First Name</label>
-              <input type="text" placeholder="Enter Your First Name" />
+              <input type="text" />
               <label htmlFor="">Email</label>
-              <input type="email" placeholder="Enter Your Email" />
+              <input type="email" />
               <label htmlFor="">Address</label>
-              <input type="address"placeholder="Enter Your Address" />
+              <input type="address" />
             </form>
             <form action="">
               <label htmlFor="">Last Name</label>
-              <input type="text" placeholder="Enter Your Last Name"/>
+              <input type="text" />
               <label htmlFor="">Password</label>
-              <input type="Password" placeholder="Enter Your Password"/>
+              <input type="Password" />
               <label htmlFor="">Zip Code</label>
-              <input type="text" placeholder="Enter Zip Code"/>
+              <input type="text" />
             </form>
           </div>
           <div style={{display:'flex',justifyContent:"end",gap:'10px'}}>

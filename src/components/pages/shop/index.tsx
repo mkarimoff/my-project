@@ -1,10 +1,7 @@
 import arrow from "../../../assets/svg/smallarrow.svg";
-import grids from "../../../assets/svg/Grids.svg";
 import stars from "../../../assets/svg/stars.svg";
 import MultipleSelectChip from "./mui/category";
 import MultipleSelectCheckmarks from "./mui/discount";
-import GroupedSelect from "./mui/price";
-import IconLabelButtons from "./mui/search";
 import {
   CollectBgWrap,
   CollectFilter,
@@ -15,8 +12,21 @@ import {
   ShopProductsWrap,
 } from "./style";
 import { BlogsMockData } from "../mockdata/blogs.mock";
+import ViewListIcon from '@mui/icons-material/ViewList';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import GroupedSelect from "./mui/price";
 
 const ShopComponent = () => {
+
+  let food = document.querySelectorAll('.food');
+    food.forEach((value) => {
+        value.addEventListener('click', () => {
+            food.forEach(value => {
+                value.classList.remove('active')
+            })
+            value.classList.add('active')
+        })
+    })
 
   return (
     <>
@@ -46,11 +56,17 @@ const ShopComponent = () => {
             <MultipleSelectChip />
             <GroupedSelect />
             <MultipleSelectCheckmarks />
-            <IconLabelButtons />
+       
           </CollectFilter>
           <GridsWrap>
-            <p>25 Results Found</p>
-            <img src={grids} alt="grids" />
+            <div style={{display:'flex',alignItems:'center',gap:'5px'}}>
+              <b>25</b>
+              <p>Results Found</p>
+            </div>
+           <div>
+            <ViewModuleIcon style={{fontSize:'40px',fill:'gray',cursor:'pointer'}}/>
+            <ViewListIcon style={{fontSize:'40px',fill:'gray',cursor:'pointer'}}/>
+           </div>
           </GridsWrap>
           <ShopCon>
             <ShopProductsWrap>

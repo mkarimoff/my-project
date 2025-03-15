@@ -76,3 +76,33 @@ img{
      cursor: pointer;
 }
 `
+export const NavbarItem = styled.div`
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  
+
+  &:hover {
+    color: #ddd;
+  }
+`;
+
+export const DropdownContent = styled.div`
+  display: block;
+  position: absolute;
+  width: 200px;
+  left: 0px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+`;
+export const DropdownLink = styled(NavLink)`
+  display: flex;
+  text-decoration: none;
+  color: black;
+  padding: 10px 10px 10px 20px;
+&:hover{
+     color: #928E8B;
+}
+`

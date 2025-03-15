@@ -15,6 +15,8 @@ import ShopComponent from './components/pages/shop'
 import BlogDetail from './components/pages/blogs/detail-page/blog.detail'
 import CartComponent from './components/pages/cart/cart'
 import Profile from './components/navbar/profile/profile'
+import Signin from './components/signin/signin'
+import Signup from './components/signup/signup'
 
 
 const RouterComponent = () => {
@@ -36,6 +38,8 @@ const RouterComponent = () => {
         <Route path='/BlogsDetail/:id' element= {<BlogDetail/>}/>
         <Route path='/cart' element= {<CartComponent/>}/>
         <Route path='/profile' element= {<Profile/>}/>
+        <Route path='/signin' element= {<Signin/>}/>
+        <Route path='/signup' element= {<Signup/>}/>
         <Route path='/*' element= {<ErrorPage/>}/>
     </Routes>
     <Footer/>
