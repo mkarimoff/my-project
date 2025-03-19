@@ -60,31 +60,17 @@ const ShopComponent = () => {
                 <b>25</b>
                 <p>Results Found</p>
               </div>
-              <div>
-                <button
-                  onClick={handleHMenu}
-                  style={{ border: "none", backgroundColor: "white" }}
-                >
+              <div style={{ display: "flex" }}>
+                <div onClick={handleHMenu}>
                   <ViewModuleIcon
-                    style={{
-                      fontSize: "40px",
-                      fill: "gray",
-                      cursor: "pointer",
-                    }}
+                    className={`menuH ${active ? "active" : ""}`}
                   />
-                </button>
-                <button
-                  onClick={handleVMenu}
-                  style={{ border: "none", backgroundColor: "white" }}
-                >
+                </div>
+                <div onClick={handleVMenu}>
                   <ViewListIcon
-                    style={{
-                      fontSize: "40px",
-                      fill: "gray",
-                      cursor: "pointer",
-                    }}
+                    className={`menuH ${!active ? "active" : ""}`}
                   />
-                </button>
+                </div>
               </div>
             </div>
             {active ? (

@@ -72,8 +72,15 @@ p:hover {
 export const NavIcons = styled.div`
      display: flex;
      gap: 40px;
-img{
+
+.icons{
+     font-size: 27px;
+     fill: black;
      cursor: pointer;
+     border-bottom: solid 1px white;
+     &:hover{
+          border-bottom: solid 1px black;
+     }
 }
 `
 export const NavbarItem = styled.div`

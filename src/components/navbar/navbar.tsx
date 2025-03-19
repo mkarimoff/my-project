@@ -12,18 +12,17 @@ import {
   NavTop,
 } from "./style";
 import logo from "../../assets/svg/Logo.svg";
-import search from "../../assets/icons/search.svg";
-import shopping from "../../assets/icons/shopping-bag.svg";
-import user from "../../assets/icons/user.svg";
 import { useNavigate } from "react-router-dom";
 import { Box, Modal } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-
+import PersonIcon from "@mui/icons-material/Person";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 const Navbar = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  //
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -37,6 +36,7 @@ const Navbar = () => {
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+  
 
   return (
     <>
@@ -94,7 +94,7 @@ const Navbar = () => {
               </Navlink>
             </MenuWrap>
             <NavIcons>
-              <img onClick={handleOpen} src={search} alt="search-icon" />
+              <SearchOutlinedIcon onClick={handleOpen} className="icons" />
               <Modal open={open} onClose={handleClose}>
                 <Box sx={style}>
                   <img src={logo} alt="logo" width={"180px"} />
@@ -115,12 +115,14 @@ const Navbar = () => {
                   />
                 </Box>
               </Modal>
-              <img
-                src={shopping}
-                alt="shopping-icon"
+              <ShoppingCartIcon
                 onClick={handleClickCart}
+                className="icons"
               />
-              <img src={user} alt="user-icon" onClick={handleClickProfile} />
+              <PersonIcon
+                onClick={handleClickProfile}
+                className="icons"
+              />
             </NavIcons>
           </NavRight>
         </NavMenu>
