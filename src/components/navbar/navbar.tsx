@@ -15,9 +15,10 @@ import logo from "../../assets/svg/Logo.svg";
 import { useNavigate } from "react-router-dom";
 import { Box, Modal } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import PersonIcon from "@mui/icons-material/Person";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+
 const Navbar = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -115,11 +116,11 @@ const Navbar = () => {
                   />
                 </Box>
               </Modal>
-              <ShoppingCartIcon
+              <ShoppingCartOutlinedIcon
                 onClick={handleClickCart}
                 className="icons"
               />
-              <PersonIcon
+              <PermIdentityOutlinedIcon
                 onClick={handleClickProfile}
                 className="icons"
               />

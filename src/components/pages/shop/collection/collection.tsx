@@ -18,7 +18,7 @@ import SupportAgentOutlinedIcon from "@mui/icons-material/SupportAgentOutlined";
 import GppGoodOutlinedIcon from "@mui/icons-material/GppGoodOutlined";
 import CachedOutlinedIcon from "@mui/icons-material/CachedOutlined";
 import { FaFacebook, FaPinterest, FaTwitter } from "react-icons/fa";
-import { BlogsMockData, FilteredMockData } from "../../mockdata/blogs.mock";
+import { BlogsMockData } from "../../mockdata/blogs.mock";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { IncrDecrContainer } from "../../home/style";
@@ -42,10 +42,10 @@ const CollectionComponent: React.FC = () => {
 
   console.log("detail:", BlogsMockData);
   
-  const popularData = FilteredMockData.filter(
+  const popularData = BlogsMockData.filter(
     (item) => item.type === "popular"
   );
-  const NewArrivalData = FilteredMockData.filter(
+  const NewArrivalData = BlogsMockData.filter(
     (item) => item.type === "new"
   );
   const data = BlogsMockData.find((value) => value.id.toString() === id);
@@ -202,6 +202,7 @@ const CollectionComponent: React.FC = () => {
             <p>Don't Miss The Newest Products!</p>
           </div>
           <ShopNewWrap>
+            
           {NewArrivalData.map((value) => (
               <div className="popular-products">
                 <img src={value.photo} alt="image" className="product-image" />

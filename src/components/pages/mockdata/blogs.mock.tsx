@@ -180,11 +180,8 @@ export const BlogsMockData = [
         "type": "home",
         "prise": "$349"
       },
-    ]
-
-    export const FilteredMockData = [
-
       {
+        "id": 15,
         "type": "popular",
         "prise": "$349.00",
         "photo": "https://www.ambiance-sticker.com/images/Image/sticker-meuble-marbre-noir-et-dore-3-ambiance-sticker-col-mob-RJ-2246.jpg",
@@ -197,6 +194,7 @@ export const BlogsMockData = [
         "second_description": "It is accompanied by a case that can contain up to three different diffusers and can be used for dry storage of loose tea. The perfect way to enjoy brewing tea on low hanging fruit to identify. Lighting is a minimal residence located in Tokyo, Japan, designed by Spozy."
       },
       {
+        "id": 16,
         "type": "popular",
         "prise": "$249",
         "photo": "https://cdn.laredoute.com/cdn-cgi/image/width=400,height=400,fit=pad,dpr=1/products/4/3/0/4305c5d035495807f43a2e63a21d6057.jpg",
@@ -209,6 +207,7 @@ export const BlogsMockData = [
         "second_description": "It is accompanied by a case that can contain up to three different diffusers and can be used for dry storage of loose tea. The perfect way to enjoy brewing tea on low hanging fruit to identify. Lighting is a minimal residence located in Tokyo, Japan, designed by Spozy."
       },
       {
+        "id": 17,
         "type": "popular",
         "prise": "$79.00",
         "photo": "https://media.johnlewiscontent.com/i/JohnLewis/anyday-rental-living-t-290321?fmt=auto",
@@ -221,6 +220,7 @@ export const BlogsMockData = [
         "second_description": "It is accompanied by a case that can contain up to three different diffusers and can be used for dry storage of loose tea. The perfect way to enjoy brewing tea on low hanging fruit to identify. Lighting is a minimal residence located in Tokyo, Japan, designed by Spozy."
       },
       {
+        "id": 18,
         "type": "popular",
         "prise": "$430.00",
         "photo": "https://m.media-amazon.com/images/I/71D5e8wn+mL.jpg",
@@ -305,6 +305,7 @@ export const BlogsMockData = [
       //   "second_description": "It is accompanied by a case that can contain up to three different diffusers and can be used for dry storage of loose tea. The perfect way to enjoy brewing tea on low hanging fruit to identify. Lighting is a minimal residence located in Tokyo, Japan, designed by Spozy."
       // },
       {
+        "id": 19,
         "type": "new",
         "prise": "$100.00",
         "photo": "https://www.carltonfurniture.co.uk/images/pages/534-3-Aero%20Bubble%20Sofa%20Set%20%20(19).jpg",
@@ -317,6 +318,7 @@ export const BlogsMockData = [
         "second_description": "It is accompanied by a case that can contain up to three different diffusers and can be used for dry storage of loose tea. The perfect way to enjoy brewing tea on low hanging fruit to identify. Lighting is a minimal residence located in Tokyo, Japan, designed by Spozy."
       },
       {
+        "id": 20,
         "type": "new",
         "prise": "$300.00",
         "photo": "https://media.johnlewiscontent.com/i/johnlewis/Small-space-furniture-lead?fmt=auto",
@@ -329,6 +331,7 @@ export const BlogsMockData = [
         "second_description": "It is accompanied by a case that can contain up to three different diffusers and can be used for dry storage of loose tea. The perfect way to enjoy brewing tea on low hanging fruit to identify. Lighting is a minimal residence located in Tokyo, Japan, designed by Spozy."
       },
        {
+          "id": 21,
           "type": "new",
           "photo": "https://www.ambiance-sticker.com/images/Image/sticker-meuble-marbre-noir-et-dore-3-ambiance-sticker-col-mob-RJ-2246.jpg",
           "header": "Sleek Modern Couch",
@@ -341,6 +344,7 @@ export const BlogsMockData = [
           "prise": "$599"
         },
         {
+          "id": 22,
           "type": "new",
           "photo": "https://cdn.laredoute.com/cdn-cgi/image/width=400,height=400,fit=pad,dpr=1/products/4/3/0/4305c5d035495807f43a2e63a21d6057.jpg",
           "header": "Cozy Rattan Chair",
