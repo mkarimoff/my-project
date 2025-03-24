@@ -150,7 +150,8 @@ export const CategoryWrap = styled.div`
   padding: 0px 18px;
   margin-bottom: 130px;
 `;
-export const CategoryDiv = styled.div`
+
+export const CategoryDiv = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -158,6 +159,7 @@ export const CategoryDiv = styled.div`
   height: 134px;
   background: var(--product-background, #f6f6f6);
   gap: 30px;
+  text-decoration: none;
   cursor: pointer;
   img {
     width: 117px;
@@ -165,9 +167,10 @@ export const CategoryDiv = styled.div`
   }
   b {
     color: var(--Text-Color, #252525);
-    font-size: 22px;
+    font-size: 20px;
     font-style: normal;
     font-weight: 500;
+    width: 150px;
   }
   h6 {
     color: var(--Text-Color, #252525);
@@ -183,6 +186,7 @@ export const CategoryDiv = styled.div`
     display: flex;
     flex-direction: column;
     text-align: start;
+    gap: 5px;
   }
   .price-wrap {
     display: flex;

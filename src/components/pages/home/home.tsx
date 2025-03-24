@@ -40,11 +40,9 @@ import support from "../../../assets/svg/support.svg";
 import security from "../../../assets/svg/security.svg";
 import arrow from "../../../assets/svg/round-arrow.svg";
 import sofa from "../../../assets/images/sofa.png";
-import light from "../../../assets/images/light.webp";
 import chair2 from "../../../assets/images/chair-category.png";
 import drawer from "../../../assets/images/drawer.png";
 import table from "../../../assets/images/wooden-table.avif";
-import decor from "../../../assets/images/decor.webp";
 import stars from "../../../assets/svg/stars.svg";
 import table2 from "../../../assets/images/table2.webp";
 import colors from "../../../assets/svg/color container.svg";
@@ -75,6 +73,9 @@ const HomeComponent: React.FC = () => {
   };
 
   const filteredData = BlogsMockData.filter((item) => item.type === "home");
+  const filteredPopular = BlogsMockData.filter(
+    (item) => item.type === "popular"
+  );
 
   return (
     <HomeContainer>
@@ -153,86 +154,18 @@ const HomeComponent: React.FC = () => {
           <p>Don't Miss The Most Popular Products!</p>
         </div>
         <CategoryWrap>
-          <CategoryDiv>
-            <img src={sofa} alt="img" />
-            <div className="text-wrap">
-              <b>Sofas</b>
-              <div className="price-wrap">
-                <h6>Starts from</h6>
-                <p>200$</p>
+          {filteredPopular.map((value) => (
+            <CategoryDiv key={value.id} to={`/BlogsDetail/${value.id}`}>
+              <img src={value.photo} alt="popular-product-iamage" />
+              <div className="text-wrap">
+                <b>{value.header}</b>
+                <div className="price-wrap">
+                  <h6>Starts from</h6>
+                  <p>{value.prise}</p>
+                </div>
               </div>
-            </div>
-          </CategoryDiv>
-          <CategoryDiv>
-            <img src={light} alt="img" />
-            <div className="text-wrap">
-              <b>Lights</b>
-              <div className="price-wrap">
-                <h6>Starts from</h6>
-                <p>120$</p>
-              </div>
-            </div>
-          </CategoryDiv>
-          <CategoryDiv>
-            <img src={chair2} alt="img" />
-            <div className="text-wrap">
-              <b>Chairs</b>
-              <div className="price-wrap">
-                <h6>Starts from</h6>
-                <p>120$</p>
-              </div>
-            </div>
-          </CategoryDiv>
-          <CategoryDiv>
-            <img src={drawer} alt="img" />
-            <div className="text-wrap">
-              <b>Drawers</b>
-              <div className="price-wrap">
-                <h6>Starts from</h6>
-                <p>130$</p>
-              </div>
-            </div>
-          </CategoryDiv>
-          <CategoryDiv>
-            <img src={table} alt="img" />
-            <div className="text-wrap">
-              <b>Wooden Tables</b>
-              <div className="price-wrap">
-                <h6>Starts from</h6>
-                <p>90$</p>
-              </div>
-            </div>
-          </CategoryDiv>
-          <CategoryDiv>
-            <img src={decor} alt="img" />
-            <div className="text-wrap">
-              <b>Home Decor</b>
-              <div className="price-wrap">
-                <h6>Starts from</h6>
-                <p>202$</p>
-              </div>
-            </div>
-          </CategoryDiv>
-          <CategoryDiv>
-            <img src={sofa} alt="img" />
-            <div className="text-wrap">
-              <b>Sofa</b>
-              <div className="price-wrap">
-                <h6>Starts from</h6>
-                <p>200$</p>
-              </div>
-            </div>
-          </CategoryDiv>
-          <CategoryDiv>
-            <img src={light} alt="img" />
-            <div className="text-wrap">
-              <b>Lights</b>
-              <div className="price-wrap">
-                <h6>Starts from</h6>
-                <p>120$</p>
-              </div>
-            </div>
-          </CategoryDiv>
+            </CategoryDiv>
+          ))}
         </CategoryWrap>
       </CategoryCon>
       <ProductsMain>
@@ -240,7 +173,7 @@ const HomeComponent: React.FC = () => {
           <h1>Popular Products</h1>
           <p>Don't Miss The Most Popular Products!</p>
         </div>
-        <LinkData/>
+        <LinkData />
         <BestSellerMain>
           <BestSellerPros>
             <div className="products-div">
@@ -443,18 +376,16 @@ const HomeComponent: React.FC = () => {
           <p>Don't Miss The Most Popular Products!</p>
         </div>
         <LatestPickWrap>
-          {filteredData.map((value) => {
-            return (
-              <LatestProducts key={value.id} to={`/BlogsDetail/${value.id}`}>
-                <img src={value.photo} alt="image" className="product-image" />
-                <div className="texts-wrap">
-                  <img src={stars} alt="img" />
-                  <h1>{value.header}</h1>
-                  <p>{value.prise}</p>
-                </div>
-              </LatestProducts>
-            );
-          })}
+          {filteredData.map((value) => (
+            <LatestProducts key={value.id} to={`/BlogsDetail/${value.id}`}>
+              <img src={value.photo} alt="image" className="product-image" />
+              <div className="texts-wrap">
+                <img src={stars} alt="img" />
+                <h1>{value.header}</h1>
+                <p>{value.prise}</p>
+              </div>
+            </LatestProducts>
+          ))}
         </LatestPickWrap>
       </LatestPickCon>
       <DownloadApp>
