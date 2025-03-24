@@ -216,24 +216,6 @@ export const ProductsMain = styled.div`
     }
   }
 `;
-export const ProductsMenu = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 60px;
-  margin-top: 50px;
-  p {
-    color: var(--Home-2-Accent, #928e8b);
-    font-size: 23px;
-    font-weight: 400;
-    cursor: pointer;
-  }
-  p:hover {
-    color: black;
-    border-bottom: solid 2px black;
-    font-weight: 500;
-  }
-`;
 export const BestSellerMain = styled.div`
   display: flex;
   align-items: center;

@@ -20,7 +20,6 @@ import {
   MoneyCon,
   ProductsImg,
   ProductsMain,
-  ProductsMenu,
   ReadAboutDivs,
   ReadAboutIndustry,
   ReadAboutWrap,
@@ -60,6 +59,7 @@ import { Box, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { BlogsMockData } from "../mockdata/blogs.mock";
 import Carousel from "./carousel";
+import LinkData from "./popular products/linkdata";
 
 const HomeComponent: React.FC = () => {
   const [count, setCount] = useState<number>(0);
@@ -240,12 +240,7 @@ const HomeComponent: React.FC = () => {
           <h1>Popular Products</h1>
           <p>Don't Miss The Most Popular Products!</p>
         </div>
-        <ProductsMenu>
-          <p>New Arrivals</p>
-          <p>Best Sellers</p>
-          <p>Discounted</p>
-          <p>On Sale</p>
-        </ProductsMenu>
+        <LinkData/>
         <BestSellerMain>
           <BestSellerPros>
             <div className="products-div">
