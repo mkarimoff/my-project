@@ -233,6 +233,7 @@ export const BlogsMockData = [
         "second_description": "It is accompanied by a case that can contain up to three different diffusers and can be used for dry storage of loose tea. The perfect way to enjoy brewing tea on low hanging fruit to identify. Lighting is a minimal residence located in Tokyo, Japan, designed by Spozy."
       },
       {
+        "id": 19,
         "type": "popular",
         "prise": "$349.00",
         "photo": "https://www.archerssleepcentre.co.uk/images/products/large/_61284.webp",
@@ -245,6 +246,7 @@ export const BlogsMockData = [
         "second_description": "It is accompanied by a case that can contain up to three different diffusers and can be used for dry storage of loose tea. The perfect way to enjoy brewing tea on low hanging fruit to identify. Lighting is a minimal residence located in Tokyo, Japan, designed by Spozy."
       },
       {
+        "id": 20,
         "type": "popular",
         "prise": "$249",
         "photo": "https://img.freepik.com/premium-photo/bright-airy-living-room-corner-with-cozy-rattan-chair-neutral-tones-natural-materials-soft-lighting-large-windows-creating-serene-minimalist-space-relaxation_1219093-40683.jpg",
@@ -257,6 +259,7 @@ export const BlogsMockData = [
         "second_description": "It is accompanied by a case that can contain up to three different diffusers and can be used for dry storage of loose tea. The perfect way to enjoy brewing tea on low hanging fruit to identify. Lighting is a minimal residence located in Tokyo, Japan, designed by Spozy."
       },
       {
+        "id": 21,
         "type": "popular",
         "prise": "$79.00",
         "photo": "https://i5.walmartimages.com/seo/Dextrus-5-Tier-Bookshelf-Sturdy-Wood-Storage-Bookcase-Shelves-with-Metal-Frame-Plant-Display-for-Living-Room-Office-Rustic-Brown_ab546ce9-0a33-4454-93fe-15b438b746a3.9d56a7ab072a744c0f221459ecd62092.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF",
@@ -269,6 +272,7 @@ export const BlogsMockData = [
         "second_description": "It is accompanied by a case that can contain up to three different diffusers and can be used for dry storage of loose tea. The perfect way to enjoy brewing tea on low hanging fruit to identify. Lighting is a minimal residence located in Tokyo, Japan, designed by Spozy."
       },
       {
+        "id": 22,
         "type": "popular",
         "prise": "$430.00",
         "photo": "https://i5.walmartimages.com/seo/Modway-Provision-47-Round-Dining-Table-in-Black_24f06e2c-b756-4b75-947e-0435443f4756.c673cabf4c1b634c8474905b55db601a.jpeg",
@@ -281,6 +285,7 @@ export const BlogsMockData = [
         "second_description": "It is accompanied by a case that can contain up to three different diffusers and can be used for dry storage of loose tea. The perfect way to enjoy brewing tea on low hanging fruit to identify. Lighting is a minimal residence located in Tokyo, Japan, designed by Spozy."
       },
       {
+        "id": 23,
         "type": "popular",
         "prise": "$349.00",
         "photo": "https://remodernliving.com/wp-content/uploads/2021/12/vitis-sofa-sectional-rom.jpg",
@@ -293,6 +298,7 @@ export const BlogsMockData = [
         "second_description": "It is accompanied by a case that can contain up to three different diffusers and can be used for dry storage of loose tea. The perfect way to enjoy brewing tea on low hanging fruit to identify. Lighting is a minimal residence located in Tokyo, Japan, designed by Spozy."
       },
       {
+        "id": 24,
         "type": "popular",
         "prise": "$249",
         "photo": "https://img4.dhresource.com/webp/m/f3/albu/jc/s/14/c97948fb-769f-4fb7-b034-7b51b8174b84.jpg",
@@ -305,7 +311,7 @@ export const BlogsMockData = [
         "second_description": "It is accompanied by a case that can contain up to three different diffusers and can be used for dry storage of loose tea. The perfect way to enjoy brewing tea on low hanging fruit to identify. Lighting is a minimal residence located in Tokyo, Japan, designed by Spozy."
       },
       {
-        "id": 19,
+        "id": 25,
         "type": "new",
         "prise": "$100.00",
         "photo": "https://www.carltonfurniture.co.uk/images/pages/534-3-Aero%20Bubble%20Sofa%20Set%20%20(19).jpg",
@@ -318,7 +324,7 @@ export const BlogsMockData = [
         "second_description": "It is accompanied by a case that can contain up to three different diffusers and can be used for dry storage of loose tea. The perfect way to enjoy brewing tea on low hanging fruit to identify. Lighting is a minimal residence located in Tokyo, Japan, designed by Spozy."
       },
       {
-        "id": 20,
+        "id": 26,
         "type": "new",
         "prise": "$300.00",
         "photo": "https://media.johnlewiscontent.com/i/johnlewis/Small-space-furniture-lead?fmt=auto",
@@ -331,7 +337,7 @@ export const BlogsMockData = [
         "second_description": "It is accompanied by a case that can contain up to three different diffusers and can be used for dry storage of loose tea. The perfect way to enjoy brewing tea on low hanging fruit to identify. Lighting is a minimal residence located in Tokyo, Japan, designed by Spozy."
       },
        {
-          "id": 21,
+          "id": 27,
           "type": "new",
           "photo": "https://www.ambiance-sticker.com/images/Image/sticker-meuble-marbre-noir-et-dore-3-ambiance-sticker-col-mob-RJ-2246.jpg",
           "header": "Sleek Modern Couch",
@@ -344,7 +350,7 @@ export const BlogsMockData = [
           "prise": "$599"
         },
         {
-          "id": 22,
+          "id": 28,
           "type": "new",
           "photo": "https://cdn.laredoute.com/cdn-cgi/image/width=400,height=400,fit=pad,dpr=1/products/4/3/0/4305c5d035495807f43a2e63a21d6057.jpg",
           "header": "Cozy Rattan Chair",
