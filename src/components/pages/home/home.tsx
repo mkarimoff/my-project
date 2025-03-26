@@ -73,6 +73,10 @@ const HomeComponent: React.FC = () => {
     (item) => item.type === "popular"
   );
 
+  const handleScroll = () => {
+    window.scrollTo({ top: 3450, behavior: "smooth" }); // Scrolls to 500px down
+  };
+
   return (
     <HomeContainer>
       <HomeMain>
@@ -93,8 +97,8 @@ const HomeComponent: React.FC = () => {
               Hand made wood <br />
               furniture
             </h3>
-            <button>
-              <span>Explore</span>
+            <button onClick={handleScroll}>
+              Explore
             </button>
           </div>
         </div>

@@ -32,8 +32,8 @@ export const HomeMain = styled.div`
       font-style: normal;
     }
     button {
-      width: 196px;
-      height: 57px;
+      width: 146px;
+      height: 50px;
       background-color: black;
       color: white;
       border: none;
@@ -61,16 +61,17 @@ export const DelivCon = styled.div`
   align-items: center;
   justify-content: center;
   width: 400px;
-  height: 245px;
+  height: 220px;
   background: var(--product-background, #f6f6f6);
   img {
-    width: 61px;
+    width: 55px;
   }
   div {
     display: flex;
     flex-direction: column;
     text-align: start;
     margin-left: 150px;
+    gap: 5px;
   }
 `;
 export const SupportCon = styled.div`
@@ -78,16 +79,17 @@ export const SupportCon = styled.div`
   align-items: center;
   justify-content: center;
   width: 320px;
-  height: 245px;
+  height: 220px;
   background: var(--Home-2-Accent, #928e8b);
   color: white;
   img {
-    width: 61px;
+    width: 52px;
   }
   div {
     display: flex;
     flex-direction: column;
     text-align: start;
+    gap: 5px;
   }
 `;
 export const SecureCon = styled.div`
@@ -95,16 +97,17 @@ export const SecureCon = styled.div`
   align-items: center;
   justify-content: center;
   width: 320px;
-  height: 245px;
+  height: 220px;
   background: var(--Text-Color, #252525);
   color: white;
   img {
-    width: 61px;
+    width: 55px;
   }
   div {
     display: flex;
     flex-direction: column;
     text-align: start;
+    gap: 5px;
   }
 `;
 export const MoneyCon = styled.div`
@@ -112,7 +115,7 @@ export const MoneyCon = styled.div`
   align-items: center;
   justify-content: center;
   width: 400px;
-  height: 245px;
+  height: 220px;
   background: var(--Home-2-Background, #efebe8);
   div {
     display: flex;
@@ -120,8 +123,9 @@ export const MoneyCon = styled.div`
     text-align: start;
     margin-right: 150px;
     margin-left: 0px;
+    gap: 5px;
     img {
-      width: 53px;
+      width: 40px;
     }
   }
 `;
