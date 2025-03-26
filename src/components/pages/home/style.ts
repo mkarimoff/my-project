@@ -194,6 +194,7 @@ export const CategoryDiv = styled(Link)`
     gap: 5px;
   }
 `;
+
 export const ProductsMain = styled.div`
   display: flex;
   flex-direction: column;
@@ -220,46 +221,7 @@ export const ProductsMain = styled.div`
     }
   }
 `;
-export const BestSellerMain = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 100px;
-`;
-export const BestSellerPros = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 50px;
-  margin-top: 60px;
 
-  .products-div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 200px;
-    height: 200px;
-    border-radius: 100px;
-    background-color: white;
-    cursor: pointer;
-
-    img {
-      width: 280px;
-    }
-  }
-  .texts-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 7px;
-  }
-  p {
-    color: var(--Substitute-Accent-Color, #daa174);
-    font-size: 20px;
-    font-weight: 600;
-  }
-`;
 export const FeaturedPros = styled.div`
   display: flex;
   flex-direction: column;
@@ -450,13 +412,13 @@ export const LatestPickCon = styled.div`
   .product-image {
     width: 290px;
     height: 270px;
-    &:hover{
+    &:hover {
       box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 60px 4px;
       transition: transform 0.4s ease, box-shadow 0.3s ease;
-      transform: scale(1.04); 
+      transform: scale(1.04);
+    }
   }
-  }
-`
+`;
 export const LatestPickWrap = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -591,10 +553,10 @@ export const ReadAboutDivs = styled.div`
   justify-content: center;
   height: 480px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  &:hover{
-      box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 60px 4px;
-      transition: transform 0.4s ease, box-shadow 0.3s ease;
-      transform: scale(1.04); 
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 60px 4px;
+    transition: transform 0.4s ease, box-shadow 0.3s ease;
+    transform: scale(1.04);
   }
   img {
     display: flex;

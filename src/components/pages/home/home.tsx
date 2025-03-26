@@ -1,7 +1,5 @@
 import {
   AddingImgCon,
-  BestSellerMain,
-  BestSellerPros,
   CategoryCon,
   CategoryDiv,
   CategoryWrap,
@@ -39,12 +37,10 @@ import delivery from "../../../assets/svg/delivery.svg";
 import support from "../../../assets/svg/support.svg";
 import security from "../../../assets/svg/security.svg";
 import arrow from "../../../assets/svg/round-arrow.svg";
-import sofa from "../../../assets/images/sofa.png";
 import chair2 from "../../../assets/images/chair-category.png";
 import drawer from "../../../assets/images/drawer.png";
 import table from "../../../assets/images/wooden-table.avif";
 import stars from "../../../assets/svg/stars.svg";
-import table2 from "../../../assets/images/table2.webp";
 import colors from "../../../assets/svg/color container.svg";
 import WhiteChair from "../../../assets/images/white-chair.png";
 import blackchair from "../../../assets/images/black-chair.png";
@@ -174,48 +170,6 @@ const HomeComponent: React.FC = () => {
           <p>Don't Miss The Most Popular Products!</p>
         </div>
         <LinkData />
-        <BestSellerMain>
-          <BestSellerPros>
-            <div className="products-div">
-              <img src={chair2} alt="forniture-image" />
-            </div>
-            <div className="texts-wrap">
-              <img src={stars} alt="stars-icon" />
-              <b>Single cushioned Chair </b>
-              <p>$250.00</p>
-            </div>
-          </BestSellerPros>
-          <BestSellerPros>
-            <div className="products-div">
-              <img src={table2} alt="forniture-image" />
-            </div>
-            <div className="texts-wrap">
-              <img src={stars} alt="stars-icon" />
-              <b>Table </b>
-              <p>$150.00</p>
-            </div>
-          </BestSellerPros>
-          <BestSellerPros>
-            <div className="products-div">
-              <img src={chair} alt="forniture-image" />
-            </div>
-            <div className="texts-wrap">
-              <img src={stars} alt="stars-icon" />
-              <b>Single cushioned Chair </b>
-              <p>$430.00</p>
-            </div>
-          </BestSellerPros>
-          <BestSellerPros>
-            <div className="products-div">
-              <img src={sofa} alt="forniture-image" />
-            </div>
-            <div className="texts-wrap">
-              <img src={stars} alt="stars-icon" />
-              <b>Soft Sofa </b>
-              <p>$200.00</p>
-            </div>
-          </BestSellerPros>
-        </BestSellerMain>
       </ProductsMain>
       <FeaturedPros>
         <div className="Menu-featured-head">

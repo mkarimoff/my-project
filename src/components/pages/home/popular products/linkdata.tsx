@@ -9,7 +9,7 @@ import OnSale from "./on.sale";
 type CategoryType = "BestSeller" | "Discounted" | "NewArrival" | "OnSale";
 
 const LinkData = () => {
-    const [selectCategory, setSelectCategory] = useState<CategoryType>("BestSeller");
+    const [selectCategory, setSelectCategory] = useState<CategoryType>("NewArrival");
 
     const handleClick = (category: CategoryType) => {
       setSelectCategory(category);

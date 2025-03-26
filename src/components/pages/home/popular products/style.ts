@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -17,5 +18,56 @@ export const MenuBtn = styled.button<{ active: boolean }>`
   cursor: pointer;
   &:hover {
     color: black;
+  }
+`;
+
+export const PopularMain = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 100px;
+`;
+export const PopularWrap = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: none;
+  text-decoration: none;
+`;
+export const PopularItems = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 20px;
+
+  .products-div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      border-radius: 125px;
+      width: 250px;
+      height: 250px;
+    }
+  }
+  .texts-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+  }
+  p {
+    color: var(--Substitute-Accent-Color, #daa174);
+    font-size: 20px;
+    font-weight: 600;
+  }
+  b {
+    color: var(--Text-Color, #252525);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
   }
 `;
