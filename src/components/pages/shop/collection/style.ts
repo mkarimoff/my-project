@@ -5,7 +5,6 @@ export const ShopCon = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 40px;
 `;
 export const BuyingWrap = styled.div`
   display: flex;
@@ -184,9 +183,10 @@ export const ShopPopPros = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 600px;
   background: var(--product-background, #f6f6f6);
   gap: 40px;
+  padding: 50px 0px 50px;
+  text-align: center;
 `;
 export const ShopPopProsWrap = styled.div`
   display: flex;
@@ -203,6 +203,7 @@ export const ShopPopProsWrap = styled.div`
     align-items: center;
     justify-content: center;
     gap: 20px;
+    text-decoration: none;
 
     .product-image {
       width: 290px;
@@ -241,8 +242,8 @@ export const ShopNewCon = styled.div`
   justify-content: center;
   width: 100%;
   height: 600px;
-  background: var(--product-background, #f6f6f6);
   gap: 40px;
+  text-align: center;
 `;
 export const ShopNewWrap = styled.div`
   display: flex;
@@ -253,12 +254,13 @@ export const ShopNewWrap = styled.div`
   width: 100%;
   gap: 20px;
 
-  .popular-products {
+  .new-products {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 20px;
+    text-decoration: none;
 
     .product-image {
       width: 290px;

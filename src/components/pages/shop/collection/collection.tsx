@@ -19,7 +19,7 @@ import GppGoodOutlinedIcon from "@mui/icons-material/GppGoodOutlined";
 import CachedOutlinedIcon from "@mui/icons-material/CachedOutlined";
 import { FaFacebook, FaPinterest, FaTwitter } from "react-icons/fa";
 import { BlogsMockData } from "../../mockdata/blogs.mock";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
 import { IncrDecrContainer } from "../../home/style";
 
@@ -185,14 +185,15 @@ const CollectionComponent: React.FC = () => {
           </div>
           <ShopPopProsWrap>
             {popularData.map((value) => (
-              <div className="popular-products">
+              <Link className="popular-products"  key={value.id}
+              to={`/collection/${value.id}`}>
                 <img src={value.photo} alt="image" className="product-image" />
                 <div className="texts-wrap">
                   <img src={stars} alt="img" />
                   <h1>{value.header}</h1>
                   <p>{value.prise}</p>
                 </div>
-              </div>
+              </Link>
             ))}
           </ShopPopProsWrap>
         </ShopPopPros>
@@ -202,16 +203,16 @@ const CollectionComponent: React.FC = () => {
             <p>Don't Miss The Newest Products!</p>
           </div>
           <ShopNewWrap>
-            
           {NewArrivalData.map((value) => (
-              <div className="popular-products">
+              <Link className="new-products"  key={value.id}
+              to={`/collection/${value.id}`}>
                 <img src={value.photo} alt="image" className="product-image" />
                 <div className="texts-wrap">
                   <img src={stars} alt="img" />
                   <h1>{value.header}</h1>
                   <p>{value.prise}</p>
                 </div>
-              </div>
+              </Link>
             ))}
           </ShopNewWrap>
         </ShopNewCon>
