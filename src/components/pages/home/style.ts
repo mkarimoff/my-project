@@ -206,7 +206,7 @@ export const ProductsMain = styled.div`
   justify-content: center;
   background: var(--product-background, #f6f6f6);
   width: 100%;
-  height: 718px;
+  height: 730px;
 
   .products-header {
     display: flex;

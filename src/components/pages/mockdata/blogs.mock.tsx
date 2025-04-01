@@ -390,7 +390,20 @@ export const BlogsMockData = [
           "second_description": "It is accompanied by a case that can contain up to three different diffusers and can be used for dry storage of loose tea. The perfect way to enjoy brewing tea on low hanging fruit to identify. Lighting is a minimal residence located in Tokyo, Japan, designed by Spozy.",
           "old_prise": "$249",
           "new_price": "$189"
-        }
+        },
+        {
+          "id": 29,
+          "type": "new",
+          "photo": "https://gvawood.com/cdn/shop/files/O1CN01Ss3Hue1nJefr8ZY24__1105025069.jpg?v=1741813705&width=750",
+          "header": "TV Drawer",
+          "date_name": "Date:",
+          "date": "March 01, 2025",
+          "author": "Author:",
+          "author_name": "John Doe",
+          "description": "It is accompanied by a case that can contain up to three different diffusers and can be used for dry storage of loose tea. The perfect way to enjoy brewing tea on low hanging fruit to identify. Lighting is a minimal residence located in Tokyo, Japan, designed by Spozy. Large tiles were arranged on the counter top plate near the window of the living room, they were connected to the kitchen counter through the opening in the existing building wall. For me, the most important part of improving at photography has been sharing it. Sign up for an Exposure account, or post regularly to Tumblr, or both. Tell people you’re trying to get better at photography.",
+          "second_description": "It is accompanied by a case that can contain up to three different diffusers and can be used for dry storage of loose tea. The perfect way to enjoy brewing tea on low hanging fruit to identify. Lighting is a minimal residence located in Tokyo, Japan, designed by Spozy.",
+          "prise": "$599"
+        },
   
     ]
     

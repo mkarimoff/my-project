@@ -21,12 +21,6 @@ export const MenuBtn = styled.button<{ active: boolean }>`
   }
 `;
 
-export const PopularMain = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 100px;
-`;
 export const PopularWrap = styled(Link)`
   display: flex;
   align-items: center;
@@ -49,8 +43,8 @@ export const PopularItems = styled.div`
 
     img {
       border-radius: 125px;
-      width: 250px;
-      height: 250px;
+      width: 260px;
+      height: 260px;
     }
   }
   .texts-wrap {
