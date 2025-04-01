@@ -13,7 +13,7 @@ import TermsOfUse from './components/footer/TermsOfUse/terms';
 import ScrollToTop from './scollToTop';
 import ErrorPage from './components/404/404';
 import BlogDetail from './components/pages/blogs/detail-page/blog.detail';
-import CartComponent from './components/pages/cart/cart';
+import CartComponent from './components/navbar/cart/cart';
 import Profile from './components/navbar/profile/profile';
 import Signin from './components/signin/signin';
 import Signup from './components/signup/signup';

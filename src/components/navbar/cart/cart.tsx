@@ -35,7 +35,7 @@ const CartComponent = () => {
         </AboutBgWrap>
       </div>
       <CartWrap>
-        <div className="Products-wrap">
+        <div className="Products-wrap" data-aos="fade-up">
           <div className="category-texts">
             <p style={{ marginRight: "50px" }}>Product Name</p>
             <p>Price</p>

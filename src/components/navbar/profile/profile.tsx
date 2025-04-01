@@ -24,7 +24,7 @@ const Profile = () => {
           </div>
         </AboutBgWrap>
       </div>
-      <ProfileWrap>
+      <ProfileWrap data-aos="fade-up">
         <div className="edit-wrap">
           <h2>Edit Your Profile</h2>
           <div style={{ display: "flex", alignItems: "center", gap: "50px" }}>

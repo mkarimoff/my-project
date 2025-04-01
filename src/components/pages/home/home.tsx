@@ -50,10 +50,12 @@ import forniture from "../../../assets/images/forniture.jpeg";
 import sofa2 from "../../../assets/images/sofa2.jpg";
 import drawer2 from "../../../assets/images/drawer2.webp";
 import { Box, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BlogsMockData } from "../mockdata/blogs.mock";
 import Carousel from "./carousel";
 import LinkData from "./popular products/linkdata";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const HomeComponent: React.FC = () => {
   const [count, setCount] = useState<number>(0);
@@ -68,6 +70,10 @@ const HomeComponent: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    AOS.init({ duration: 800 }); 
+  }, []);
+
   const filteredData = BlogsMockData.filter((item) => item.type === "home");
   const filteredPopular = BlogsMockData.filter(
     (item) => item.type === "popular"
@@ -81,7 +87,7 @@ const HomeComponent: React.FC = () => {
     <HomeContainer>
       <HomeMain>
         <div className="bg-image-left">
-          <div className="Home-left">
+          <div className="Home-left" data-aos="fade-right">
             <img
               src={cyrcle}
               alt="change-img"
@@ -102,7 +108,7 @@ const HomeComponent: React.FC = () => {
             </button>
           </div>
         </div>
-        <div>
+        <div data-aos="fade-left">
           <img
             src={chair}
             alt="chair-image"
@@ -153,7 +159,7 @@ const HomeComponent: React.FC = () => {
           <h2>Categories</h2>
           <p>Don't Miss The Most Popular Products!</p>
         </div>
-        <CategoryWrap>
+        <CategoryWrap data-aos="fade-up">
           {filteredPopular.map((value) => (
             <CategoryDiv key={value.id} to={`/BlogsDetail/${value.id}`}>
               <img src={value.photo} alt="popular-product-iamage" />
@@ -169,13 +175,13 @@ const HomeComponent: React.FC = () => {
         </CategoryWrap>
       </CategoryCon>
       <ProductsMain>
-        <div className="products-header">
+        <div className="products-header" data-aos="fade-up">
           <h1>Popular Products</h1>
           <p>Don't Miss The Most Popular Products!</p>
         </div>
-        <LinkData />
+        <LinkData/>
       </ProductsMain>
-      <FeaturedPros>
+      <FeaturedPros data-aos="fade-up">
         <div className="Menu-featured-head">
           <h2>Featured Products</h2>
           <p>Choose your desired products from our featured product</p>
@@ -322,13 +328,13 @@ const HomeComponent: React.FC = () => {
         </div>
       </FeaturedPros>
       <SummerSale>
-        <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "5px" }} data-aos="fade-right">
           <h2>35% Summer Sales Discount. Use Coupon Code:</h2>
           <p>Furnimart</p>
         </div>
-        <button>Shop Now</button>
+        <button data-aos="fade-left">Shop Now</button>
       </SummerSale>
-      <LatestPickCon>
+      <LatestPickCon data-aos="fade-up">
         <div className="latest-header">
           <h1>Latest Picks For You</h1>
           <p>Don't Miss The Most Popular Products!</p>
@@ -347,7 +353,7 @@ const HomeComponent: React.FC = () => {
         </LatestPickWrap>
       </LatestPickCon>
       <DownloadApp>
-        <div className="download-wrap">
+        <div className="download-wrap" data-aos="fade-up">
           <div>
             <div className="left-wrap">
               <h1>
@@ -405,7 +411,7 @@ const HomeComponent: React.FC = () => {
         </div>
       </DownloadApp>
       <SummerSale></SummerSale>
-      <ReadAboutIndustry>
+      <ReadAboutIndustry data-aos="fade-up">
         <div className="read-header">
           <h1>Blogs & Insights</h1>
           <p>Read About Furniture Industry</p>
@@ -449,7 +455,7 @@ const HomeComponent: React.FC = () => {
           </ReadAboutDivs>
         </ReadAboutWrap>
       </ReadAboutIndustry>
-      <ProductsImg>
+      <ProductsImg data-aos="fade-up">
         <Carousel />
       </ProductsImg>
     </HomeContainer>

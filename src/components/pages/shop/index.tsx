@@ -46,7 +46,7 @@ const ShopComponent = () => {
           </CollectBgWrap>
         </div>
         <div>
-          <CollectFilter>
+          <CollectFilter data-aos="fade-up">
             <p>Filter:</p>
             <MultipleSelectChip />
             <GroupedSelect />
@@ -55,12 +55,12 @@ const ShopComponent = () => {
           <GridsWrap>
             <div style={{ display: "flex", gap: "850px" }}>
               <div
-                style={{ display: "flex", alignItems: "center", gap: "5px" }}
+                style={{ display: "flex", alignItems: "center", gap: "5px" }} data-aos="fade-up"
               >
                 <b>25</b>
                 <p>Results Found</p>
               </div>
-              <div style={{ display: "flex" }}>
+              <div style={{ display: "flex" }} data-aos="fade-up">
                 <div onClick={handleHMenu}>
                   <ViewModuleIcon
                     className={`menuH ${active ? "active" : ""}`}

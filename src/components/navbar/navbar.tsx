@@ -16,8 +16,8 @@ import { useNavigate } from "react-router-dom";
 import { Box, Modal } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
 const Navbar = () => {
   const [open, setOpen] = React.useState(false);
@@ -37,7 +37,6 @@ const Navbar = () => {
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-  
 
   return (
     <>
@@ -52,8 +51,13 @@ const Navbar = () => {
           </div>
         </NavTop>
         <NavMenu>
-          <img src={logo} alt="logo" style={{ width: "200px" }} />
-          <NavRight>
+          <img
+            src={logo}
+            alt="logo"
+            style={{ width: "200px" }}
+            data-aos="fade-right"
+          />
+          <NavRight data-aos="fade-left">
             <MenuWrap>
               <Navlink to="/">
                 <p>Home</p>
@@ -74,7 +78,7 @@ const Navbar = () => {
                   </p>
                 </Navlink>
                 {isDropdownOpen && (
-                  <DropdownContent>
+                  <DropdownContent data-aos="fade-up">
                     <DropdownLink to={"/about"}>About Us</DropdownLink>
                     <DropdownLink to={"/terms-of-use"}>
                       Terms of Sale & Use
@@ -96,7 +100,7 @@ const Navbar = () => {
             </MenuWrap>
             <NavIcons>
               <SearchOutlinedIcon onClick={handleOpen} className="icons" />
-              <Modal open={open} onClose={handleClose}>
+              <Modal open={open} onClose={handleClose} data-aos="fade-down">
                 <Box sx={style}>
                   <img src={logo} alt="logo" width={"180px"} />
                   <input

@@ -16,7 +16,7 @@ const LinkData = () => {
   };
 
   return (
-    <div>
+    <div data-aos="fade-up">
       <Container>
         <MenuBtn active={selectCategory === "NewArrival"} onClick={() => handleClick("NewArrival")}>
           New Arrivals

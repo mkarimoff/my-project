@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom"
 const ErrorPage = () => {
   let navigate = useNavigate();
   return (
-    <ErrorCon>
+    <ErrorCon data-aos="zoom-in">
          <div className="collection-bg">
           <AboutBgWrap>
              <b>404</b>

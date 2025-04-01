@@ -4,7 +4,7 @@ import { BlogsMockData } from '../../mockdata/blogs.mock'
 
 const HorizontMenu = () => {
   return (
-    <div>
+    <div data-aos="fade-up">
         <ShopConH>
             <ShopProductsWrap>
               {BlogsMockData.map((value) => (

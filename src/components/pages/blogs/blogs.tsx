@@ -41,7 +41,7 @@ const BlogsComponent = () => {
         </AboutBgWrap>
       </div>
       <BlogsMainWrap>
-        <BlogsLeftWrap>
+        <BlogsLeftWrap data-aos="fade-right">
           <form action="" style={{ display: "flex" }}>
             <input type="search" placeholder="Search" />
             <div
@@ -110,7 +110,7 @@ const BlogsComponent = () => {
             </form>
           </NewsLetterCon>
         </BlogsLeftWrap>
-        <BlogsRightCon>
+        <BlogsRightCon data-aos="fade-left">
           {filteredData.map((value) => {
             return (
               <BlogsRightWrap>

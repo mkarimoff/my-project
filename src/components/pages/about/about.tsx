@@ -37,8 +37,9 @@ const AboutComponent: React.FC = () => {
         controls
         width="1150px"
         height="550px"
+        data-aos="zoom-in"
       />
-       <MottoCon>
+       <MottoCon data-aos="fade-up">
             <div className="motto-components">
               <LocalShippingOutlinedIcon fontSize="large" />
               <div>
@@ -70,7 +71,7 @@ const AboutComponent: React.FC = () => {
        </MottoCon>
        <AboutTextWrap>
         <div className="components-wrap">
-        <div className="text-wrap">
+        <div className="text-wrap" data-aos="fade-right">
            <div>
             <h1>Desire Meets A New Style</h1>
             <p>Since when has the concept of “jewelry” existed? When it comes to jewelry, people often think of personal accessories that make a difference to help the wearer stand out.</p>
@@ -78,11 +79,11 @@ const AboutComponent: React.FC = () => {
             <p>Since when has the concept of “jewelry” existed? When it comes to jewelry, people often think of personal accessories that make a difference to help the wearer stand out. This concept dates back to about 40,000 years ago, when humans knew how to sharpen animal bones into bracelets, necklaces.</p>
            </div>
          </div>
-         <img src={blackchair} alt="product-image" />
+         <img src={blackchair} alt="product-image" data-aos="fade-left" />
         </div>
         <div className="components-wrap">
-        <img src={granit} alt="product-image" />
-        <div className="text-wrap">
+        <img src={granit} alt="product-image" data-aos="fade-right"/>
+        <div className="text-wrap" data-aos="fade-left">
            <div>
             <h1>Desire Meets A New Style</h1>
             <p>Since when has the concept of “jewelry” existed? When it comes to jewelry, people often think of personal accessories that make a difference to help the wearer stand out.</p>
@@ -92,7 +93,7 @@ const AboutComponent: React.FC = () => {
          </div>
         </div>
        </AboutTextWrap>
-       <ProductsImg>
+       <ProductsImg data-aos="fade-up">
        <Carousel/>
       </ProductsImg>
     </AboutCon>

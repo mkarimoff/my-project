@@ -30,7 +30,7 @@ const PagesComponet = () => {
         </AboutBgWrap>
       </div>
       <SuccessWrap>
-        <div className="texts-wrap">
+        <div className="texts-wrap" data-aos="fade-right">
           <div>
             <p style={{color:'#d4a373'}}>Welcome to Furnimall</p>
             <h1>Our Success <br /> And Company History.</h1>
@@ -44,9 +44,9 @@ const PagesComponet = () => {
           <img src={signature} alt="signature image" style={{width:'200px'}} />
          <p><span>Muhammad </span>- Founder of Furnimall</p>
         </div>
-        <img src={founder} alt="image" style={{width:'700px',height:"1000px"}}/>
+        <img src={founder} alt="image" style={{width:'700px',height:"1000px"}} data-aos="fade-left"/>
       </SuccessWrap>
-      <HistoryWrap>
+      <HistoryWrap data-aos="fade-up">
         <div className="components">
           <img src={vision} alt="img" />
           <h2>OUR VISION</h2>

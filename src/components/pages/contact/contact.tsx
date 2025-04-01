@@ -7,7 +7,7 @@ import { ContactUs } from "./contactUs"
 
 const ContactComponent = () => {
   return (
-    <ContactMainCon>
+    <ContactMainCon data-aos="fade-up">
        <div className="collection-bg">
           <AboutBgWrap>
              <b>Contact</b>

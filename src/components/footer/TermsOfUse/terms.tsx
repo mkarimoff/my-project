@@ -25,12 +25,12 @@ const TermsOfUse = () => {
              </div>
           </AboutBgWrap>
        </div>
-        <h1>We followed the law, follow our policies, we self-report</h1>
+        <h1 data-aos="fade-up">We followed the law, follow our policies, we self-report</h1>
         <div className="header-bot">
-            <div style={{width:'8px',height:"65px",backgroundColor:"#5F9999"}}></div>
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+            <div style={{width:'8px',height:"65px",backgroundColor:"#5F9999"}} data-aos="fade-right"></div>
+            <p data-aos="fade-left">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
         </div>
-        <TermsMiddleWrap>
+        <TermsMiddleWrap data-aos="fade-up">
             <div className="texts-wrap">
                 <div>
                     <b>Changes to personally information</b>
@@ -52,7 +52,7 @@ const TermsOfUse = () => {
                 </div>
             </div>
         </TermsMiddleWrap>
-        <MultipleInfoWrap>
+        <MultipleInfoWrap data-aos="fade-up">
             <h1>Watch information collected through technology and bt third-parties?</h1>
             <div className="infos-wrap">
                 <h2>01</h2>
