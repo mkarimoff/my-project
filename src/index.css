@@ -33,26 +33,13 @@
     background-size: cover;
 }
 
-.carousel-container {
-    width: 80%; /* Carouselning kengligi */
-    margin: 0 auto; /* Markazlashtirish */
-  }
-  
-  .carousel-image {
-    width: 100%; /* Rasmlar to'liq kenglikda bo'ladi */
-    height: auto; /* Kenglik bo'yicha nisbiy balandlik */
-    object-fit: cover; /* Rasmlar maydonga to'g'ri keladi */
-  }
-  
-  .slick-slide {
-    padding: 0 10px; /* Rasmlar orasidagi bo'shliq */
-  }
-  .react-multi-carousel-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 373px !important; 
-  }
+.slick-prev:before,
+.slick-next:before {
+  color: black !important; 
+  font-size: 26px !important;
+}
+
+
   
   
   

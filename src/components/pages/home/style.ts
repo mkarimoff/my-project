@@ -206,7 +206,7 @@ export const ProductsMain = styled.div`
   justify-content: center;
   background: var(--product-background, #f6f6f6);
   width: 100%;
-  height: 730px;
+  height: 820px;
 
   .products-header {
     display: flex;
@@ -566,7 +566,7 @@ export const ReadAboutDivs = styled.div`
     display: flex;
     align-items: center;
     width: 380px;
-    height: 62%;
+    height: 60%;
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
   }
@@ -575,7 +575,7 @@ export const ReadAboutDivs = styled.div`
     justify-content: center;
     flex-direction: column;
     width: 380px;
-    height: 38%;
+    height: 40%;
     background-color: white;
     padding: 20px;
     gap: 5px;
@@ -591,16 +591,18 @@ export const ReadAboutDivs = styled.div`
       font-size: 14px;
       font-weight: 300;
     }
-    b {
+  }
+`;
+export const HomeBlogLink = styled(Link)`
       color: var(--Text-Color, #252525);
       font-size: 15px;
       font-weight: 500;
-      text-decoration-line: underline;
-      text-decoration-style: solid;
       cursor: pointer;
-    }
-  }
-`;
+      &:hover{
+        color: #31572c;
+
+      }
+`
 export const ProductsImg = styled.div`
   display: flex;
   align-items: center;

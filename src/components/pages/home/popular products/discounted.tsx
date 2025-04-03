@@ -1,35 +1,24 @@
 import { BlogsMockData } from "../../mockdata/blogs.mock";
 import { PopularItems, PopularWrap } from "./style";
 import stars from "../../../../assets/svg/stars.svg";
-import "react-multi-carousel/lib/styles.css";
-import Carousel from "react-multi-carousel";
-
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 const Discounted = () => {
   const filteredDiscounted = BlogsMockData.filter(
     (item) => item.type === "discounted"
   );
+
+  const settings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+  };
+
   return (
-    <div style={{ width: "100%", maxWidth: "1400px" }}>
-      <Carousel
-        swipeable={false}
-        draggable={false}
-        showDots={false}
-        infinite={true}
-        autoPlay={false}
-        keyBoardControl={true}
-        customTransition="transform 0.5s ease-in-out"
-        transitionDuration={500}
-        containerClass="carousel-container"
-        arrows={true}
-        slidesToSlide={1}
-        responsive={{
-          fixed: {
-            breakpoint: { max: 4000, min: 0 },
-            items: 3,
-            partialVisibilityGutter: 0,
-          },
-        }}
-      >
+    <div style={{ width: "100%", maxWidth: "1100px" }}>
+      <Slider {...settings}>
         {filteredDiscounted.map((value) => (
           <PopularWrap key={value.id} to={`/BlogsDetail/${value.id}`}>
             <PopularItems>
@@ -54,7 +43,7 @@ const Discounted = () => {
             </PopularItems>
           </PopularWrap>
         ))}
-      </Carousel>
+      </Slider>
     </div>
   );
 };

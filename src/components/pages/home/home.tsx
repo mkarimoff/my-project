@@ -7,6 +7,7 @@ import {
   DownloadApp,
   FeaturedAdding,
   FeaturedPros,
+  HomeBlogLink,
   HomeContainer,
   HomeInfo,
   HomeMain,
@@ -46,9 +47,6 @@ import WhiteChair from "../../../assets/images/white-chair.png";
 import blackchair from "../../../assets/images/black-chair.png";
 import google from "../../../assets/images/google.png";
 import appstore from "../../../assets/images/appstore.png";
-import forniture from "../../../assets/images/forniture.jpeg";
-import sofa2 from "../../../assets/images/sofa2.jpg";
-import drawer2 from "../../../assets/images/drawer2.webp";
 import { Box, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { BlogsMockData } from "../mockdata/blogs.mock";
@@ -75,9 +73,15 @@ const HomeComponent: React.FC = () => {
   }, []);
 
   const filteredData = BlogsMockData.filter((item) => item.type === "home");
-  const filteredPopular = BlogsMockData.filter(
-    (item) => item.type === "popular"
-  );
+  const filteredPopular = BlogsMockData
+  .filter((item) => item.type === "popular")
+  .sort(() => Math.random() - 0.5) // Shuffle the array randomly
+  .slice(0, 8);
+
+  const filteredBlogs = BlogsMockData
+  .filter((item) => item.type === "blogs") // Filter the blogs
+  .sort(() => Math.random() - 0.5) // Shuffle the array randomly
+  .slice(0, 3);
 
   const handleScroll = () => {
     window.scrollTo({ top: 3450, behavior: "smooth" }); // Scrolls to 500px down
@@ -161,7 +165,7 @@ const HomeComponent: React.FC = () => {
         </div>
         <CategoryWrap data-aos="fade-up">
           {filteredPopular.map((value) => (
-            <CategoryDiv key={value.id} to={`/BlogsDetail/${value.id}`}>
+            <CategoryDiv key={value.id} to={`/Collection/${value.id}`}>
               <img src={value.photo} alt="popular-product-iamage" />
               <div className="text-wrap">
                 <b>{value.header}</b>
@@ -417,42 +421,16 @@ const HomeComponent: React.FC = () => {
           <p>Read About Furniture Industry</p>
         </div>
         <ReadAboutWrap>
+        {filteredBlogs.map((value) => (
           <ReadAboutDivs>
-            <img src={sofa2} alt="forniture-image" />
+            <img src={value.photo} alt="forniture-image" />
             <div className="read-text">
-              <h2>The best wooden furniture for apartments</h2>
-              <p>
-                One may not need charts and graphs at this point to know that,
-                in the past couple of years especially, the buying and selling
-                o...
-              </p>
-              <b>Read More</b>
+              <h2>{value.header}</h2>
+              <p>{value.second_description}</p>
+              <HomeBlogLink key={value.id} to={`/BlogsDetail/${value.id}`}>Read More</HomeBlogLink>
             </div>
           </ReadAboutDivs>
-          <ReadAboutDivs>
-            <img src={drawer2} alt="forniture-image" />
-            <div className="read-text">
-              <h2>The best wooden furniture for apartments</h2>
-              <p>
-                One may not need charts and graphs at this point to know that,
-                in the past couple of years especially, the buying and selling
-                o...
-              </p>
-              <b>Read More</b>
-            </div>
-          </ReadAboutDivs>
-          <ReadAboutDivs>
-            <img src={forniture} alt="forniture-image" />
-            <div className="read-text">
-              <h2>The best wooden furniture for apartments</h2>
-              <p>
-                One may not need charts and graphs at this point to know that,
-                in the past couple of years especially, the buying and selling
-                o...
-              </p>
-              <b>Read More</b>
-            </div>
-          </ReadAboutDivs>
+           ))}
         </ReadAboutWrap>
       </ReadAboutIndustry>
       <ProductsImg data-aos="fade-up">

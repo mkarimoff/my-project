@@ -49,9 +49,7 @@ const CollectionComponent: React.FC = () => {
     (item) => item.type === "new"
   );
   const data = BlogsMockData.find((value) => value.id.toString() === id);
-
-  console.log(id);
-  console.log("data", data);
+  
   return (
     <>
       <ShopCon>
