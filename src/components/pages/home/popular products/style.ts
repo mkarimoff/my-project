@@ -43,8 +43,8 @@ export const PopularItems = styled.div`
 
     img {
       border-radius: 125px;
-      width: 260px;
-      height: 260px;
+      width: 250px;
+      height: 250px;
     }
   }
   .texts-wrap {

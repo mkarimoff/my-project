@@ -22,7 +22,6 @@ const Discounted = () => {
         containerClass="carousel-container"
         arrows={true}
         slidesToSlide={1}
-        itemClass="carousel-item"
         responsive={{
           fixed: {
             breakpoint: { max: 4000, min: 0 },

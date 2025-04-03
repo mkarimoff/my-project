@@ -5,10 +5,12 @@ import stars from "../../../../assets/svg/stars.svg";
 import { PopularItems, PopularWrap } from "./style";
 
 const NewArrival = () => {
-  const filteredNewarrival = BlogsMockData.filter((item) => item.type === "new");
+  const filteredNewarrival = BlogsMockData.filter(
+    (item) => item.type === "new"
+  );
 
   return (
-    <div style={{ width: "100%", maxWidth: "1800px", }}>
+    <div style={{ width: "100%", maxWidth: "1400px" }}>
       <Carousel
         swipeable={false}
         draggable={false}
@@ -29,7 +31,6 @@ const NewArrival = () => {
           },
         }}
       >
-
         {filteredNewarrival.map((value) => (
           <PopularWrap key={value.id} to={`/BlogsDetail/${value.id}`}>
             <PopularItems>
@@ -52,12 +53,9 @@ const NewArrival = () => {
             </PopularItems>
           </PopularWrap>
         ))}
- 
       </Carousel>
     </div>
   );
 };
 
 export default NewArrival;
-
-

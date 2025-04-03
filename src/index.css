@@ -47,27 +47,12 @@
   .slick-slide {
     padding: 0 10px; /* Rasmlar orasidagi bo'shliq */
   }
-  .carousel-container {
-    position: relative;
+  .react-multi-carousel-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 373px !important; 
   }
   
-  /* Position the left arrow */
-  .react-multi-carousel-arrow.react-multi-carousel-prev {
-    position: absolute !important;
-    top: 50% !important;
-    left: 10px !important;  /* Adjust the left arrow position */
-    transform: translateY(-50%) !important;
-    z-index: 10 !important;
-  }
-  
-  /* Position the right arrow */
-  .react-multi-carousel-arrow.react-multi-carousel-next {
-    position: absolute !important;
-    top: 50% !important;
-    right: 10px !important;  /* Adjust the right arrow position */
-    transform: translateY(-50%) !important;
-    z-index: 10 !important;
-  }
-
   
   
