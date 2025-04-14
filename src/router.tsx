@@ -16,9 +16,9 @@ import BlogDetail from './components/pages/blogs/detail-page/blog.detail';
 import CartComponent from './components/navbar/cart/cart';
 import Profile from './components/navbar/profile/profile';
 import Signin from './components/signin/signin';
-import Signup from './components/signup/signup';
 import ShopComponent from './components/pages/shop';
 import Loader from "./components/loading/loader";
+import Register from "./components/register/register";
 
 const RouterComponent = () => {
   const [loading, setLoading] = useState(false);
@@ -55,7 +55,7 @@ const RouterComponent = () => {
             <Route path='/cart' element={<CartComponent />} />
             <Route path='/profile' element={<Profile />} />
             <Route path='/signin' element={<Signin />} />
-            <Route path='/signup' element={<Signup />} />
+            <Route path='/register' element={<Register />} />
             <Route path='/*' element={<ErrorPage />} />
           </Routes>
           <Footer />

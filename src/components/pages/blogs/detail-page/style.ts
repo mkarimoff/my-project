@@ -9,8 +9,8 @@ export const BlogDetailCon = styled.div`
   margin-bottom: 100px;
 
   .product-image {
-    width: 1100px;
-    height: 470px;
+    width: 1000px;
+    height: 600px;
   }
   .texts-wrap {
     display: flex;
