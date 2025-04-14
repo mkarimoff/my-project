@@ -1,6 +1,4 @@
 import arrow from "../../../assets/svg/smallarrow.svg";
-import MultipleSelectChip from "./mui/category";
-import MultipleSelectCheckmarks from "./mui/discount";
 import {
   CollectBgWrap,
   CollectFilter,
@@ -9,20 +7,74 @@ import {
 } from "./style";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
-import GroupedSelect from "./mui/price";
 import { useState } from "react";
 import VerticalMenu from "./vertical/vertical";
 import HorizontMenu from "./horizontal/hmenu";
+import { BlogsMockData } from "../mockdata/blogs.mock";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  OutlinedInput,
+  Chip,
+} from "@mui/material"; // Importing MUI components for dropdowns
 
 const ShopComponent = () => {
-  const [active, seActive] = useState(true);
+  const [active, setActive] = useState(true); // True for vertical, false for horizontal
+  const [filters, setFilters] = useState({
+    categories: [] as string[],
+    selectedPriceRange: "", // Default: no price range
+  });
 
   const handleHMenu = () => {
-    seActive(true);
+    setActive(true); // Switch to vertical layout
   };
+
   const handleVMenu = () => {
-    seActive(false);
+    setActive(false); // Switch to horizontal layout
   };
+
+  const handleCategoryChange = (event: any) => {
+    const selectedCategories = event.target.value;
+    setFilters((prev) => ({
+      ...prev,
+      categories: selectedCategories,
+    }));
+  };
+
+  const handlePriceChange = (event: any) => {
+    const selectedPrice = event.target.value;
+    setFilters((prev) => ({
+      ...prev,
+      selectedPriceRange: selectedPrice,
+    }));
+  };
+
+  const priceRanges = [
+    { id: 1, label: "0$ - 100$", min: 0, max: 100 },
+    { id: 2, label: "101$ - 200$", min: 101, max: 200 },
+    { id: 3, label: "201$ - 300$", min: 201, max: 300 },
+    { id: 4, label: "301$ - 400$", min: 301, max: 400 },
+    { id: 5, label: "401$ and above", min: 401, max: 10000 },
+  ];
+
+  // Filter the mock data based on the selected filters
+  const filteredData = BlogsMockData.filter((product) => {
+    const category = product.category || "Uncategorized"; // Fallback to "Uncategorized" if no category
+    const prise = product.prise ? parseFloat(product.prise.replace(/[^0-9.]/g, "")) : 0; // Convert price to number
+
+    const isCategoryMatch =
+      filters.categories.length === 0 || filters.categories.includes(category);
+
+    const isPriseMatch =
+      filters.selectedPriceRange === "" || // No price range selected, show all prices
+      (prise >= priceRanges[parseInt(filters.selectedPriceRange as string) - 1]?.min &&
+        prise <= priceRanges[parseInt(filters.selectedPriceRange as string) - 1]?.max);
+
+    return isCategoryMatch && isPriseMatch;
+  });
+
   return (
     <>
       <CollectionWrap>
@@ -48,16 +100,59 @@ const ShopComponent = () => {
         <div>
           <CollectFilter data-aos="fade-up">
             <p>Filter:</p>
-            <MultipleSelectChip />
-            <GroupedSelect />
-            <MultipleSelectCheckmarks />
+            {/* Category Filter */}
+            <FormControl sx={{ m: 1, width: 300 }}>
+              <InputLabel id="category-label">Category</InputLabel>
+              <Select
+                labelId="category-label"
+                multiple
+                value={filters.categories}
+                onChange={handleCategoryChange}
+                input={<OutlinedInput label="Category" />}
+                renderValue={(selected) => (
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                    {selected.map((value) => (
+                      <Chip key={value} label={value} />
+                    ))}
+                  </div>
+                )}
+              >
+                {["Tables", "Sofas", "Drawers", "Chairs"].map((name) => (
+                  <MenuItem key={name} value={name}>
+                    {name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            {/* Price Filter */}
+            <FormControl sx={{ m: 1, width: 300 }}>
+              <InputLabel id="price-label">Price Range</InputLabel>
+              <Select
+                labelId="price-label"
+                value={filters.selectedPriceRange}
+                onChange={handlePriceChange}
+                input={<OutlinedInput label="Price Range" />}
+              >
+                <MenuItem value="">
+                  <em>All</em>
+                </MenuItem>
+                {priceRanges.map((range) => (
+                  <MenuItem key={range.id} value={range.id.toString()}>
+                    {range.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </CollectFilter>
+
           <GridsWrap>
             <div style={{ display: "flex", gap: "850px" }}>
               <div
-                style={{ display: "flex", alignItems: "center", gap: "5px" }} data-aos="fade-up"
+                style={{ display: "flex", alignItems: "center", gap: "5px" }}
+                data-aos="fade-up"
               >
-                <b>25</b>
+                <b>{filteredData.length}</b>
                 <p>Results Found</p>
               </div>
               <div style={{ display: "flex" }} data-aos="fade-up">
@@ -74,13 +169,9 @@ const ShopComponent = () => {
               </div>
             </div>
             {active ? (
-              <div>
-                <VerticalMenu />
-              </div>
+              <VerticalMenu products={filteredData} /> // Pass filtered data to VerticalMenu
             ) : (
-              <div>
-                <HorizontMenu />
-              </div>
+              <HorizontMenu products={filteredData} /> // Pass filtered data to HorizontMenu
             )}
           </GridsWrap>
         </div>

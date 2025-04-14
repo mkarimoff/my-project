@@ -49,6 +49,7 @@ export const ErrorCon = styled.div`
     align-items: center;
     justify-content: center;
     height: 900px;
+    background-color: #252525;
 
 .error-wrapper{
     display: flex;
