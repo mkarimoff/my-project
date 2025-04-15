@@ -113,7 +113,7 @@ const BlogsComponent = () => {
         <BlogsRightCon data-aos="fade-left">
           {filteredData.map((value) => {
             return (
-              <BlogsRightWrap>
+              <BlogsRightWrap key={value.id} to={`/BlogsDetail/${value.id}`}>
                 <img src={value.photo} alt="image" />
                 <div className="texts-wrap">
                   <h1>{value.header}</h1>
@@ -123,7 +123,7 @@ const BlogsComponent = () => {
                     days that people have to stay indoors.The era of sportswear
                     emerged a...
                   </h3>
-                  <ReadMore key={value.id} to={`/BlogsDetail/${value.id}`}>
+                  <ReadMore >
                     Read More
                   </ReadMore>
                 </div>

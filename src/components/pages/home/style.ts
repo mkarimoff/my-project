@@ -524,6 +524,16 @@ export const ReadAboutIndustry = styled.div`
   width: 100%;
   height: 776px;
   gap: 50px;
+
+  .read-about{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  max-width: 1500px;
+  width: 100%;
+  text-decoration: none;
+  }
   .read-header {
     display: flex;
     flex-direction: column;
@@ -540,14 +550,12 @@ export const ReadAboutIndustry = styled.div`
     }
   }
 `;
-export const ReadAboutWrap = styled.div`
+export const ReadAboutWrap = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 20px;
-  flex-wrap: wrap;
-  max-width: 1500px;
-  width: 100%;
+  text-decoration: none;
 `;
 
 export const ReadAboutDivs = styled.div`
@@ -593,13 +601,14 @@ export const ReadAboutDivs = styled.div`
     }
   }
 `;
-export const HomeBlogLink = styled(Link)`
+export const HomeBlogLink = styled.div`
       color: var(--Text-Color, #252525);
       font-size: 15px;
       font-weight: 500;
       cursor: pointer;
       &:hover{
         color: #31572c;
+        text-decoration: underline;
 
       }
 `

@@ -47,7 +47,7 @@ const Navbar = () => {
             <p>24/7 Support</p>
           </div>
           <div>
-            <p>Enquiries +850 1254 789</p>
+            <p>Enquiries +8210-6505-1909</p>
           </div>
         </NavTop>
         <NavMenu>
@@ -55,11 +55,11 @@ const Navbar = () => {
             src={logo}
             alt="logo"
             style={{ width: "200px" }}
-            data-aos="fade-right"
+            
           />
-          <NavRight data-aos="fade-left">
+          <NavRight >
             <MenuWrap>
-              <Navlink to="/">
+              <Navlink to="/home">
                 <p>Home</p>
               </Navlink>
               <Navlink to="/about">

@@ -38,6 +38,15 @@ const AboutComponent: React.FC = () => {
         width="1150px"
         height="550px"
         data-aos="zoom-in"
+        onReady={() => console.log('Player is ready')}
+        config={{
+          youtube: {
+            playerVars: {
+              autoplay: 0,
+              modestbranding: 1,
+            },
+          },
+        }}
       />
        <MottoCon data-aos="fade-up">
             <div className="motto-components">
@@ -101,3 +110,4 @@ const AboutComponent: React.FC = () => {
 };
 
 export default AboutComponent;
+

@@ -352,7 +352,7 @@ export const BlogsMockData = [
           "prise": "$599"
         },
         {
-          "id": 29,
+          "id": 28,
           "type": "new",
           "photo": "https://gvawood.com/cdn/shop/files/O1CN01Ss3Hue1nJefr8ZY24__1105025069.jpg?v=1741813705&width=750",
           "header": "TV Drawer",

@@ -3,7 +3,7 @@ import stars from '../../../../assets/svg/stars.svg'
 import { BlogsMockData } from '../../mockdata/blogs.mock'
 
 interface HorizontMenuProps {
-  products: typeof BlogsMockData; // yoki products: any[] agar mockdata yo‘q bo‘lsa
+  products: typeof BlogsMockData; 
 }
 
 const HorizontMenu = ({ products }: HorizontMenuProps) => {

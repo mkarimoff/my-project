@@ -21,6 +21,7 @@ import {
 } from "@mui/material"; // Importing MUI components for dropdowns
 
 const ShopComponent = () => {
+  
   const [active, setActive] = useState(true); // True for vertical, false for horizontal
   const [filters, setFilters] = useState({
     categories: [] as string[],

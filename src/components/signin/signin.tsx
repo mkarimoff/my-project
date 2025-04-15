@@ -32,7 +32,7 @@ const Signin = () => {
       if (response.data.message === "Login successful") {
         const token = response.data.token;
         localStorage.setItem("authToken", token);
-        navigate("/");
+        navigate("/home");
       } else {
         setError("Invalid email or password.");
       }

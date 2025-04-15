@@ -134,7 +134,7 @@ export const BlogsRightCon = styled.div`
   width: 100%;
   gap: 20px;
 `;
-export const BlogsRightWrap = styled.div`
+export const BlogsRightWrap = styled(Link)`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -143,6 +143,7 @@ export const BlogsRightWrap = styled.div`
   text-decoration: none;
   color: black;
   gap: 10px;
+  text-decoration: none;
 
   img {
     width: 100%;
@@ -185,7 +186,7 @@ export const BlogsRightWrap = styled.div`
     }
   }
 `;
-export const ReadMore = styled(Link)`
+export const ReadMore = styled.div`
   width: 97px;
   height: 35px;
   border: none;
@@ -193,7 +194,6 @@ export const ReadMore = styled(Link)`
   color: white;
   font-weight: 500;
   cursor: pointer;
-  text-decoration: none;
   padding: 5px 0px 5px 0px;
   text-align: center;
   &:hover {

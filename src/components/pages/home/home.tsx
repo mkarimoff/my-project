@@ -75,16 +75,16 @@ const HomeComponent: React.FC = () => {
   const filteredData = BlogsMockData.filter((item) => item.type === "home");
   const filteredPopular = BlogsMockData
   .filter((item) => item.type === "popular")
-  .sort(() => Math.random() - 0.5) // Shuffle the array randomly
+  .sort(() => Math.random() - 0.5) 
   .slice(0, 8);
 
   const filteredBlogs = BlogsMockData
-  .filter((item) => item.type === "blogs") // Filter the blogs
-  .sort(() => Math.random() - 0.5) // Shuffle the array randomly
+  .filter((item) => item.type === "blogs")
+  .sort(() => Math.random() - 0.5) 
   .slice(0, 3);
 
   const handleScroll = () => {
-    window.scrollTo({ top: 3450, behavior: "smooth" }); // Scrolls to 500px down
+    window.scrollTo({ top: 3450, behavior: "smooth" });
   };
 
   return (
@@ -420,18 +420,20 @@ const HomeComponent: React.FC = () => {
           <h1>Blogs & Insights</h1>
           <p>Read About Furniture Industry</p>
         </div>
-        <ReadAboutWrap>
+        <div className="read-about">
         {filteredBlogs.map((value) => (
+        <ReadAboutWrap key={value.id} to={`/BlogsDetail/${value.id}`} >
           <ReadAboutDivs>
             <img src={value.photo} alt="forniture-image" />
             <div className="read-text">
               <h2>{value.header}</h2>
               <p>{value.second_description}</p>
-              <HomeBlogLink key={value.id} to={`/BlogsDetail/${value.id}`}>Read More</HomeBlogLink>
+              <HomeBlogLink>Read More</HomeBlogLink>
             </div>
           </ReadAboutDivs>
-           ))}
         </ReadAboutWrap>
+           ))}
+           </div>
       </ReadAboutIndustry>
       <ProductsImg data-aos="fade-up">
         <Carousel />
