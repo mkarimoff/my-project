@@ -1,8 +1,25 @@
-import { AboutBgWrap } from "../../pages/about/style"
-import arrow from '../../../assets/svg/smallarrow.svg'
-import { PrivacyCon, TextsCon } from "./style"
+import { useEffect } from 'react';
+import { AboutBgWrap } from "../../pages/about/style";
+import arrow from '../../../assets/svg/smallarrow.svg';
+import { PrivacyCon, TextsCon } from "./style";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const PrivacyPolicy = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: false,
+      mirror: true,
+    });
+
+    AOS.refresh();
+
+    return () => {
+      AOS.refreshHard();
+    };
+  }, []);
+
   return (
     <PrivacyCon>
        <div className="collection-bg">
@@ -51,7 +68,7 @@ const PrivacyPolicy = () => {
         </div>
        </TextsCon>
     </PrivacyCon>
-  )
-}
+  );
+};
 
-export default PrivacyPolicy
+export default PrivacyPolicy;

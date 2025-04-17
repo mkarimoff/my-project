@@ -1,9 +1,25 @@
-import { AboutBgWrap } from "../../pages/about/style"
-import { MultipleInfoWrap, TermsCon, TermsMiddleWrap } from "./style"
-import arrow from '../../../assets/svg/smallarrow.svg'
-
+import { useEffect } from 'react';
+import { AboutBgWrap } from "../../pages/about/style";
+import { MultipleInfoWrap, TermsCon, TermsMiddleWrap } from "./style";
+import arrow from '../../../assets/svg/smallarrow.svg';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const TermsOfUse = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: false,
+      mirror: true,
+    });
+
+    AOS.refresh();
+
+    return () => {
+      AOS.refreshHard();
+    };
+  }, []);
+
   return (
     <TermsCon>
         <div className="collection-bg">
@@ -91,7 +107,7 @@ const TermsOfUse = () => {
             </div>
         </MultipleInfoWrap>
     </TermsCon>
-  )
-}
+  );
+};
 
-export default TermsOfUse
+export default TermsOfUse;

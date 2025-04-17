@@ -15,8 +15,12 @@ const Footer = () => {
         </FooterDivs>
         <FooterHelp>
             <b>Need Help?</b>
+            <FooterLink to= {"/contact"}>
             <p>Support</p>
+            </FooterLink>
+            <FooterLink to= {"/register"}>
             <p>Get Started</p>
+            </FooterLink>
             <FooterLink to= {"/terms-of-use"}>
             <p>Terms of Sale & Use</p>
             </FooterLink>

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
   AboutBgWrap,
   BlogsCon,
@@ -16,9 +17,26 @@ import recentpost2 from "../../../assets/images/recent-post2.jpeg";
 import { BlogsMockData } from "../mockdata/blogs.mock";
 import { Stack } from "@mui/system";
 import { Pagination } from "@mui/material";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const BlogsComponent = () => {
-  const filteredData = BlogsMockData.filter((item) =>  item.type === "blogs");
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // Animation duration in milliseconds
+      once: false, // Animations trigger every time elements come into view
+      mirror: true, // Animations trigger when scrolling up
+    });
+
+    AOS.refresh(); // Ensure animations are recalculated after initialization
+
+    return () => {
+      AOS.refreshHard(); // Reset AOS state on component unmount
+    };
+  }, []); // Empty dependency array to run only on mount
+
+  const filteredData = BlogsMockData.filter((item) => item.type === "blogs");
+
   return (
     <BlogsCon>
       <div className="collection-bg">
@@ -110,7 +128,7 @@ const BlogsComponent = () => {
             </form>
           </NewsLetterCon>
         </BlogsLeftWrap>
-        <BlogsRightCon data-aos="fade-left">
+        <BlogsRightCon data-aos="fade-left]">
           {filteredData.map((value) => {
             return (
               <BlogsRightWrap key={value.id} to={`/BlogsDetail/${value.id}`}>
@@ -123,7 +141,7 @@ const BlogsComponent = () => {
                     days that people have to stay indoors.The era of sportswear
                     emerged a...
                   </h3>
-                  <ReadMore >
+                  <ReadMore>
                     Read More
                   </ReadMore>
                 </div>
@@ -140,3 +158,4 @@ const BlogsComponent = () => {
 };
 
 export default BlogsComponent;
+

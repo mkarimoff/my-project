@@ -1,18 +1,33 @@
-import { AboutBgWrap } from "../../pages/about/style"
+import { useEffect } from 'react';
+import { AboutBgWrap } from "../../pages/about/style";
 import arrow from "../../../assets/svg/smallarrow.svg";
 import greenarrow from "../../../assets/svg/greenarrow.svg";
 import { CartMainCon, CartWrap } from "./style";
 import { useNavigate } from "react-router-dom";
-
-
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const CartComponent = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: false,
+      mirror: true,
+    });
+
+    AOS.refresh();
+
+    return () => {
+      AOS.refreshHard();
+    };
+  }, []);
 
   const navigate = useNavigate(); 
   
   const handleClick = () => {
     navigate("/shop"); 
   };
+
   return (
     <CartMainCon>
       <div className="collection-bg">
@@ -58,14 +73,14 @@ const CartComponent = () => {
                 <b>$10.00</b>
               </div>
             </div>
-                <div className="small-line"></div>
-                <div style={{display:'flex',gap:'30px',}}>
-                <b>Total:</b>
-                <h4>$100.00</h4>
-                </div>
-            <div style={{display:'flex',alignItems:'center', gap:'5px',marginTop:'25px',cursor:'pointer'}} onClick={handleClick} >
-            <h5>Continue Shopping </h5>
-            <img src={greenarrow} alt="" style={{width:'15px'}} />
+            <div className="small-line"></div>
+            <div style={{display:'flex',gap:'30px',}}>
+              <b>Total:</b>
+              <h4>$100.00</h4>
+            </div>
+            <div style={{display:'flex',alignItems:'center', gap:'5px',marginTop:'25px',cursor:'pointer'}} onClick={handleClick}>
+              <h5>Continue Shopping </h5>
+              <img src={greenarrow} alt="" style={{width:'15px'}} />
             </div>
           </div>
         </div>

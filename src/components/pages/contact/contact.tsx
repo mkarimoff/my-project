@@ -1,11 +1,26 @@
-import { AboutBgWrap } from "../about/style"
-import arrow from '../../../assets/svg/smallarrow.svg'
-import { ContactInfoWrap, ContactMainCon } from "./style"
-// import BasicMap from "./map/map"
-import { ContactUs } from "./contactUs"
-
+import { useEffect } from 'react';
+import { AboutBgWrap } from "../about/style";
+import arrow from '../../../assets/svg/smallarrow.svg';
+import { ContactInfoWrap, ContactMainCon } from "./style";
+import { ContactUs } from "./contactUs";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const ContactComponent = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: false,
+      mirror: true,
+    });
+
+    AOS.refresh();
+
+    return () => {
+      AOS.refreshHard();
+    };
+  }, []);
+
   return (
     <ContactMainCon data-aos="fade-up">
        <div className="collection-bg">
@@ -45,7 +60,7 @@ const ContactComponent = () => {
        <ContactUs />
        {/* <BasicMap /> */}
     </ContactMainCon>
-  )
-}
+  );
+};
 
-export default ContactComponent
+export default ContactComponent;

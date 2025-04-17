@@ -1,8 +1,25 @@
+import { useEffect } from 'react';
 import { AboutBgWrap } from "../../pages/about/style";
 import arrow from "../../../assets/svg/smallarrow.svg";
 import { ProfileCon, ProfileWrap } from "./style";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const Profile = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: false,
+      mirror: true,
+    });
+
+    AOS.refresh();
+
+    return () => {
+      AOS.refreshHard();
+    };
+  }, []);
+
   return (
     <ProfileCon>
       <div className="collection-bg">
