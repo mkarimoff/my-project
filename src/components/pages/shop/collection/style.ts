@@ -9,6 +9,7 @@ export const ShopCon = styled.div`
 export const BuyingWrap = styled.div`
   display: flex;
   gap: 30px;
+  margin-top: 50px;
 
   .imgs-wrap {
     display: flex;
