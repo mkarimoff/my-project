@@ -51,13 +51,8 @@ const Navbar = () => {
           </div>
         </NavTop>
         <NavMenu>
-          <img
-            src={logo}
-            alt="logo"
-            style={{ width: "200px" }}
-            
-          />
-          <NavRight >
+          <img src={logo} alt="logo" style={{ width: "200px" }} />
+          <NavRight>
             <MenuWrap>
               <Navlink to="/home">
                 <p>Home</p>

@@ -3,7 +3,7 @@ import { useAuth } from "../context/authContext";
 import { SignUpInLink } from "../register/style";
 import { P, SignInCon } from "./style";
 import { useState } from "react";
-import { toast } from "react-toastify"; // Optional
+import { toast } from "react-toastify"; 
 
 const Signin = () => {
   const { login } = useAuth();
@@ -12,6 +12,7 @@ const Signin = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -19,18 +20,19 @@ const Signin = () => {
 
     if (!email || !password) {
       setError("All fields are required.");
-      toast.error("All fields are required."); // Optional
+      toast.error("All fields are required.");
       setIsLoading(false);
       return;
     }
 
     try {
       await login(email, password);
-      toast.success("Login successful!"); // Optional
+      toast.success("Login successful!");
+      
     } catch (error: any) {
       const errorMessage = error.message || "Login failed. Please try again.";
       setError(errorMessage);
-      toast.error(errorMessage); // Optional
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }

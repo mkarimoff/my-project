@@ -3,6 +3,7 @@ import { P, SignUpCon, SignUpInLink } from "./style";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "aos/dist/aos.css";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -52,6 +53,7 @@ const Register = () => {
     setError(null);
     setSuccess(null);
     setIsLoading(true);
+    toast.success('User successfully registered!')
 
     if (!firstName || !lastName || !email || !password || !address || !number) {
       setError("All fields are required.");
@@ -84,7 +86,7 @@ const Register = () => {
       return;
     }
 
-    // Send hyphenated number to match backend validation
+  
     const hyphenatedNumber = formatKoreanPhoneNumber(cleanedNumber);
 
     const payload = {
@@ -93,7 +95,7 @@ const Register = () => {
       email,
       password,
       address,
-      number: hyphenatedNumber, // Send hyphenated number (e.g., "010-1234-5678")
+      number: hyphenatedNumber, 
       role: "user",
     };
 

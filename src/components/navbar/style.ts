@@ -113,3 +113,10 @@ export const DropdownLink = styled(NavLink)`
      color: #928E8B;
 }
 `
+export const StyledP = styled.p<{ $active: boolean }>`
+  background-color: ${({ $active }) => ($active ? "#928E8B" : "transparent")};
+  color: ${({ $active }) => ($active ? "white" : "black")};
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: 0.3s;
+`;

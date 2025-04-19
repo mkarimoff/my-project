@@ -1,10 +1,10 @@
-// components/signin/authContext.tsx
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
 interface AuthContextType {
   isAuthenticated: boolean;
+  user: { email: string; firstName: string; lastName: string } | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
 }
@@ -13,18 +13,22 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [user, setUser] = useState<{ email: string; firstName: string; lastName: string } | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Initialize authentication state
   useEffect(() => {
     const token = localStorage.getItem("authToken");
-    setIsAuthenticated(!!token);
+    const storedUser = localStorage.getItem("user");
+
+    if (token && storedUser) {
+      setIsAuthenticated(true);
+      setUser(JSON.parse(storedUser)); 
+    }
   }, []);
 
-  // Redirect authenticated users from /Signin only
   useEffect(() => {
-    if (isAuthenticated && location.pathname === "/") {
+    if (isAuthenticated && location.pathname === "/login") {
       const from = location.state?.from || "/home";
       navigate(from, { replace: true });
     }
@@ -40,7 +44,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       if (response.data.message === "Login successful") {
         localStorage.setItem("authToken", response.data.token);
+
+        // Save user details to localStorage
+        const userData = response.data.user; // assuming the user object is in response.data.user
+        localStorage.setItem("user", JSON.stringify(userData));
+
         setIsAuthenticated(true);
+        setUser(userData);
+
         const from = location.state?.from || "/home";
         navigate(from, { replace: true });
       } else {
@@ -52,13 +63,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem("authToken");
-    setIsAuthenticated(false);
-    navigate("/");
+    try {
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("user");
+
+      setIsAuthenticated(false);
+      setUser(null); 
+
+      navigate("/login");
+    } catch (error: any) {
+      console.error("Error during logout", error);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
