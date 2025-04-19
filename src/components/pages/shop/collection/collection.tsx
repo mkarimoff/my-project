@@ -19,21 +19,24 @@ import GppGoodOutlinedIcon from "@mui/icons-material/GppGoodOutlined";
 import CachedOutlinedIcon from "@mui/icons-material/CachedOutlined";
 import { FaFacebook, FaPinterest, FaTwitter } from "react-icons/fa";
 import { BlogsMockData } from "../../mockdata/blogs.mock";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { IncrDecrContainer } from "../../home/style";
-import { useCart } from "../../../navbar/cart/CartContext";
+import { toast } from "react-toastify";
+import { useAuth } from "../../../context/authContext";
+import { useCart } from "../../../context/cartContext";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const CollectionComponent: React.FC = () => {
-  const [count, setCount] = useState<number>(0);
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const { addToCart } = useCart();
   const { id } = useParams();
   const data = BlogsMockData.find((value) => value.id.toString() === id);
-
   const popularData = BlogsMockData.filter((item) => item.type === "popular");
   const NewArrivalData = BlogsMockData.filter((item) => item.type === "new");
+  const [count, setCount] = useState<number>(0);
 
   const handleIncrement = () => {
     setCount((prev) => prev + 1);
@@ -44,8 +47,17 @@ const CollectionComponent: React.FC = () => {
   };
 
   const handleAddToCart = () => {
+    if (!isAuthenticated) {
+      toast.error("Please signin to add products to cart");
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+  
+      return;
+    }
+  
     if (!data || count === 0) return;
-
+  
     const cartItem = {
       id: data.id,
       photo: data.photo,
@@ -53,14 +65,21 @@ const CollectionComponent: React.FC = () => {
       price: data.prise ?? "0",
       quantity: count,
     };
-
-    addToCart(cartItem);
-    alert("Item added to cart!");
+  
+    try {
+      addToCart(cartItem);
+      toast.success("Product added to cart!");
+    } catch (error: any) {
+      toast.error(error.message || "Failed to add product to cart");
+    }
   };
+  
 
   return (
     <ShopCon>
-      <div style={{ width: "100%", height: "55px", backgroundColor: "#F6F6F6" }}></div>
+      <div
+        style={{ width: "100%", height: "55px", backgroundColor: "#F6F6F6" }}
+      ></div>
 
       <BuyingWrap>
         <div className="imgs-wrap">
@@ -85,16 +104,22 @@ const CollectionComponent: React.FC = () => {
             <IncrDecrContainer>
               <b style={{ fontSize: "20px" }}>Quantity:</b>
               <div>
-                <button className="IncrDecrButtons" onClick={handleIncrement}>+</button>
+                <button className="IncrDecrButtons" onClick={handleIncrement}>
+                  +
+                </button>
                 <p>{count}</p>
-                <button className="IncrDecrButtons" onClick={handleDecrement}>-</button>
+                <button className="IncrDecrButtons" onClick={handleDecrement}>
+                  -
+                </button>
               </div>
             </IncrDecrContainer>
 
             <p>Only 7 Left In Stock</p>
 
             <div className="buttons-wrap">
-              <button onClick={handleAddToCart} disabled={count === 0}>Add To Cart</button>
+              <button onClick={handleAddToCart} disabled={count === 0}>
+                Add To Cart
+              </button>
               <button>Buy Now</button>
             </div>
 
@@ -124,13 +149,25 @@ const CollectionComponent: React.FC = () => {
                   <div className="social-medias">
                     <span>Share:</span>
                     <div>
-                      <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
+                      <a
+                        href="https://www.twitter.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         <FaTwitter size={20} color="#00ACEE" />
                       </a>
-                      <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+                      <a
+                        href="https://www.facebook.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         <FaFacebook size={20} color="#3B5998" />
                       </a>
-                      <a href="https://www.pinterest.com" target="_blank" rel="noopener noreferrer">
+                      <a
+                        href="https://www.pinterest.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         <FaPinterest size={20} color="#C8232C" />
                       </a>
                     </div>
@@ -180,8 +217,16 @@ const CollectionComponent: React.FC = () => {
         </div>
         <ShopPopProsWrap>
           {popularData.map((value) => (
-            <Link className="popular-products" key={value.id} to={`/collection/${value.id}`}>
-              <img src={value.photo} alt="Popular Product" className="product-image" />
+            <Link
+              className="popular-products"
+              key={value.id}
+              to={`/collection/${value.id}`}
+            >
+              <img
+                src={value.photo}
+                alt="Popular Product"
+                className="product-image"
+              />
               <div className="texts-wrap">
                 <img src={stars} alt="rating" />
                 <h1>{value.header}</h1>
@@ -199,8 +244,16 @@ const CollectionComponent: React.FC = () => {
         </div>
         <ShopNewWrap>
           {NewArrivalData.map((value) => (
-            <Link className="new-products" key={value.id} to={`/collection/${value.id}`}>
-              <img src={value.photo} alt="New Product" className="product-image" />
+            <Link
+              className="new-products"
+              key={value.id}
+              to={`/collection/${value.id}`}
+            >
+              <img
+                src={value.photo}
+                alt="New Product"
+                className="product-image"
+              />
               <div className="texts-wrap">
                 <img src={stars} alt="rating" />
                 <h1>{value.header}</h1>
@@ -215,4 +268,3 @@ const CollectionComponent: React.FC = () => {
 };
 
 export default CollectionComponent;
-

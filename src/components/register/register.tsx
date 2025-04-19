@@ -114,18 +114,15 @@ const Register = () => {
     } catch (error: any) {
       let message = "Failed to register user. Please try again.";
       if (error.response) {
-        // Server responded with a status code
         if (error.response.data?.error) {
           message = error.response.data.error;
         } else if (Array.isArray(error.response.data?.errors) && error.response.data.errors.length > 0) {
           message = error.response.data.errors[0].msg;
         }
       } else if (error.request) {
-        // Request was made but no response (e.g., CORS or server down)
         message = "Unable to connect to the server. Please check your network or try again later.";
         console.error("No response received:", error.request);
       } else {
-        // Other errors (e.g., Axios setup issue)
         message = "An unexpected error occurred. Please try again.";
         console.error("Error:", error.message);
       }

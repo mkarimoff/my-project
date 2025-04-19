@@ -1,9 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 import { AboutBgWrap } from "../../pages/about/style";
 import arrow from "../../../assets/svg/smallarrow.svg";
 import { ProfileCon, ProfileWrap } from "./style";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useAuth } from "../../context/authContext";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   useEffect(() => {
@@ -19,6 +22,37 @@ const Profile = () => {
       AOS.refreshHard();
     };
   }, []);
+
+  const { logout, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    try {
+      logout();
+      toast.success("Logged out successfully");
+      navigate("/");
+    } catch (error: any) {
+      toast.error(error.message || "Failed to log out");
+    }
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <ProfileCon style={{ padding: "3rem", textAlign: "center" }}>
+        <h2>You are not logged in.</h2>
+        <p>
+          Please{" "}
+          <span
+            style={{ color: "blue", cursor: "pointer" }}
+            onClick={() => navigate("/")}
+          >
+            sign in
+          </span>{" "}
+          to view your profile.
+        </p>
+      </ProfileCon>
+    );
+  }
 
   return (
     <ProfileCon>
@@ -46,25 +80,32 @@ const Profile = () => {
           <h2>Edit Your Profile</h2>
           <div style={{ display: "flex", alignItems: "center", gap: "50px" }}>
             <form action="">
-              <label htmlFor="">First Name</label>
-              <input type="text" />
-              <label htmlFor="">Email</label>
-              <input type="email" />
-              <label htmlFor="">Address</label>
-              <input type="address" />
+              <label htmlFor="firstName">First Name</label>
+              <input type="text" id="firstName" />
+              <label htmlFor="email">Email</label>
+              <input type="email" id="email" />
+              <label htmlFor="address">Address</label>
+              <input type="text" id="address" />
             </form>
             <form action="">
-              <label htmlFor="">Last Name</label>
-              <input type="text" />
-              <label htmlFor="">Password</label>
-              <input type="Password" />
-              <label htmlFor="">Zip Code</label>
-              <input type="text" />
+              <label htmlFor="lastName">Last Name</label>
+              <input type="text" id="lastName" />
+              <label htmlFor="password">Password</label>
+              <input type="password" id="password" />
+              <label htmlFor="number">Phone Number</label>
+              <input type="text" id="number" />
             </form>
           </div>
-          <div style={{display:'flex',justifyContent:"end",gap:'10px'}}>
-            <button>Cancel</button>
-            <button>Save</button>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div>
+              <button onClick={handleLogout} style={{ backgroundColor: "red" }}>
+                Log Out
+              </button>
+            </div>
+            <div style={{ display: "flex", gap: "10px" }}>
+              <button>Cancel</button>
+              <button>Save</button>
+            </div>
           </div>
         </div>
       </ProfileWrap>

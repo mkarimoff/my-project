@@ -1,47 +1,40 @@
-import { useNavigate } from "react-router-dom";
+
+import { useAuth } from "../context/authContext";
 import { SignUpInLink } from "../register/style";
 import { P, SignInCon } from "./style";
-import axios from "axios";
 import { useState } from "react";
+import { toast } from "react-toastify"; // Optional
 
 const Signin = () => {
-  let navigate = useNavigate();
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-  
+    setIsLoading(true);
+
     if (!email || !password) {
       setError("All fields are required.");
+      toast.error("All fields are required."); // Optional
+      setIsLoading(false);
       return;
     }
-  
+
     try {
-      const response = await axios.post("http://localhost:5050/dev-api/auth/login", {
-        email,
-        password,
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-  
-      if (response.data.message === "Login successful") {
-        const token = response.data.token;
-        localStorage.setItem("authToken", token);
-        navigate("/home");
-      } else {
-        setError("Invalid email or password.");
-      }
+      await login(email, password);
+      toast.success("Login successful!"); // Optional
     } catch (error: any) {
-      console.error("Login failed:", error.response ? error.response.data : error);
-      setError(error.response?.data?.error || "Login failed. Please try again.");
+      const errorMessage = error.message || "Login failed. Please try again.";
+      setError(errorMessage);
+      toast.error(errorMessage); // Optional
+    } finally {
+      setIsLoading(false);
     }
   };
-  
 
   return (
     <SignInCon>
@@ -68,7 +61,9 @@ const Signin = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         {error && <p style={{ color: "red" }}>{error}</p>}
-        <button type="submit">Sign In</button>
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? "Signing In..." : "Sign In"}
+        </button>
       </form>
       <div
         style={{ width: "406px", height: "1px", backgroundColor: "#8B837D" }}
