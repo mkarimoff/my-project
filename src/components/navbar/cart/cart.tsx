@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useCart, CartItem } from "../../context/cartContext";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const CartComponent = () => {
   useEffect(() => {
@@ -21,7 +22,7 @@ const CartComponent = () => {
   }, []);
 
   const navigate = useNavigate();
-  const { cart: cartItems, updateQuantity } = useCart();
+  const { cart: cartItems, updateQuantity, removeFromCart } = useCart();
 
   const subtotal = cartItems.reduce((acc: number, item: CartItem) => {
     const cleanPrice =
@@ -30,12 +31,6 @@ const CartComponent = () => {
         : item.price.toString();
     const price = parseFloat(cleanPrice) || 0;
     const quantity = Number(item.quantity) || 0;
-    console.log(
-      `Item: ${item.header}, Raw Price: ${item.price}, Clean Price: ${cleanPrice}, Parsed Price: ${price}`
-    );
-    if (price === 0) {
-      console.warn(`Invalid price for item ${item.header}: ${item.price}`);
-    }
     return acc + price * quantity;
   }, 0);
 
@@ -62,6 +57,10 @@ const CartComponent = () => {
 
   const handleDecrement = (id: number, currentQuantity: number) => {
     updateQuantity(id, currentQuantity - 1);
+  };
+
+  const handleRemove = (id: number) => {
+    removeFromCart(id);
   };
 
   return (
@@ -127,6 +126,15 @@ const CartComponent = () => {
                       }}
                     >
                       Total Price
+                    </th>
+                    <th
+                      style={{
+                        padding: "12px",
+                        width: "10%",
+                        textAlign: "center",
+                      }}
+                    >
+                      Remove
                     </th>
                   </tr>
                 </thead>
@@ -229,6 +237,19 @@ const CartComponent = () => {
                           ) || 0) * item.quantity
                         ).toFixed(2)}`}
                       </td>
+                      <td style={{ padding: "12px", textAlign: "center" }}>
+                        <button
+                          onClick={() => handleRemove(item.id)}
+                          style={{
+                            border:"none",
+                            backgroundColor:'white',
+                            cursor: "pointer",
+                            fontSize: "16px",
+                          }}
+                        >
+                          <DeleteIcon />{" "}
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -260,7 +281,7 @@ const CartComponent = () => {
                 >
                   <button
                     style={{
-                      padding: "10px 20px",
+                      padding: "8px 15px",
                       backgroundColor: "#000",
                       color: "#fff",
                       border: "none",

@@ -52,12 +52,12 @@ const CollectionComponent: React.FC = () => {
       setTimeout(() => {
         navigate("/");
       }, 2000);
-  
+
       return;
     }
-  
+
     if (!data || count === 0) return;
-  
+
     const cartItem = {
       id: data.id,
       photo: data.photo,
@@ -65,7 +65,7 @@ const CollectionComponent: React.FC = () => {
       price: data.prise ?? "0",
       quantity: count,
     };
-  
+
     try {
       addToCart(cartItem);
       toast.success("Product added to cart!");
@@ -73,13 +73,12 @@ const CollectionComponent: React.FC = () => {
       toast.error(error.message || "Failed to add product to cart");
     }
   };
-  
 
   return (
     <ShopCon>
       <div
-        style={{ width: "100%", height: "55px", backgroundColor: "#F6F6F6" }}
-      ></div>
+        style={{ width: "100%", height: "55px", backgroundColor: "#F6F6F6" }}>
+      </div>
 
       <BuyingWrap>
         <div className="imgs-wrap">
