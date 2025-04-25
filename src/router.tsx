@@ -19,6 +19,7 @@ import Loader from "./components/loading/loader";
 import Register from "./components/register/register";
 import ErrorPage from "./components/404/404";
 import HomeComponent from "./components/pages/home/home";
+import FavoriteComponent from "./components/navbar/favorites/favorite";
 
 const RouterComponent = () => {
   const [loading, setLoading] = useState(false);
@@ -54,6 +55,7 @@ const RouterComponent = () => {
             <Route path='/terms-of-use' element={<TermsOfUse />} />
             <Route path='/BlogsDetail/:id' element={<BlogDetail />} />
             <Route path='/cart' element={<CartComponent />} />
+            <Route path='/favorites' element={<FavoriteComponent />} />
             <Route path='/profile' element={<Profile />} />
             <Route path='/register' element={<Register />} />
             <Route path='*' element={<ErrorPage />} />

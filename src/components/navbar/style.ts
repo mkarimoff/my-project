@@ -71,7 +71,7 @@ p:hover {
 `
 export const NavIcons = styled.div`
      display: flex;
-     gap: 40px;
+     gap: 25px;
 
 .icons{
      font-size: 27px;

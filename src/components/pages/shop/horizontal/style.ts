@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const ShopConH = styled.div`
@@ -15,13 +14,15 @@ export const ShopConH = styled.div`
     flex-direction: column;
     text-align: center;
   }
+  
   .product-image {
     width: 320px;
     height: 270px;
-    border-bottom-left-radius:15px;
-    border-top-left-radius:15px;
+    border-bottom-left-radius: 15px;
+    border-top-left-radius: 15px;
   }
 `;
+
 export const ShopProductsWrap = styled.div`
   display: flex;
   flex-direction: column;
@@ -29,18 +30,21 @@ export const ShopProductsWrap = styled.div`
   align-items: center;
   gap: 20px;
 `;
-export const ShopProducts = styled(Link)`
+
+export const ShopProducts = styled.div`
   display: flex;
   gap: 50px;
   text-decoration: none;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border-radius: 15px;
   width: 800px;
+  position: relative;
+
   &:hover {
-      box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 60px 4px;
-      transition: transform 0.4s ease, box-shadow 0.3s ease;
-      transform: scale(1.04);
-    }
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 60px 4px;
+    transition: transform 0.4s ease, box-shadow 0.3s ease;
+    transform: scale(1.00);
+  }
 
   .texts-wrap {
     display: flex;
@@ -48,19 +52,47 @@ export const ShopProducts = styled(Link)`
     align-items: center;
     justify-content: center;
     gap: 70px;
+
     h1 {
       color: var(--Text-Color, #252525);
       font-size: 22px;
       font-weight: 600;
     }
+
     p {
       color: var(--Substitute-Accent-Color, #daa174);
       font-size: 23px;
       font-weight: 600;
       text-transform: capitalize;
     }
-    img{
-        margin-right: -400px;
+
+    img {
+      margin-right: -400px;
     }
   }
+
+  .hover-icons {
+    position: absolute;
+    top: 75%;
+    left: 45%;
+    display: none;
+    gap: 10px;
+    background: black;
+    padding: 0px 8px;
+  }
+
+  &:hover .hover-icons {
+    display: flex;
+  }
+  .hover-icons button {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
+

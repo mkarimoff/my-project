@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const ShopCon = styled.div`
@@ -33,7 +32,7 @@ export const ShopProductsWrap = styled.div`
   width: 100%;
   gap: 20px;
 `;
-export const ShopProducts = styled(Link)`
+export const ShopProducts = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

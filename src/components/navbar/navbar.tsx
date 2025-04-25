@@ -13,11 +13,14 @@ import {
 } from "./style";
 import logo from "../../assets/svg/Logo.svg";
 import { useNavigate } from "react-router-dom";
-import { Box, Modal } from "@mui/material";
+import { Box, Modal, Badge } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { useCart } from "../context/cartContext";
+import { useFavorites } from "../context/favoritesContext";
 
 const Navbar = () => {
   const [open, setOpen] = React.useState(false);
@@ -30,6 +33,11 @@ const Navbar = () => {
   const handleClickCart = () => {
     navigate("/cart");
   };
+
+  const handleClickFavorite = () => {
+    navigate("/favorites");
+  };
+
   const handleClickProfile = () => {
     navigate("/profile");
   };
@@ -38,11 +46,15 @@ const Navbar = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
+  const { cart } = useCart();
+  const { favorites } = useFavorites();
+
   return (
     <>
       <NavMain>
         <NavTop>
           <div style={{ display: "flex", gap: "40px" }}>
+            {" "}
             <p>Free shipping over $150</p>
             <p>24/7 Support</p>
           </div>
@@ -115,10 +127,54 @@ const Navbar = () => {
                   />
                 </Box>
               </Modal>
-              <ShoppingCartOutlinedIcon
-                onClick={handleClickCart}
-                className="icons"
-              />
+              <Badge
+                badgeContent={cart.length}
+                color="primary"
+                max={99}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                sx={{
+                  "& .MuiBadge-badge": {
+                    fontSize: "10px",
+                    minWidth: "18px",
+                    height: "18px",
+                    padding: "0 2px",
+                  },
+                }}
+              >
+                <ShoppingCartOutlinedIcon
+                  onClick={handleClickCart}
+                  className="icons"
+                  style={{ cursor: "pointer" }}
+                />
+              </Badge>
+
+              <Badge
+                badgeContent={favorites.length}
+                color="secondary"
+                max={99}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                sx={{
+                  "& .MuiBadge-badge": {
+                    fontSize: "10px",
+                    minWidth: "18px",
+                    height: "18px",
+                    padding: "0 2px",
+                  },
+                }}
+              >
+                <FavoriteBorderIcon
+                  onClick={handleClickFavorite}
+                  className="icons"
+                  style={{ cursor: "pointer" }}
+                />
+              </Badge>
+
               <PermIdentityOutlinedIcon
                 onClick={handleClickProfile}
                 className="icons"

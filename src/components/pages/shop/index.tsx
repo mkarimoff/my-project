@@ -22,35 +22,42 @@ import {
   OutlinedInput,
   Chip,
 } from "@mui/material";
+import { toast } from "react-toastify";
+import { useCart } from "../../context/cartContext";
+import { useAuth } from "../../context/authContext";
+import { useFavorites } from "../../context/favoritesContext";
+import { useNavigate } from "react-router-dom";
 
 const ShopComponent = () => {
-  const [active, setActive] = useState(true); 
+  const { addToCart } = useCart();
+  const { isAuthenticated } = useAuth();
+  const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
+  const navigate = useNavigate();
+  const [active, setActive] = useState(true);
   const [filters, setFilters] = useState({
     categories: [] as string[],
-    selectedPriceRange: "", 
+    selectedPriceRange: "",
   });
 
-  
   useEffect(() => {
     AOS.init({
-      duration: 1000, 
-      once: false, 
+      duration: 1000,
+      once: false,
       mirror: true,
     });
-    AOS.refresh(); 
+    AOS.refresh();
 
-    
     return () => {
       AOS.refreshHard();
     };
-  }, [filters]); 
+  }, [filters]);
 
   const handleHMenu = () => {
     setActive(true); // Switch to vertical layout
   };
 
   const handleVMenu = () => {
-    setActive(false); 
+    setActive(false);
   };
 
   const handleCategoryChange = (event: any) => {
@@ -69,6 +76,42 @@ const ShopComponent = () => {
     }));
   };
 
+  const handleAddToCart = (product: any) => {
+    if (!isAuthenticated) {
+      toast.error("Please sign in to add products to cart");
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+      return;
+    }
+
+    const cartItem = {
+      id: product.id,
+      photo: product.photo,
+      header: product.header,
+      price: product.price ?? "0",
+      quantity: 1,
+    };
+
+    try {
+      addToCart(cartItem);
+      toast.success("Product added to cart!");
+    } catch (error: any) {
+      toast.error(error.message || "Failed to add product to cart");
+    }
+  };
+
+  const handleFavoriteToggle = (product: any) => {
+    const isFavorite = favorites.some((item) => item.id === product.id);
+    if (isFavorite) {
+      removeFromFavorites(product.id);
+    } else {
+      addToFavorites(product);
+    }
+  };
+
+
+
   const priceRanges = [
     { id: 1, label: "0$ - 100$", min: 0, max: 100 },
     { id: 2, label: "101$ - 200$", min: 101, max: 200 },
@@ -77,7 +120,6 @@ const ShopComponent = () => {
     { id: 5, label: "401$ and above", min: 401, max: 10000 },
   ];
 
-  // Filter the mock data based on the selected filters
   const filteredData = BlogsMockData.filter((product) => {
     const category = product.category || "Uncategorized";
     const price = product.prise
@@ -172,23 +214,33 @@ const ShopComponent = () => {
               <b>{filteredData.length}</b>
               <p>Results Found</p>
             </div>
-            <div style={{ display: "flex" }} data-aos="fade-up" data-aos-duration="1000">
+            <div
+              style={{ display: "flex" }}
+              data-aos="fade-up"
+              data-aos-duration="1000"
+            >
               <div onClick={handleHMenu}>
-                <ViewModuleIcon
-                  className={`menuH ${active ? "active" : ""}`}
-                />
+                <ViewModuleIcon className={`menuH ${active ? "active" : ""}`} />
               </div>
               <div onClick={handleVMenu}>
-                <ViewListIcon
-                  className={`menuH ${!active ? "active" : ""}`}
-                />
+                <ViewListIcon className={`menuH ${!active ? "active" : ""}`} />
               </div>
             </div>
           </div>
           {active ? (
-            <VerticalMenu products={filteredData} />
+            <VerticalMenu
+              products={filteredData}
+              addToCart={handleAddToCart}
+              handleFavoriteToggle={handleFavoriteToggle}
+              favorites={favorites}
+            />
           ) : (
-            <HorizontMenu products={filteredData} />
+            <HorizontMenu
+              products={filteredData}
+              addToCart={handleAddToCart}
+              handleFavoriteToggle={handleFavoriteToggle}
+              favorites={favorites}
+            />
           )}
         </GridsWrap>
       </div>

@@ -428,17 +428,16 @@ export const LatestPickWrap = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  max-width: 1500px;
-  width: 100%;
   gap: 20px;
 `;
-export const LatestProducts = styled(Link)`
+export const LatestProducts = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 10px;
   text-decoration: none;
+  max-width: 1500px;
 
   .texts-wrap {
     display: flex;
@@ -525,14 +524,14 @@ export const ReadAboutIndustry = styled.div`
   height: 776px;
   gap: 50px;
 
-  .read-about{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  max-width: 1500px;
-  width: 100%;
-  text-decoration: none;
+  .read-about {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1500px;
+    width: 100%;
+    text-decoration: none;
   }
   .read-header {
     display: flex;
@@ -602,16 +601,15 @@ export const ReadAboutDivs = styled.div`
   }
 `;
 export const HomeBlogLink = styled.div`
-      color: var(--Text-Color, #252525);
-      font-size: 15px;
-      font-weight: 500;
-      cursor: pointer;
-      &:hover{
-        color: #31572c;
-        text-decoration: underline;
-
-      }
-`
+  color: var(--Text-Color, #252525);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  &:hover {
+    color: #31572c;
+    text-decoration: underline;
+  }
+`;
 export const ProductsImg = styled.div`
   display: flex;
   align-items: center;

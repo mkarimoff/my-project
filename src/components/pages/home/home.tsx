@@ -54,9 +54,22 @@ import Carousel from "./carousel";
 import LinkData from "./popular products/linkdata";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Link, useNavigate } from "react-router-dom";
+import { useCart } from "../../context/cartContext";
+import { useAuth } from "../../context/authContext";
+import { useFavorites } from "../../context/favoritesContext";
+import { toast } from "react-toastify";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
 const HomeComponent: React.FC = () => {
   const [count, setCount] = useState<number>(0);
+  const { addToCart } = useCart();
+  const { isAuthenticated } = useAuth();
+  const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
+  const navigate = useNavigate();
 
   const handleIncrement = () => {
     setCount(count + 1);
@@ -69,22 +82,56 @@ const HomeComponent: React.FC = () => {
   };
 
   useEffect(() => {
-    AOS.init({ duration: 800 }); 
+    AOS.init({ duration: 800 });
   }, []);
 
   const filteredData = BlogsMockData.filter((item) => item.type === "home");
-  const filteredPopular = BlogsMockData
-  .filter((item) => item.type === "popular")
-  .sort(() => Math.random() - 0.5) 
-  .slice(0, 8);
+  const filteredPopular = BlogsMockData.filter(
+    (item) => item.type === "popular"
+  )
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 8);
 
-  const filteredBlogs = BlogsMockData
-  .filter((item) => item.type === "blogs")
-  .sort(() => Math.random() - 0.5) 
-  .slice(0, 3);
+  const filteredBlogs = BlogsMockData.filter((item) => item.type === "blogs")
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 3);
 
   const handleScroll = () => {
     window.scrollTo({ top: 3450, behavior: "smooth" });
+  };
+
+  const handleAddToCart = (product: any) => {
+    if (!isAuthenticated) {
+      toast.error("Please sign in to add products to cart");
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+      return;
+    }
+
+    const cartItem = {
+      id: product.id,
+      photo: product.photo,
+      header: product.header,
+      price: product.price ?? "0",
+      quantity: 1,
+    };
+
+    try {
+      addToCart(cartItem);
+      toast.success("Product added to cart!");
+    } catch (error: any) {
+      toast.error(error.message || "Failed to add product to cart");
+    }
+  };
+
+  const handleFavoriteToggle = (product: any) => {
+    const isFavorite = favorites.some((item) => item.id === product.id);
+    if (isFavorite) {
+      removeFromFavorites(product.id);
+    } else {
+      addToFavorites(product);
+    }
   };
 
   return (
@@ -107,9 +154,7 @@ const HomeComponent: React.FC = () => {
               Hand made wood <br />
               furniture
             </h3>
-            <button onClick={handleScroll}>
-              Explore
-            </button>
+            <button onClick={handleScroll}>Explore</button>
           </div>
         </div>
         <div data-aos="fade-left">
@@ -183,7 +228,7 @@ const HomeComponent: React.FC = () => {
           <h1>Popular Products</h1>
           <p>Don't Miss The Most Popular Products!</p>
         </div>
-        <LinkData/>
+        <LinkData />
       </ProductsMain>
       <FeaturedPros data-aos="fade-up">
         <div className="Menu-featured-head">
@@ -332,7 +377,10 @@ const HomeComponent: React.FC = () => {
         </div>
       </FeaturedPros>
       <SummerSale>
-        <div style={{ display: "flex", alignItems: "center", gap: "5px" }} data-aos="fade-right">
+        <div
+          style={{ display: "flex", alignItems: "center", gap: "5px" }}
+          data-aos="fade-right"
+        >
           <h2>35% Summer Sales Discount. Use Coupon Code:</h2>
           <p>Furnimart</p>
         </div>
@@ -345,8 +393,36 @@ const HomeComponent: React.FC = () => {
         </div>
         <LatestPickWrap>
           {filteredData.map((value) => (
-            <LatestProducts key={value.id} to={`/BlogsDetail/${value.id}`}>
-              <img src={value.photo} alt="image" className="product-image" />
+            <LatestProducts key={value.id}>
+              <div className="product-image-hover">
+                <img src={value.photo} alt="image" className="product-image" />
+                <div className="overlay">
+                  <div className="overlay-icons">
+                    <button onClick={() => handleFavoriteToggle(value)}>
+                      {favorites.some((item) => item.id === value.id) ? (
+                        <FavoriteIcon style={{ color: "red" }} />
+                      ) : (
+                        <FavoriteBorderOutlinedIcon
+                          style={{ color: "black" }}
+                        />
+                      )}
+                    </button>
+                    <Link
+                      to={`/BlogsDetail/${value.id}`}
+                      style={{
+                        textDecoration: "none",
+                        color: "white",
+                        marginTop: "7px",
+                      }}
+                    >
+                      <VisibilityOutlinedIcon style={{ color: "black" }} />
+                    </Link>
+                    <button onClick={() => handleAddToCart(value)}>
+                      <ShoppingCartOutlinedIcon style={{ color: "black" }} />
+                    </button>
+                  </div>
+                </div>
+              </div>
               <div className="texts-wrap">
                 <img src={stars} alt="img" />
                 <h1>{value.header}</h1>
@@ -421,19 +497,19 @@ const HomeComponent: React.FC = () => {
           <p>Read About Furniture Industry</p>
         </div>
         <div className="read-about">
-        {filteredBlogs.map((value) => (
-        <ReadAboutWrap key={value.id} to={`/BlogsDetail/${value.id}`} >
-          <ReadAboutDivs>
-            <img src={value.photo} alt="forniture-image" />
-            <div className="read-text">
-              <h2>{value.header}</h2>
-              <p>{value.second_description}</p>
-              <HomeBlogLink>Read More</HomeBlogLink>
-            </div>
-          </ReadAboutDivs>
-        </ReadAboutWrap>
-           ))}
-           </div>
+          {filteredBlogs.map((value) => (
+            <ReadAboutWrap key={value.id} to={`/BlogsDetail/${value.id}`}>
+              <ReadAboutDivs>
+                <img src={value.photo} alt="forniture-image" />
+                <div className="read-text">
+                  <h2>{value.header}</h2>
+                  <p>{value.second_description}</p>
+                  <HomeBlogLink>Read More</HomeBlogLink>
+                </div>
+              </ReadAboutDivs>
+            </ReadAboutWrap>
+          ))}
+        </div>
       </ReadAboutIndustry>
       <ProductsImg data-aos="fade-up">
         <Carousel />

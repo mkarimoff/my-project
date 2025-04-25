@@ -27,7 +27,6 @@ import { useAuth } from "../../../context/authContext";
 import { useCart } from "../../../context/cartContext";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
-
 const CollectionComponent: React.FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
