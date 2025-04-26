@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "aos/dist/aos.css";
 import { toast } from "react-toastify";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -18,6 +20,8 @@ const Register = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const formatKoreanPhoneNumber = (value: string) => {
     const cleaned = value.replace(/\D/g, "");
@@ -53,29 +57,32 @@ const Register = () => {
     setError(null);
     setSuccess(null);
     setIsLoading(true);
-    toast.success('User successfully registered!')
 
     if (!firstName || !lastName || !email || !password || !address || !number) {
       setError("All fields are required.");
       setIsLoading(false);
+      toast.error("All fields are required.");
       return;
     }
 
     if (password !== confirmPassword) {
       setError("Passwords do not match. Please confirm.");
       setIsLoading(false);
+      toast.error("Passwords do not match. Please confirm.");
       return;
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setError("Invalid email format.");
       setIsLoading(false);
+      toast.error("Invalid email format.");
       return;
     }
 
     if (password.length < 6) {
       setError("Password must be at least 6 characters long.");
       setIsLoading(false);
+      toast.error("Password must be at least 6 characters long.");
       return;
     }
 
@@ -83,10 +90,10 @@ const Register = () => {
     if (!/^01[0-1,6-9][0-9]{7,8}$/.test(cleanedNumber)) {
       setError("Please enter a valid Korean phone number (e.g., 010-1234-5678).");
       setIsLoading(false);
+      toast.error("Please enter a valid Korean phone number (e.g., 010-1234-5678).");
       return;
     }
 
-  
     const hyphenatedNumber = formatKoreanPhoneNumber(cleanedNumber);
 
     const payload = {
@@ -95,7 +102,7 @@ const Register = () => {
       email,
       password,
       address,
-      number: hyphenatedNumber, 
+      number: hyphenatedNumber,
       role: "user",
     };
 
@@ -112,6 +119,7 @@ const Register = () => {
 
       console.log("Registration response:", response.data);
       setSuccess("Registration successful!");
+      toast.success("User successfully registered!");
       navigate("/");
     } catch (error: any) {
       let message = "Failed to register user. Please try again.";
@@ -129,10 +137,19 @@ const Register = () => {
         console.error("Error:", error.message);
       }
       setError(message);
+      toast.error(message);
       console.error("Full error:", error);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   return (
@@ -172,21 +189,53 @@ const Register = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
         <label htmlFor="password">Create Password</label>
-        <input
-          id="password"
-          type="password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div style={{ position: "relative", width: "100%" }}>
+          <input
+            id="password"
+            type={showPassword ? "text" : "password"}
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={{ paddingRight: "40px", width: "100%", boxSizing: "border-box" }}
+          />
+          <span
+            onClick={togglePasswordVisibility}
+            style={{
+              position: "absolute",
+              right: "10px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              cursor: "pointer",
+              color: "#5f9999",
+            }}
+          >
+            {showPassword ? <Visibility /> : <VisibilityOff /> }
+          </span>
+        </div>
         <label htmlFor="confirmPassword">Confirm Password</label>
-        <input
-          id="confirmPassword"
-          type="password"
-          required
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
+        <div style={{ position: "relative", width: "100%" }}>
+          <input
+            id="confirmPassword"
+            type={showConfirmPassword ? "text" : "password"}
+            required
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            style={{ paddingRight: "40px", width: "100%", boxSizing: "border-box" }}
+          />
+          <span
+            onClick={toggleConfirmPasswordVisibility}
+            style={{
+              position: "absolute",
+              right: "10px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              cursor: "pointer",
+              color: "#5f9999",
+            }}
+          >
+            {showConfirmPassword ?  <Visibility /> : <VisibilityOff />}
+          </span>
+        </div>
         <label htmlFor="address">Address</label>
         <input
           id="address"

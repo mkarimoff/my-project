@@ -19,8 +19,7 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { useCart } from "../context/cartContext";
-import { useFavorites } from "../context/favoritesContext";
+import { useAuth } from "../context/authContext";
 
 const Navbar = () => {
   const [open, setOpen] = React.useState(false);
@@ -46,15 +45,13 @@ const Navbar = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const { cart } = useCart();
-  const { favorites } = useFavorites();
+  const { cart, favorites } = useAuth();
 
   return (
     <>
       <NavMain>
         <NavTop>
           <div style={{ display: "flex", gap: "40px" }}>
-            {" "}
             <p>Free shipping over $150</p>
             <p>24/7 Support</p>
           </div>

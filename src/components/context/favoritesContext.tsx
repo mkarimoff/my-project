@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
-// Define the structure of a Favorite Item
 export interface FavoriteItem {
   id: number;
   photo: string;
@@ -8,32 +7,29 @@ export interface FavoriteItem {
   price: string | number;
 }
 
-// Define the type of the context
 interface FavoritesContextType {
   favorites: FavoriteItem[];
   addToFavorites: (item: FavoriteItem) => void;
   removeFromFavorites: (id: number) => void;
   clearFavorites: () => void;
+  toggleFavorite: (item: FavoriteItem) => void;  
 }
 
 const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
 
 export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
   const [favorites, setFavorites] = useState<FavoriteItem[]>(() => {
-    // Check if there are any saved favorites in localStorage
     const storedFavorites = localStorage.getItem("favorites");
     return storedFavorites ? JSON.parse(storedFavorites) : [];
   });
 
   useEffect(() => {
-    // Whenever favorites change, update localStorage
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [favorites]);
 
-  // Function to add an item to favorites
   const addToFavorites = (item: FavoriteItem) => {
     setFavorites((prevFavorites) => {
-      // If item already exists, no need to add it again
+    
       if (prevFavorites.find((favorite) => favorite.id === item.id)) {
         return prevFavorites;
       }
@@ -41,18 +37,29 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  // Function to remove an item from favorites
+  
   const removeFromFavorites = (id: number) => {
     setFavorites((prevFavorites) => prevFavorites.filter((item) => item.id !== id));
   };
 
-  // Function to clear all favorites
   const clearFavorites = () => {
     setFavorites([]);
   };
 
+  const toggleFavorite = (item: FavoriteItem) => {
+    setFavorites((prevFavorites) => {
+      const exists = prevFavorites.find((fav) => fav.id === item.id);
+      if (exists) {
+
+        return prevFavorites.filter((fav) => fav.id !== item.id);
+      }
+
+      return [...prevFavorites, item];
+    });
+  };
+
   return (
-    <FavoritesContext.Provider value={{ favorites, addToFavorites, removeFromFavorites, clearFavorites }}>
+    <FavoritesContext.Provider value={{ favorites, addToFavorites, removeFromFavorites, clearFavorites, toggleFavorite }}>
       {children}
     </FavoritesContext.Provider>
   );

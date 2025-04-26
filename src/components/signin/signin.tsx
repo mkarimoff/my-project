@@ -1,9 +1,10 @@
-
 import { useAuth } from "../context/authContext";
 import { SignUpInLink } from "../register/style";
 import { P, SignInCon } from "./style";
 import { useState } from "react";
 import { toast } from "react-toastify"; 
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const Signin = () => {
   const { login } = useAuth();
@@ -11,7 +12,7 @@ const Signin = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,7 +29,6 @@ const Signin = () => {
     try {
       await login(email, password);
       toast.success("Login successful!");
-      
     } catch (error: any) {
       const errorMessage = error.message || "Login failed. Please try again.";
       setError(errorMessage);
@@ -36,6 +36,10 @@ const Signin = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -48,20 +52,38 @@ const Signin = () => {
         <SignUpInLink to={"/register"}>Create Account</SignUpInLink>
       </div>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="">Email</label>
+        <label htmlFor="email">Email</label>
         <input
           type="email"
+          id="email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <label htmlFor="">Password</label>
-        <input
-          type="password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <label htmlFor="password">Password</label>
+        <div style={{ position: "relative", width: "100%" }}>
+          <input
+            type={showPassword ? "text" : "password"}
+            id="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={{ paddingRight: "40px", width: "100%", boxSizing: "border-box" }}
+          />
+          <span
+            onClick={togglePasswordVisibility}
+            style={{
+              position: "absolute",
+              right: "10px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              cursor: "pointer",
+              color: "#5f9999",
+            }}
+          >
+            {showPassword ?  <Visibility /> : <VisibilityOff />}
+          </span>
+        </div>
         {error && <p style={{ color: "red" }}>{error}</p>}
         <button type="submit" disabled={isLoading}>
           {isLoading ? "Signing In..." : "Sign In"}

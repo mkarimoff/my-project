@@ -25,50 +25,72 @@ import {
   SecureCon,
   SummerSale,
   SupportCon,
-} from "./style";
+} from './style';
 import {
   FaFacebook,
   FaInstagram,
   FaPinterest,
   FaTwitter,
-} from "react-icons/fa";
-import chair from "../../../assets/images/chair.png";
-import cyrcle from "../../../assets/svg/cyrcle.svg";
-import delivery from "../../../assets/svg/delivery.svg";
-import support from "../../../assets/svg/support.svg";
-import security from "../../../assets/svg/security.svg";
-import arrow from "../../../assets/svg/round-arrow.svg";
-import chair2 from "../../../assets/images/chair-category.png";
-import drawer from "../../../assets/images/drawer.png";
-import table from "../../../assets/images/wooden-table.avif";
-import stars from "../../../assets/svg/stars.svg";
-import colors from "../../../assets/svg/color container.svg";
-import WhiteChair from "../../../assets/images/white-chair.png";
-import blackchair from "../../../assets/images/black-chair.png";
-import google from "../../../assets/images/google.png";
-import appstore from "../../../assets/images/appstore.png";
-import { Box, TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { BlogsMockData } from "../mockdata/blogs.mock";
-import Carousel from "./carousel";
-import LinkData from "./popular products/linkdata";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import { Link, useNavigate } from "react-router-dom";
-import { useCart } from "../../context/cartContext";
-import { useAuth } from "../../context/authContext";
-import { useFavorites } from "../../context/favoritesContext";
-import { toast } from "react-toastify";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+} from 'react-icons/fa';
+import chair from '../../../assets/images/chair.png';
+import cyrcle from '../../../assets/svg/cyrcle.svg';
+import delivery from '../../../assets/svg/delivery.svg';
+import support from '../../../assets/svg/support.svg';
+import security from '../../../assets/svg/security.svg';
+import arrow from '../../../assets/svg/round-arrow.svg';
+import chair2 from '../../../assets/images/chair-category.png';
+import drawer from '../../../assets/images/drawer.png';
+import table from '../../../assets/images/wooden-table.avif';
+import stars from '../../../assets/svg/stars.svg';
+import colors from '../../../assets/svg/color container.svg';
+import WhiteChair from '../../../assets/images/white-chair.png';
+import blackchair from '../../../assets/images/black-chair.png';
+import google from '../../../assets/images/google.png';
+import appstore from '../../../assets/images/appstore.png';
+import { Box, TextField } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { BlogsMockData } from '../mockdata/blogs.mock';
+import Carousel from './carousel';
+import LinkData from './popular products/linkdata';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/authContext';
+import { toast } from 'react-toastify';
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import axios from 'axios';
+
+interface Product {
+  id: number;
+  header: string;
+  photo: string;
+  price: number;
+  type: string;
+  second_description?: string;
+}
+
+interface CartItem {
+  id: number;
+  name: string;
+  photo?: string;
+  price: number;
+  quantity: number;
+  discount?: number;
+}
+
+interface FavoriteItem {
+  id: number;
+  photo: string;
+  header: string;
+  price: number;
+}
 
 const HomeComponent: React.FC = () => {
   const [count, setCount] = useState<number>(0);
-  const { addToCart } = useCart();
-  const { isAuthenticated } = useAuth();
-  const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
+  const { cart, setCart, favorites, setFavorites, isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
 
   const handleIncrement = () => {
@@ -85,52 +107,158 @@ const HomeComponent: React.FC = () => {
     AOS.init({ duration: 800 });
   }, []);
 
-  const filteredData = BlogsMockData.filter((item) => item.type === "home");
-  const filteredPopular = BlogsMockData.filter(
-    (item) => item.type === "popular"
-  )
+  const filteredData = BlogsMockData.filter((item) => item.type === 'home');
+  const filteredPopular = BlogsMockData.filter((item) => item.type === 'popular')
     .sort(() => Math.random() - 0.5)
     .slice(0, 8);
-
-  const filteredBlogs = BlogsMockData.filter((item) => item.type === "blogs")
+  const filteredBlogs = BlogsMockData.filter((item) => item.type === 'blogs')
     .sort(() => Math.random() - 0.5)
     .slice(0, 3);
 
   const handleScroll = () => {
-    window.scrollTo({ top: 3450, behavior: "smooth" });
+    window.scrollTo({ top: 3450, behavior: 'smooth' });
   };
 
-  const handleAddToCart = (product: any) => {
+  const handleAddToCart = async (product: Product) => {
     if (!isAuthenticated) {
-      toast.error("Please sign in to add products to cart");
+      toast.error('Please sign in to add products to cart');
       setTimeout(() => {
-        navigate("/");
+        navigate('/');
       }, 2000);
       return;
     }
 
-    const cartItem = {
-      id: product.id,
-      photo: product.photo,
-      header: product.header,
-      price: product.price ?? "0",
+    const cartItem: CartItem = {
+      id: Number(product.id),
+      name: product.header,
+      photo: product.photo || '',
+      price: Number(product.price),
       quantity: 1,
+      discount: 0,
     };
 
+    console.log('Adding to cart - Product:', cartItem);
+
     try {
-      addToCart(cartItem);
-      toast.success("Product added to cart!");
+      const existingItem = cart.find((item) => item.id === cartItem.id);
+      let newCart: CartItem[];
+      if (existingItem) {
+        newCart = cart.map((item) =>
+          item.id === cartItem.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      } else {
+        newCart = [...cart, cartItem];
+      }
+
+      console.log('Sending cart to backend:', newCart);
+
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        console.error('No auth token found');
+        toast.error('Please sign in again');
+        navigate('/');
+        return;
+      }
+
+      const response = await axios.post(
+        'http://localhost:5050/dev-api/cart',
+        { cart: newCart },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      console.log('Cart response:', response.data);
+      setCart(response.data.cart);
+      localStorage.setItem(`cart_${user?.email}`, JSON.stringify(response.data.cart));
+      toast.success('Product added to cart!');
     } catch (error: any) {
-      toast.error(error.message || "Failed to add product to cart");
+      console.error('Failed to add to cart:', error);
+      console.error('Error response:', error.response?.data);
+      toast.error(error.response?.data?.error || 'Failed to add product to cart');
     }
   };
 
-  const handleFavoriteToggle = (product: any) => {
+  const handleFavoriteToggle = async (product: Product) => {
+    if (!isAuthenticated) {
+      toast.error('Please sign in to add products to favorites');
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
+      return;
+    }
+
     const isFavorite = favorites.some((item) => item.id === product.id);
-    if (isFavorite) {
-      removeFromFavorites(product.id);
-    } else {
-      addToFavorites(product);
+    const favoriteItem: FavoriteItem = {
+      id: Number(product.id),
+      photo: product.photo || '',
+      header: product.header,
+      price: Number(product.price),
+    };
+
+    console.log('Toggling favorite - Product:', favoriteItem, 'Is favorite:', isFavorite);
+
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        console.error('No auth token found');
+        toast.error('Please sign in again');
+        navigate('/');
+        return;
+      }
+
+      if (isFavorite) {
+        // Remove from favorites
+        const newFavorites = favorites.filter((item) => item.id !== product.id);
+        const response = await axios.post(
+          'http://localhost:5050/dev-api/cart/favorites',
+          {
+            favorites: newFavorites.map((fav) => ({
+              id: Number(fav.id),
+              name: fav.header,
+              photo: fav.photo || '',
+              price: Number(fav.price),
+            })),
+          },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        const mappedFavorites = response.data.favorites.map((item: any) => ({
+          id: Number(item.id),
+          photo: item.photo || '',
+          header: item.name,
+          price: Number(item.price || 0),
+        }));
+        console.log('Favorites response:', response.data);
+        setFavorites(mappedFavorites);
+        localStorage.setItem(`favorites_${user?.email}`, JSON.stringify(mappedFavorites));
+        toast.success('Removed from favorites');
+      } else {
+        // Add to favorites
+        const newFavorites = [...favorites, favoriteItem];
+        const response = await axios.post(
+          'http://localhost:5050/dev-api/cart/favorites',
+          {
+            favorites: newFavorites.map((fav) => ({
+              id: Number(fav.id),
+              name: fav.header,
+              photo: fav.photo || '',
+              price: Number(fav.price),
+            })),
+          },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        const mappedFavorites = response.data.favorites.map((item: any) => ({
+          id: Number(item.id),
+          photo: item.photo || '',
+          header: item.name,
+          price: Number(item.price || 0),
+        }));
+        console.log('Favorites response:', response.data);
+        setFavorites(mappedFavorites);
+        localStorage.setItem(`favorites_${user?.email}`, JSON.stringify(mappedFavorites));
+        toast.success('Added to favorites');
+      }
+    } catch (error: any) {
+      console.error('Failed to toggle favorite:', error);
+      console.error('Error response:', error.response?.data);
+      toast.error(error.response?.data?.error || 'Failed to toggle favorite');
     }
   };
 
@@ -143,9 +271,9 @@ const HomeComponent: React.FC = () => {
               src={cyrcle}
               alt="change-img"
               style={{
-                width: "140px",
-                marginBottom: "-95px",
-                marginLeft: "-55px",
+                width: '140px',
+                marginBottom: '-95px',
+                marginLeft: '-55px',
               }}
             />
             <p>Save Upto 50%!</p>
@@ -161,7 +289,7 @@ const HomeComponent: React.FC = () => {
           <img
             src={chair}
             alt="chair-image"
-            style={{ width: "500px", height: "530px" }}
+            style={{ width: '500px', height: '530px' }}
           />
         </div>
       </HomeMain>
@@ -189,7 +317,7 @@ const HomeComponent: React.FC = () => {
             <img src={security} alt="security-icon" />
             <b>Secure Shopping</b>
             <p>
-              Highly secured online payment <br /> method{" "}
+              Highly secured online payment <br /> method{' '}
             </p>
           </div>
         </SecureCon>
@@ -198,7 +326,7 @@ const HomeComponent: React.FC = () => {
             <img src={arrow} alt="arrow-icon" />
             <b>Moneyback Guarantee </b>
             <p>
-              Guaranteed money back in <br /> 30 days{" "}
+              Guaranteed money back in <br /> 30 days{' '}
             </p>
           </div>
         </MoneyCon>
@@ -211,12 +339,12 @@ const HomeComponent: React.FC = () => {
         <CategoryWrap data-aos="fade-up">
           {filteredPopular.map((value) => (
             <CategoryDiv key={value.id} to={`/Collection/${value.id}`}>
-              <img src={value.photo} alt="popular-product-iamage" />
+              <img src={value.photo} alt="popular-product-image" />
               <div className="text-wrap">
                 <b>{value.header}</b>
                 <div className="price-wrap">
                   <h6>Starts from</h6>
-                  <p>{value.prise}</p>
+                  <p>${value.price}</p>
                 </div>
               </div>
             </CategoryDiv>
@@ -235,13 +363,13 @@ const HomeComponent: React.FC = () => {
           <h2>Featured Products</h2>
           <p>Choose your desired products from our featured product</p>
         </div>
-        <div style={{ display: "flex", gap: "60px" }}>
+        <div style={{ display: 'flex', gap: '60px' }}>
           <FeaturedAdding>
             <div className="featured-left">
               <div className="first-part">
                 <h1>Single Cushioned Leather Chair </h1>
                 <div
-                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
                 >
                   <b>$120.00</b>
                   <p>$25.00</p>
@@ -249,20 +377,20 @@ const HomeComponent: React.FC = () => {
                 <img src={stars} alt="stars-icon" />
                 <div
                   style={{
-                    width: "590px",
-                    height: "2px",
-                    background: "var(--Border-Color, #E9E9E9)",
+                    width: '590px',
+                    height: '2px',
+                    background: 'var(--Border-Color, #E9E9E9)',
                   }}
                 ></div>
               </div>
             </div>
-            <div style={{ display: "flex" }}>
+            <div style={{ display: 'flex' }}>
               <MainAddWrap>
-                <div style={{ display: "flex", gap: "30px" }}>
+                <div style={{ display: 'flex', gap: '30px' }}>
                   <b>Color:</b>
                   <img src={colors} alt="colors-img" />
                 </div>
-                <div style={{ display: "flex", gap: "30px" }}>
+                <div style={{ display: 'flex', gap: '30px' }}>
                   <b>Serial:</b>
                   <p>W123D514XQ899</p>
                 </div>
@@ -287,11 +415,11 @@ const HomeComponent: React.FC = () => {
                 <button>Add To Cart</button>
               </MainAddWrap>
               <MainAddWrap>
-                <div style={{ display: "flex", gap: "30px" }}>
+                <div style={{ display: 'flex', gap: '30px' }}>
                   <b>Availability:</b>
                   <p>Only 7 Left In Stock</p>
                 </div>
-                <div style={{ display: "flex", gap: "30px" }}>
+                <div style={{ display: 'flex', gap: '30px' }}>
                   <b>Product Type:</b>
                   <p>Furniture & Decor</p>
                 </div>
@@ -332,10 +460,10 @@ const HomeComponent: React.FC = () => {
             <div>
               <div
                 style={{
-                  width: "310px",
-                  height: "385px",
+                  width: '310px',
+                  height: '385px',
                   background:
-                    "url(<path-to-image>) lightgray 50% / cover no-repeat",
+                    'url(<path-to-image>) lightgray 50% / cover no-repeat',
                 }}
               >
                 <img src={chair2} alt="chair" />
@@ -344,33 +472,33 @@ const HomeComponent: React.FC = () => {
             <div className="little-imgs">
               <div
                 style={{
-                  width: "100px",
-                  height: "115px",
+                  width: '100px',
+                  height: '115px',
                   background:
-                    "url(<path-to-image>) lightgray 50% / cover no-repeat",
+                    'url(<path-to-image>) lightgray 50% / cover no-repeat',
                 }}
               >
-                <img src={WhiteChair} alt="chair" style={{ width: "100px" }} />
+                <img src={WhiteChair} alt="chair" style={{ width: '100px' }} />
               </div>
               <div
                 style={{
-                  width: "100px",
-                  height: "115px",
+                  width: '100px',
+                  height: '115px',
                   background:
-                    "url(<path-to-image>) lightgray 50% / cover no-repeat",
+                    'url(<path-to-image>) lightgray 50% / cover no-repeat',
                 }}
               >
-                <img src={blackchair} alt="chair" style={{ width: "100px" }} />
+                <img src={blackchair} alt="chair" style={{ width: '100px' }} />
               </div>
               <div
                 style={{
-                  width: "100px",
-                  height: "115px",
+                  width: '100px',
+                  height: '115px',
                   background:
-                    "url(<path-to-image>) lightgray 50% / cover no-repeat",
+                    'url(<path-to-image>) lightgray 50% / cover no-repeat',
                 }}
               >
-                <img src={table} alt="chair" style={{ width: "100px" }} />
+                <img src={table} alt="chair" style={{ width: '100px' }} />
               </div>
             </div>
           </AddingImgCon>
@@ -378,7 +506,7 @@ const HomeComponent: React.FC = () => {
       </FeaturedPros>
       <SummerSale>
         <div
-          style={{ display: "flex", alignItems: "center", gap: "5px" }}
+          style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
           data-aos="fade-right"
         >
           <h2>35% Summer Sales Discount. Use Coupon Code:</h2>
@@ -398,27 +526,47 @@ const HomeComponent: React.FC = () => {
                 <img src={value.photo} alt="image" className="product-image" />
                 <div className="overlay">
                   <div className="overlay-icons">
-                    <button onClick={() => handleFavoriteToggle(value)}>
+                    <button
+                      onClick={() =>
+                        handleFavoriteToggle({
+                          id: Number(value.id),
+                          header: value.header,
+                          photo: value.photo || '',
+                          price: Number(value.price),
+                          type: value.type,
+                          second_description: value.second_description,
+                        })
+                      }
+                    >
                       {favorites.some((item) => item.id === value.id) ? (
-                        <FavoriteIcon style={{ color: "red" }} />
+                        <FavoriteIcon style={{ color: 'red' }} />
                       ) : (
-                        <FavoriteBorderOutlinedIcon
-                          style={{ color: "black" }}
-                        />
+                        <FavoriteBorderOutlinedIcon style={{ color: 'black' }} />
                       )}
                     </button>
                     <Link
                       to={`/BlogsDetail/${value.id}`}
                       style={{
-                        textDecoration: "none",
-                        color: "white",
-                        marginTop: "7px",
+                        textDecoration: 'none',
+                        color: 'white',
+                        marginTop: '7px',
                       }}
                     >
-                      <VisibilityOutlinedIcon style={{ color: "black" }} />
+                      <VisibilityOutlinedIcon style={{ color: 'black' }} />
                     </Link>
-                    <button onClick={() => handleAddToCart(value)}>
-                      <ShoppingCartOutlinedIcon style={{ color: "black" }} />
+                    <button
+                      onClick={() =>
+                        handleAddToCart({
+                          id: Number(value.id),
+                          header: value.header,
+                          photo: value.photo || '',
+                          price: Number(value.price),
+                          type: value.type,
+                          second_description: value.second_description,
+                        })
+                      }
+                    >
+                      <ShoppingCartOutlinedIcon style={{ color: 'black' }} />
                     </button>
                   </div>
                 </div>
@@ -426,7 +574,7 @@ const HomeComponent: React.FC = () => {
               <div className="texts-wrap">
                 <img src={stars} alt="img" />
                 <h1>{value.header}</h1>
-                <p>{value.prise}</p>
+                <p>${value.price}</p>
               </div>
             </LatestProducts>
           ))}
@@ -447,10 +595,10 @@ const HomeComponent: React.FC = () => {
               </p>
               <div
                 style={{
-                  width: "390px",
-                  height: "1px",
-                  opacity: "0.3",
-                  background: "#928E8B",
+                  width: '390px',
+                  height: '1px',
+                  opacity: '0.3',
+                  background: '#928E8B',
                 }}
               ></div>
             </div>
@@ -463,7 +611,7 @@ const HomeComponent: React.FC = () => {
             </div>
           </div>
           <div>
-            <img src={drawer} alt="forniture-image" className="drawer-img" />
+            <img src={drawer} alt="furniture-image" className="drawer-img" />
           </div>
           <div>
             <div className="left-wrap">
@@ -473,7 +621,7 @@ const HomeComponent: React.FC = () => {
               </h1>
               <Box
                 component="form"
-                sx={{ "& > :not(style)": { m: 1, width: "30ch" } }}
+                sx={{ '& > :not(style)': { m: 1, width: '30ch' } }}
                 noValidate
                 autoComplete="off"
               >
@@ -481,7 +629,7 @@ const HomeComponent: React.FC = () => {
                   id="standard-basic"
                   type="email"
                   required
-                  label="Your email adress"
+                  label="Your email address"
                   variant="standard"
                 />
               </Box>
@@ -500,7 +648,7 @@ const HomeComponent: React.FC = () => {
           {filteredBlogs.map((value) => (
             <ReadAboutWrap key={value.id} to={`/BlogsDetail/${value.id}`}>
               <ReadAboutDivs>
-                <img src={value.photo} alt="forniture-image" />
+                <img src={value.photo} alt="furniture-image" />
                 <div className="read-text">
                   <h2>{value.header}</h2>
                   <p>{value.second_description}</p>

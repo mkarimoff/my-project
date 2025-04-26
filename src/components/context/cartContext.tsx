@@ -15,6 +15,7 @@ interface CartContextType {
   updateQuantity: (id: number, quantity: number) => void;
   removeFromCart: (id: number) => void;
   clearCart: () => void;
+  toggleCartItem: (item: CartItem) => void;  
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -59,8 +60,18 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setCart([]);
   };
 
+  const toggleCartItem = (item: CartItem) => {
+    setCart((prevCart) => {
+      const existingItem = prevCart.find((cartItem) => cartItem.id === item.id);
+      if (existingItem) {
+        return prevCart.filter((cartItem) => cartItem.id !== item.id);
+      }
+      return [...prevCart, item];
+    });
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, updateQuantity, removeFromCart, clearCart }}>
+    <CartContext.Provider value={{ cart, addToCart, updateQuantity, removeFromCart, clearCart, toggleCartItem }}>
       {children}
     </CartContext.Provider>
   );

@@ -1,14 +1,28 @@
-import { useEffect } from "react";
-import { AboutBgWrap } from "../../pages/about/style";
-import arrow from "../../../assets/svg/smallarrow.svg";
-import { CartMainCon, CartWrap } from "./style";
-import { useNavigate } from "react-router-dom";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import { useCart, CartItem } from "../../context/cartContext";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { useEffect } from 'react';
+import { AboutBgWrap } from '../../pages/about/style';
+import arrow from '../../../assets/svg/smallarrow.svg';
+import { CartMainCon, CartWrap } from './style';
+import { useNavigate } from 'react-router-dom';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import { useAuth } from '../../context/authContext';
+import DeleteIcon from '@mui/icons-material/Delete';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+
+interface CartItem {
+  id: number;
+  name: string;
+  photo?: string;
+  price: number;
+  quantity: number;
+  discount?: number;
+}
 
 const CartComponent = () => {
+  const { cart, setCart, isAuthenticated, user } = useAuth();
+  const navigate = useNavigate();
+
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -21,25 +35,105 @@ const CartComponent = () => {
     };
   }, []);
 
-  const navigate = useNavigate();
-  const { cart: cartItems, updateQuantity, removeFromCart } = useCart();
+  useEffect(() => {
+    console.log('CartComponent - Current cart state:', cart);
+  }, [cart]);
 
-  const subtotal = cartItems.reduce((acc: number, item: CartItem) => {
-    const cleanPrice =
-      typeof item.price === "string"
-        ? item.price.replace(/[^0-9.]/g, "")
-        : item.price.toString();
-    const price = parseFloat(cleanPrice) || 0;
+  useEffect(() => {
+    const fetchCart = async () => {
+      if (!isAuthenticated || !user) {
+        console.log('Not authenticated, skipping cart fetch');
+        const guestCart = localStorage.getItem('guestCart');
+        if (guestCart) {
+          setCart(JSON.parse(guestCart));
+        }
+        return;
+      }
+
+      try {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+          throw new Error('No auth token found');
+        }
+
+        console.log('Fetching cart for user:', user.email);
+        const response = await axios.get('http://localhost:5050/dev-api/cart', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        console.log('Fetched cart response:', response.data);
+        if (response.data.cart && Array.isArray(response.data.cart)) {
+          setCart(response.data.cart);
+          localStorage.setItem(`cart_${user.email}`, JSON.stringify(response.data.cart));
+        } else {
+          console.warn('Invalid cart data from backend:', response.data);
+        }
+      } catch (error: any) {
+        console.error('Failed to fetch cart:', error.message, error.response?.data);
+        toast.error('Failed to load cart');
+      }
+    };
+
+    fetchCart();
+  }, [isAuthenticated, user, setCart]);
+
+  const updateQuantity = async (id: number, quantity: number) => {
+    if (quantity < 1) return;
+    const newCart = cart.map((item) =>
+      item.id === id ? { ...item, quantity } : item
+    );
+    try {
+      if (!isAuthenticated) {
+        localStorage.setItem('guestCart', JSON.stringify(newCart));
+        setCart(newCart);
+      } else {
+        const token = localStorage.getItem('authToken');
+        const response = await axios.post(
+          'http://localhost:5050/dev-api/cart',
+          { cart: newCart },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setCart(response.data.cart);
+        localStorage.setItem(`cart_${user?.email}`, JSON.stringify(response.data.cart));
+      }
+    } catch (error) {
+      console.error('Failed to update quantity:', error);
+      toast.error('Failed to update quantity');
+    }
+  };
+
+  const removeFromCart = async (id: number) => {
+    const newCart = cart.filter((item) => item.id !== id);
+    try {
+      if (!isAuthenticated) {
+        localStorage.setItem('guestCart', JSON.stringify(newCart));
+        setCart(newCart);
+        toast.success('Removed from guest cart');
+      } else {
+        const token = localStorage.getItem('authToken');
+        const response = await axios.post(
+          'http://localhost:5050/dev-api/cart',
+          { cart: newCart },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setCart(response.data.cart);
+        localStorage.setItem(`cart_${user?.email}`, JSON.stringify(response.data.cart));
+        toast.success('Removed from cart');
+      }
+    } catch (error) {
+      console.error('Failed to remove from cart:', error);
+      toast.error('Failed to remove from cart');
+    }
+  };
+
+  const subtotal = cart.reduce((acc: number, item: CartItem) => {
+    const price = Number(item.price) || 0;
     const quantity = Number(item.quantity) || 0;
     return acc + price * quantity;
   }, 0);
 
-  const discount = cartItems.reduce((acc: number, item: CartItem) => {
-    const cleanPrice =
-      typeof item.price === "string"
-        ? item.price.replace(/[^0-9.]/g, "")
-        : item.price.toString();
-    const price = parseFloat(cleanPrice) || 0;
+  const discount = cart.reduce((acc: number, item: CartItem) => {
+    const price = Number(item.price) || 0;
     const quantity = Number(item.quantity) || 0;
     const itemDiscount = Number(item.discount) || 0;
     return acc + (price * quantity * itemDiscount) / 100;
@@ -48,7 +142,7 @@ const CartComponent = () => {
   const total = subtotal - discount;
 
   const handleOrderClick = () => {
-    navigate("/order");
+    navigate('/order');
   };
 
   const handleIncrement = (id: number, currentQuantity: number) => {
@@ -56,7 +150,11 @@ const CartComponent = () => {
   };
 
   const handleDecrement = (id: number, currentQuantity: number) => {
-    updateQuantity(id, currentQuantity - 1);
+    if (currentQuantity > 1) {
+      updateQuantity(id, currentQuantity - 1);
+    } else {
+      removeFromCart(id);
+    }
   };
 
   const handleRemove = (id: number) => {
@@ -70,11 +168,11 @@ const CartComponent = () => {
           <b>Cart</b>
           <div
             style={{
-              width: "900px",
-              height: "0.5px",
-              backgroundColor: "white",
-              marginBottom: "-25px",
-              marginRight: "-155px",
+              width: '900px',
+              height: '0.5px',
+              backgroundColor: 'white',
+              marginBottom: '-25px',
+              marginRight: '-155px',
             }}
           ></div>
           <div>
@@ -87,51 +185,51 @@ const CartComponent = () => {
 
       <CartWrap>
         <div className="Products-wrap" data-aos="fade-up">
-          {cartItems.length === 0 ? (
+          {cart.length === 0 ? (
             <p>Your cart is empty.</p>
           ) : (
             <>
-              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
                   <tr
                     style={{
-                      textAlign: "left",
-                      borderBottom: "1px solid #ccc",
+                      textAlign: 'left',
+                      borderBottom: '1px solid #ccc',
                     }}
                   >
-                    <th style={{ padding: "12px", width: "40%" }}>Product</th>
+                    <th style={{ padding: '12px', width: '40%' }}>Product</th>
                     <th
                       style={{
-                        padding: "12px",
-                        width: "20%",
-                        textAlign: "center",
+                        padding: '12px',
+                        width: '20%',
+                        textAlign: 'center',
                       }}
                     >
                       Price
                     </th>
                     <th
                       style={{
-                        padding: "12px",
-                        width: "20%",
-                        textAlign: "center",
+                        padding: '12px',
+                        width: '20%',
+                        textAlign: 'center',
                       }}
                     >
                       Quantity
                     </th>
                     <th
                       style={{
-                        padding: "12px",
-                        width: "20%",
-                        textAlign: "center",
+                        padding: '12px',
+                        width: '20%',
+                        textAlign: 'center',
                       }}
                     >
                       Total Price
                     </th>
                     <th
                       style={{
-                        padding: "12px",
-                        width: "10%",
-                        textAlign: "center",
+                        padding: '12px',
+                        width: '10%',
+                        textAlign: 'center',
                       }}
                     >
                       Remove
@@ -139,124 +237,118 @@ const CartComponent = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {cartItems.map((item: CartItem) => (
+                  {cart.map((item: CartItem) => (
                     <tr
                       key={item.id}
-                      style={{ borderBottom: "1px solid #eee" }}
+                      style={{ borderBottom: '1px solid #eee' }}
                     >
                       <td
                         style={{
-                          padding: "12px",
-                          display: "flex",
-                          alignItems: "center",
+                          padding: '12px',
+                          display: 'flex',
+                          alignItems: 'center',
                         }}
                       >
                         {item.photo && (
                           <img
                             src={item.photo}
-                            alt={item.header}
+                            alt={item.name}
                             style={{
-                              width: "50px",
-                              height: "50px",
-                              objectFit: "cover",
-                              marginRight: "15px",
+                              width: '50px',
+                              height: '50px',
+                              objectFit: 'cover',
+                              marginRight: '15px',
                             }}
                           />
                         )}
-                        {item.header || "Unknown Product"}
+                        {item.name || 'Unknown Product'}
                       </td>
-                      <td style={{ padding: "12px", textAlign: "center" }}>
-                        {item.price}
+                      <td style={{ padding: '12px', textAlign: 'center' }}>
+                        ${item.price.toFixed(2)}
                       </td>
-                      <td style={{ padding: "12px", textAlign: "center" }}>
+                      <td style={{ padding: '12px', textAlign: 'center' }}>
                         <div
                           style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            gap: "2px",
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '2px',
                           }}
                         >
                           <button
                             style={{
-                              width: "24px",
-                              height: "24px",
-                              backgroundColor: "#f0f0f0",
-                              border: "none",
-                              borderRadius: "4px",
-                              cursor: "pointer",
-                              fontSize: "14px",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
+                              width: '24px',
+                              height: '24px',
+                              backgroundColor: '#f0f0f0',
+                              border: 'none',
+                              borderRadius: '4px',
+                              cursor: 'pointer',
+                              fontSize: '14px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
                             }}
                             onClick={() =>
                               handleDecrement(item.id, item.quantity)
                             }
                             aria-label="Decrease quantity"
                           >
-                            &lt;
+                            -
                           </button>
                           <span
                             style={{
-                              width: "24px",
-                              textAlign: "center",
-                              fontSize: "14px",
+                              width: '24px',
+                              textAlign: 'center',
+                              fontSize: '14px',
                             }}
                           >
                             {item.quantity}
                           </span>
                           <button
                             style={{
-                              width: "24px",
-                              height: "24px",
-                              backgroundColor: "#f0f0f0",
-                              border: "none",
-                              borderRadius: "4px",
-                              cursor: "pointer",
-                              fontSize: "14px",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
+                              width: '24px',
+                              height: '24px',
+                              backgroundColor: '#f0f0f0',
+                              border: 'none',
+                              borderRadius: '4px',
+                              cursor: 'pointer',
+                              fontSize: '14px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
                             }}
                             onClick={() =>
                               handleIncrement(item.id, item.quantity)
                             }
                             aria-label="Increase quantity"
                           >
-                            &gt;
+                            +
                           </button>
                         </div>
                       </td>
-                      <td style={{ padding: "12px", textAlign: "center" }}>
-                        {`$ ${(
-                          (parseFloat(
-                            typeof item.price === "string"
-                              ? item.price.replace(/[^0-9.]/g, "")
-                              : item.price.toString()
-                          ) || 0) * item.quantity
-                        ).toFixed(2)}`}
+                      <td style={{ padding: '12px', textAlign: 'center' }}>
+                        ${((item.price || 0) * item.quantity).toFixed(2)}
                       </td>
-                      <td style={{ padding: "12px", textAlign: "center" }}>
+                      <td style={{ padding: '12px', textAlign: 'center' }}>
                         <button
                           onClick={() => handleRemove(item.id)}
                           style={{
-                            border:"none",
-                            backgroundColor:'white',
-                            cursor: "pointer",
-                            fontSize: "16px",
+                            border: 'none',
+                            backgroundColor: 'white',
+                            cursor: 'pointer',
+                            fontSize: '16px',
                           }}
                         >
-                          <DeleteIcon />{" "}
+                          <DeleteIcon />
                         </button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-              <div className="calculated-prices" style={{ marginTop: "30px" }}>
+              <div className="calculated-prices" style={{ marginTop: '30px' }}>
                 <div
-                  style={{ display: "flex", alignItems: "center", gap: "30px" }}
+                  style={{ display: 'flex', alignItems: 'center', gap: '30px' }}
                 >
                   <div className="price-names">
                     <p>SubTotal:</p>
@@ -268,26 +360,26 @@ const CartComponent = () => {
                   </div>
                 </div>
                 <div className="small-line"></div>
-                <div style={{ display: "flex", gap: "30px" }}>
+                <div style={{ display: 'flex', gap: '30px' }}>
                   <b>Total:</b>
                   <h4>${total.toFixed(2)}</h4>
                 </div>
                 <div
                   style={{
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    marginTop: "25px",
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    marginTop: '25px',
                   }}
                 >
                   <button
                     style={{
-                      padding: "8px 15px",
-                      backgroundColor: "#000",
-                      color: "#fff",
-                      border: "none",
-                      borderRadius: "5px",
-                      cursor: "pointer",
-                      fontSize: "16px",
+                      padding: '8px 15px',
+                      backgroundColor: '#000',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '5px',
+                      cursor: 'pointer',
+                      fontSize: '16px',
                     }}
                     onClick={handleOrderClick}
                   >
