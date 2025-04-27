@@ -12,7 +12,7 @@ const images: string[] = [
   bglight,
   granit,
   home,
-  "instagram-slide" // Adding Instagram slide as part of the images array
+  "instagram-slide" 
 ];
 
 export default function Carousel() {
@@ -20,12 +20,11 @@ export default function Carousel() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % images.length); // Including the Instagram slide in the loop
-    }, 4000);
+      setIndex((prevIndex) => (prevIndex + 1) % images.length); 
+    }, 2000);
     return () => clearInterval(interval);
   }, []);
 
-  // Handle looping for proper slicing, including the Instagram slide
   const visibleImages = [...images, ...images].slice(index, index + 5);
 
   return (
@@ -36,10 +35,10 @@ export default function Carousel() {
             <motion.div
               key={`${src}-${i}`}
               className="flex-none w-1/5 object-cover rounded-lg"
-              initial={{ opacity: 0, x: 50 }}  // Slide in from right with fade-in
-              animate={{ opacity: 1, x: 0 }}   // Slide to center and fade-in
-              exit={{ opacity: 0, x: -50 }}    // Exit with sliding left and fade-out
-              transition={{ duration: 0.3 }}   // Faster animation, set duration to 0.3 seconds
+              initial={{ opacity: 0, x: 50 }}  
+              animate={{ opacity: 1, x: 0 }}   
+              exit={{ opacity: 0, x: -50 }}    
+              transition={{ duration: 0.3 }}   
             >
               {src === "instagram-slide" ? (
                 <div className="insta-wrap text-center p-4">

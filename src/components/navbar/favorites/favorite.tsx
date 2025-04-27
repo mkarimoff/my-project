@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 interface FavoriteItem {
   id: number;
   photo: string;
-  header: string; // Maps to `name` in backend
+  header: string; 
   price: number;
 }
 
@@ -43,11 +43,11 @@ const FavoriteComponent = () => {
   const handleAddToCart = async (product: FavoriteItem) => {
     const cartItem: CartItem = {
       id: product.id,
-      name: product.header, // Map `header` to `name`
+      name: product.header,
       photo: product.photo,
       price: product.price,
       quantity: 1,
-      discount: 0, // Default discount (adjust if available)
+      discount: 0,
     };
 
     try {
@@ -96,7 +96,7 @@ const FavoriteComponent = () => {
           {
             favorites: newFavorites.map((fav) => ({
               id: fav.id,
-              name: fav.header, // Map `header` to `name`
+              name: fav.header,
               photo: fav.photo,
               price: fav.price,
             })),

@@ -7,6 +7,29 @@ export const BlogsCon = styled.div`
   align-items: center;
   justify-content: center;
   gap: 50px;
+
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 10px;
+    margin-top: 20px;
+
+    p {
+      font-size: 18px;
+      color: #5f9999;
+    }
+  }
+
+  .no-results {
+    font-size: 18px;
+    color: #888;
+    text-align: center;
+    margin-top: 20px;
+    width: 100%;
+  }
 `;
 export const AboutBgWrap = styled.div`
   display: flex;
