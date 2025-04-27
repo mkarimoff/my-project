@@ -42,7 +42,6 @@ const CartComponent = () => {
   useEffect(() => {
     const fetchCart = async () => {
       if (!isAuthenticated || !user) {
-        console.log('Not authenticated, skipping cart fetch');
         const guestCart = localStorage.getItem('guestCart');
         if (guestCart) {
           setCart(JSON.parse(guestCart));
@@ -55,21 +54,16 @@ const CartComponent = () => {
         if (!token) {
           throw new Error('No auth token found');
         }
-
-        console.log('Fetching cart for user:', user.email);
         const response = await axios.get('http://localhost:5050/dev-api/cart', {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        console.log('Fetched cart response:', response.data);
         if (response.data.cart && Array.isArray(response.data.cart)) {
           setCart(response.data.cart);
           localStorage.setItem(`cart_${user.email}`, JSON.stringify(response.data.cart));
         } else {
-          console.warn('Invalid cart data from backend:', response.data);
         }
       } catch (error: any) {
-        console.error('Failed to fetch cart:', error.message, error.response?.data);
         toast.error('Failed to load cart');
       }
     };

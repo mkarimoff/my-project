@@ -30,7 +30,7 @@ const HorizontMenu = ({ products, addToCart, handleFavoriteToggle, favorites }: 
               <div className="texts-wrap">
                 <div>
                   <h1>{value.header}</h1>
-                  <p>{value.prise}</p>
+                  <p>{value.price}</p>
                 </div>
                 <img src={stars} alt="img" className="star-name" />
                 <div className="hover-icons">

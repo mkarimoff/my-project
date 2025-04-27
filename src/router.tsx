@@ -20,6 +20,7 @@ import Register from "./components/register/register";
 import ErrorPage from "./components/404/404";
 import HomeComponent from "./components/pages/home/home";
 import FavoriteComponent from "./components/navbar/favorites/favorite";
+import SearchPage from "./components/navbar/search";
 
 const RouterComponent = () => {
   const [loading, setLoading] = useState(false);
@@ -58,6 +59,7 @@ const RouterComponent = () => {
             <Route path='/favorites' element={<FavoriteComponent />} />
             <Route path='/profile' element={<Profile />} />
             <Route path='/register' element={<Register />} />
+            <Route path='/search' element={<SearchPage />} />
             <Route path='*' element={<ErrorPage />} />
           </Routes>
           <Footer />

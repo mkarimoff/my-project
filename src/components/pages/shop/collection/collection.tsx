@@ -61,7 +61,7 @@ const CollectionComponent: React.FC = () => {
       id: data.id,
       photo: data.photo,
       header: data.header,
-      price: data.prise ?? "0",
+      price: data.price ?? "0",
       quantity: count,
     };
 
@@ -93,7 +93,7 @@ const CollectionComponent: React.FC = () => {
           <div className="buying-head">
             <h1>{data?.header}</h1>
             <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-              <b>{data?.prise}</b>
+              <b>{data?.price}</b>
             </div>
             <img src={stars} alt="rating" />
           </div>
@@ -228,7 +228,7 @@ const CollectionComponent: React.FC = () => {
               <div className="texts-wrap">
                 <img src={stars} alt="rating" />
                 <h1>{value.header}</h1>
-                <p>{value.prise}</p>
+                <p>{value.price}</p>
               </div>
             </Link>
           ))}
@@ -255,7 +255,7 @@ const CollectionComponent: React.FC = () => {
               <div className="texts-wrap">
                 <img src={stars} alt="rating" />
                 <h1>{value.header}</h1>
-                <p>{value.prise}</p>
+                <p>{value.price}</p>
               </div>
             </Link>
           ))}

@@ -110,7 +110,7 @@ const Discounted = () => {
                         textDecoration: "line-through solid 1px black",
                       }}
                     >
-                      {value.old_prise}
+                      {value.old_price}
                     </p>
                     <p>{value.new_price}</p>
                   </div>

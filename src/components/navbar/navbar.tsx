@@ -23,11 +23,12 @@ import { useAuth } from "../context/authContext";
 
 const Navbar = () => {
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
+  const [searchTerm, setSearchTerm] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleClickCart = () => {
     navigate("/cart");
@@ -43,6 +44,18 @@ const Navbar = () => {
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      navigate(`/search?search=${searchTerm.trim()}`);
+    }
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" && searchTerm.trim()) {
+      handleSearch();
+    }
   };
 
   const { cart, favorites } = useAuth();
@@ -72,24 +85,15 @@ const Navbar = () => {
               <Navlink to="/shop">
                 <p>Shop</p>
               </Navlink>
-              <NavbarItem
-                onMouseEnter={toggleDropdown}
-                onMouseLeave={toggleDropdown}
-              >
+              <NavbarItem onMouseEnter={toggleDropdown} onMouseLeave={toggleDropdown}>
                 <Navlink to="/pages">
-                  <p style={{ marginBottom: "32px", marginTop: "32px" }}>
-                    Pages
-                  </p>
+                  <p style={{ marginBottom: "32px", marginTop: "32px" }}>Pages</p>
                 </Navlink>
                 {isDropdownOpen && (
                   <DropdownContent data-aos="fade-up">
                     <DropdownLink to={"/about"}>About Us</DropdownLink>
-                    <DropdownLink to={"/terms-of-use"}>
-                      Terms of Sale & Use
-                    </DropdownLink>
-                    <DropdownLink to={"/privacy-policy"}>
-                      Privacy Policy
-                    </DropdownLink>
+                    <DropdownLink to={"/terms-of-use"}>Terms of Sale & Use</DropdownLink>
+                    <DropdownLink to={"/privacy-policy"}>Privacy Policy</DropdownLink>
                     <DropdownLink to={"/support"}>Support</DropdownLink>
                     <DropdownLink to={"/signin"}>Get Started</DropdownLink>
                   </DropdownContent>
@@ -107,17 +111,41 @@ const Navbar = () => {
               <Modal open={open} onClose={handleClose} data-aos="fade-down">
                 <Box sx={style}>
                   <img src={logo} alt="logo" width={"180px"} />
-                  <input
-                    type="search"
-                    style={{
-                      width: "800px",
-                      height: "50px",
-                      padding: "15px",
-                      fontSize: "15px",
-                      border: "solid 0.5px #ced4da",
-                    }}
-                    placeholder="Search"
-                  />
+                  <div style={{ display: "flex" }}>
+                    <input
+                      type="search"
+                      style={{
+                        width: "800px",
+                        height: "50px",
+                        padding: "15px",
+                        fontSize: "15px",
+                        border: "solid 0.5px #ced4da",
+                      }}
+                      placeholder="Search"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      onKeyDown={handleKeyPress}
+                    />
+                    <div
+                      style={{
+                        cursor: "pointer",
+                        width: "55px",
+                        height: "50px",
+                        backgroundColor: "#928E8B",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <SearchOutlinedIcon
+                        style={{
+                          color: "white",
+                          fontSize: "38px",
+                        }}
+                        onClick={handleSearch}
+                      />
+                    </div>
+                  </div>
                   <CloseIcon
                     style={{ fontSize: "35px", cursor: "pointer" }}
                     onClick={handleClose}
@@ -147,7 +175,6 @@ const Navbar = () => {
                   style={{ cursor: "pointer" }}
                 />
               </Badge>
-
               <Badge
                 badgeContent={favorites.length}
                 color="secondary"
@@ -198,5 +225,5 @@ const style = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  gap: "180px ",
+  gap: "150px ",
 };

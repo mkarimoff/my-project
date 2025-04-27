@@ -53,7 +53,7 @@ const VerticalMenu = ({ products, addToCart, handleFavoriteToggle, favorites }: 
               <div className="texts-wrap">
                 <img src={stars} alt="img" />
                 <h1>{value.header}</h1>
-                <p>{value.prise}</p>
+                <p>{value.price}</p>
               </div>
             </ShopProducts>
           ))}

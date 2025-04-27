@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import AOS from "aos";
-import "aos/dist/aos.css"; // Import AOS styles
+import "aos/dist/aos.css"; 
 import arrow from "../../../assets/svg/smallarrow.svg";
 import {
   CollectBgWrap,
@@ -53,7 +53,7 @@ const ShopComponent = () => {
   }, [filters]);
 
   const handleHMenu = () => {
-    setActive(true); // Switch to vertical layout
+    setActive(true); 
   };
 
   const handleVMenu = () => {
@@ -111,7 +111,6 @@ const ShopComponent = () => {
   };
 
 
-
   const priceRanges = [
     { id: 1, label: "0$ - 100$", min: 0, max: 100 },
     { id: 2, label: "101$ - 200$", min: 101, max: 200 },
@@ -122,8 +121,8 @@ const ShopComponent = () => {
 
   const filteredData = BlogsMockData.filter((product) => {
     const category = product.category || "Uncategorized";
-    const price = product.prise
-      ? parseFloat(product.prise.replace(/[^0-9.]/g, ""))
+    const price = product.price
+      ? parseFloat(product.price.replace(/[^0-9.]/g, ""))
       : 0;
 
     const isCategoryMatch =
