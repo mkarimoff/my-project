@@ -45,16 +45,16 @@ const ContactComponent = () => {
        <ContactInfoWrap>
           <div>
             <b>ADDRESS</b>
-            <p>401 Broadway, 24th Floor, Orchard View, London, UK</p>
+            <p>Goyang-si Ilsan-seogu, <br />ilsan-dong,South Korea.</p>
           </div>
           <div>
             <b>EMAIL</b>
-            <p>info@yourdomain.com</p>
+            <p>contactfurnimall@gmail.com</p>
           </div>
           <div>
             <b>PHONE</b>
-            <p>+1 234 567 8910</p>
-            <p>+1 234 567 8910</p>
+            <p>+8210-6505-1909</p>
+            <p>+8210-6505-1909</p>
           </div>
        </ContactInfoWrap>
        <ContactUs />
