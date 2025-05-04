@@ -6,6 +6,7 @@ import "aos/dist/aos.css";
 import { toast } from "react-toastify";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { baseApi } from "../../utils/api";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -108,7 +109,7 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5050/dev-api/auth/register",
+        baseApi+"/auth/register",
         payload,
         {
           headers: {
@@ -131,14 +132,11 @@ const Register = () => {
         }
       } else if (error.request) {
         message = "Unable to connect to the server. Please check your network or try again later.";
-        console.error("No response received:", error.request);
       } else {
         message = "An unexpected error occurred. Please try again.";
-        console.error("Error:", error.message);
       }
       setError(message);
       toast.error(message);
-      console.error("Full error:", error);
     } finally {
       setIsLoading(false);
     }

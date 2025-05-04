@@ -1,24 +1,28 @@
-import { useEffect } from 'react';
-import { AboutBgWrap } from '../../pages/about/style';
-import arrow from '../../../assets/svg/smallarrow.svg';
-import { FavoriteWrap, FavoriteMainCon } from './style';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import { useAuth } from '../../context/authContext';
-import DeleteIcon from '@mui/icons-material/Delete';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+import { useState, useEffect, useRef } from "react";
+import { AboutBgWrap } from "../../pages/about/style";
+import arrow from "../../../assets/svg/smallarrow.svg";
+import { FavoriteWrap, FavoriteMainCon } from "./style";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useAuth } from "../../context/authContext";
+import { useFavorites } from "../../context/favoritesContext";
+import { useCart } from "../../context/cartContext";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import CircularProgress from "@mui/material/CircularProgress";
+import { toast } from "react-toastify";
 
 interface FavoriteItem {
-  id: number;
+  id: string;
   photo: string;
-  header: string; 
+  title: string;
   price: number;
 }
 
 interface CartItem {
-  id: number;
-  name: string;
+  id: string;
+  title: string;
   photo?: string;
   price: number;
   quantity: number;
@@ -26,7 +30,11 @@ interface CartItem {
 }
 
 const FavoriteComponent = () => {
-  const { isAuthenticated, cart, setCart, favorites, setFavorites, user } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+  const { favorites, syncFavorites, removeFromFavorites } = useFavorites();
+  const { cart, toggleCart, syncCart } = useCart();
+  const [loading, setLoading] = useState<string | null>(null);
+  const hasSynced = useRef(false);
 
   useEffect(() => {
     AOS.init({
@@ -40,82 +48,64 @@ const FavoriteComponent = () => {
     };
   }, []);
 
-  const handleAddToCart = async (product: FavoriteItem) => {
+  useEffect(() => {
+    if (isAuthenticated && !hasSynced.current) {
+      hasSynced.current = true;
+      syncFavorites();
+      syncCart();
+    }
+  }, [isAuthenticated, syncFavorites, syncCart]);
+
+  const handleCartToggle = async (product: FavoriteItem) => {
+    if (!isAuthenticated) {
+      toast.error("Please sign in to manage cart");
+      return;
+    }
+
+    if (!product.id || product.id === "0") {
+      console.warn("Invalid product ID for cart:", product.id);
+      toast.error("Cannot toggle item with invalid ID");
+      return;
+    }
+
     const cartItem: CartItem = {
       id: product.id,
-      name: product.header,
+      title: product.title,
       photo: product.photo,
       price: product.price,
       quantity: 1,
       discount: 0,
     };
 
+    setLoading(product.id);
     try {
-      const existingItem = cart.find((item) => item.id === cartItem.id);
-      let newCart;
-      if (existingItem) {
-        newCart = cart.map((item) =>
-          item.id === cartItem.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      } else {
-        newCart = [...cart, cartItem];
-      }
-
-      if (!isAuthenticated) {
-        localStorage.setItem('guestCart', JSON.stringify(newCart));
-        setCart(newCart);
-        toast.success('Added to guest cart');
-      } else {
-        const token = localStorage.getItem('authToken');
-        const response = await axios.post(
-          'http://localhost:5050/dev-api/cart',
-          { cart: newCart },
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        setCart(response.data.cart);
-        localStorage.setItem(`cart_${user?.email}`, JSON.stringify(response.data.cart));
-        toast.success('Product added to cart!');
-      }
+      const wasAdded = toggleCart(cartItem, user?.email);
+      toast.success(wasAdded ? "Added to Cart" : "Removed from Cart");
     } catch (error: any) {
-      console.error('Failed to add to cart:', error);
-      toast.error(error.response?.data?.error || 'Failed to add product to cart');
+      console.error("Failed to toggle cart:", error);
+      toast.error(error.response?.data?.error || "Failed to update cart");
+    } finally {
+      setLoading(null);
     }
   };
 
-  const handleRemove = async (id: number) => {
-    const newFavorites = favorites.filter((item) => item.id !== id);
-    try {
-      if (!isAuthenticated) {
-        localStorage.setItem('guestFavorites', JSON.stringify(newFavorites));
-        setFavorites(newFavorites);
-        toast.success('Removed from guest favorites');
-      } else {
-        const token = localStorage.getItem('authToken');
-        const response = await axios.post(
-          'http://localhost:5050/dev-api/cart/favorites',
-          {
-            favorites: newFavorites.map((fav) => ({
-              id: fav.id,
-              name: fav.header,
-              photo: fav.photo,
-              price: fav.price,
-            })),
-          },
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        const mappedFavorites = response.data.favorites.map((item: any) => ({
-          id: item.id,
-          photo: item.photo || '',
-          header: item.name,
-          price: item.price || 0,
-        }));
-        setFavorites(mappedFavorites);
-        localStorage.setItem(`favorites_${user?.email}`, JSON.stringify(mappedFavorites));
-        toast.success('Removed from favorites');
-      }
-    } catch (error: any) {
-      console.error('Failed to remove from favorites:', error);
-      toast.error(error.response?.data?.error || 'Failed to remove from favorites');
+  const handleRemove = (id: string) => {
+    if (!isAuthenticated) {
+      toast.error("Please sign in to manage favorites");
+      return;
+    }
+
+    if (!id || id === "0") {
+      console.warn("Invalid ID for removal:", id);
+      toast.error("Cannot remove item with invalid ID");
+      return;
+    }
+    toast.success("Product removed from favorites");
+    console.log("Removing favorite with ID:", id);
+    removeFromFavorites(id, user?.email);
+
+    if (cart.some((cartItem) => cartItem.id === id)) {
+      toggleCart({ id, title: "", price: 0, quantity: 1 }, user?.email);
     }
   };
 
@@ -126,11 +116,11 @@ const FavoriteComponent = () => {
           <b>Favorites</b>
           <div
             style={{
-              width: '900px',
-              height: '0.5px',
-              backgroundColor: 'white',
-              marginBottom: '-25px',
-              marginRight: '-155px',
+              width: "900px",
+              height: "0.5px",
+              backgroundColor: "white",
+              marginBottom: "-25px",
+              marginRight: "-155px",
             }}
           ></div>
           <div>
@@ -147,80 +137,108 @@ const FavoriteComponent = () => {
             <p>Your favorites list is empty.</p>
           ) : (
             <>
-              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead>
                   <tr
                     style={{
-                      textAlign: 'left',
-                      borderBottom: '1px solid #ccc',
+                      textAlign: "left",
+                      borderBottom: "1px solid #ccc",
                     }}
                   >
-                    <th style={{ padding: '12px' }}>Product</th>
-                    <th style={{ padding: '12px', textAlign: 'center' }}>Price</th>
-                    <th style={{ padding: '12px', textAlign: 'center' }}></th>
-                    <th style={{ padding: '12px', textAlign: 'center' }}></th>
+                    <th style={{ padding: "12px" }}>Product</th>
+                    <th style={{ padding: "12px", textAlign: "center" }}>
+                      Price
+                    </th>
+                    <th style={{ padding: "12px", textAlign: "center" }}></th>
+                    <th style={{ padding: "12px", textAlign: "center" }}></th>
                   </tr>
                 </thead>
                 <tbody>
                   {favorites.map((item: FavoriteItem) => (
-                    <tr key={item.id} style={{ borderBottom: '1px solid #eee' }}>
+                    <tr
+                      key={item.id}
+                      style={{ borderBottom: "1px solid #eee" }}
+                    >
                       <td
                         style={{
-                          padding: '12px',
-                          display: 'flex',
-                          alignItems: 'center',
+                          padding: "12px",
+                          display: "flex",
+                          alignItems: "center",
                         }}
                       >
                         {item.photo && (
                           <img
                             src={item.photo}
-                            alt={item.header}
+                            alt={item.title}
                             style={{
-                              height: '70px',
-                              objectFit: 'cover',
-                              marginRight: '15px',
+                              height: "70px",
+                              objectFit: "cover",
+                              marginRight: "15px",
                             }}
                           />
                         )}
-                        {item.header || 'Unknown Product'}
+                        {item.title || "Unknown Product"}
                       </td>
                       <td
                         style={{
-                          padding: '12px',
-                          textAlign: 'center',
-                          fontSize: '16px',
-                          fontWeight: 'bold',
+                          padding: "12px",
+                          textAlign: "center",
+                          fontSize: "16px",
+                          fontWeight: "bold",
                         }}
                       >
                         ${item.price.toFixed(2)}
                       </td>
-                      <td style={{ padding: '12px', textAlign: 'center' }}>
+                      <td style={{ padding: "12px", textAlign: "center" }}>
                         <button
-                          onClick={() => handleAddToCart(item)}
+                          onClick={() => handleCartToggle(item)}
                           style={{
-                            padding: '5px 10px',
-                            backgroundColor: '#000',
-                            color: '#fff',
-                            border: 'none',
-                            borderRadius: '5px',
-                            cursor: 'pointer',
-                            fontSize: '12px',
+                            padding: "5px 10px",
+                            backgroundColor: cart.some(
+                              (cartItem) => cartItem.id === item.id
+                            )
+                              ? "#575c58"
+                              : "#000",
+                            color: "#fff",
+                            border: "none",
+                            borderRadius: "5px",
+                            cursor:
+                              loading === item.id ? "not-allowed" : "pointer",
+                            fontSize: "12px",
+                            opacity: loading === item.id ? 0.6 : 1,
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "5px",
                           }}
+                          disabled={loading === item.id}
                         >
-                          Add to Cart
+                          {loading === item.id ? (
+                            <CircularProgress size={16} color="inherit" />
+                          ) : cart.some((cartItem) => cartItem.id === item.id) ? (
+                            <ShoppingCartIcon style={{ fontSize: "16px" }} />
+                          ) : (
+                            <ShoppingCartOutlinedIcon
+                              style={{ fontSize: "16px" }}
+                            />
+                          )}
+                          {loading === item.id
+                            ? "Processing..."
+                            : cart.some((cartItem) => cartItem.id === item.id)
+                            ? "Remove from Cart"
+                            : "Add to Cart"}
                         </button>
                       </td>
-                      <td style={{ padding: '12px', textAlign: 'center' }}>
+                      <td style={{ padding: "12px", textAlign: "center" }}>
                         <button
                           onClick={() => handleRemove(item.id)}
                           style={{
-                            border: 'none',
-                            backgroundColor: 'white',
-                            cursor: 'pointer',
-                            fontSize: '16px',
+                            border: "none",
+                            backgroundColor: "white",
+                            cursor: "pointer",
+                            fontSize: "16px",
                           }}
                         >
-                          <DeleteIcon style={{ color: 'red' }} />
+                          <DeleteIcon style={{ color: "red" }} />
                         </button>
                       </td>
                     </tr>

@@ -21,6 +21,7 @@ import ErrorPage from "./components/404/404";
 import HomeComponent from "./components/pages/home/home";
 import FavoriteComponent from "./components/navbar/favorites/favorite";
 import SearchPage from "./components/navbar/search";
+import CheckoutForm from "./components/navbar/cart/order";
 
 const RouterComponent = () => {
   const [loading, setLoading] = useState(false);
@@ -51,7 +52,7 @@ const RouterComponent = () => {
             <Route path='/pages' element={<PagesComponet />} />
             <Route path='/blog' element={<BlogsComponent />} />
             <Route path='/contact' element={<ContactComponent />} />
-            <Route path='/collection/:id' element={<CollectionComponent />} />
+            <Route path='/collection/:_id' element={<CollectionComponent />} />
             <Route path='/privacy-policy' element={<PrivacyPolicy />} />
             <Route path='/terms-of-use' element={<TermsOfUse />} />
             <Route path='/BlogsDetail/:id' element={<BlogDetail />} />
@@ -60,6 +61,7 @@ const RouterComponent = () => {
             <Route path='/profile' element={<Profile />} />
             <Route path='/register' element={<Register />} />
             <Route path='/search' element={<SearchPage />} />
+            <Route path='/order' element={<CheckoutForm />} />
             <Route path='*' element={<ErrorPage />} />
           </Routes>
           <Footer />

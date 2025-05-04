@@ -6,7 +6,7 @@ export const ContactMainCon = styled.div`
      flex-direction: column;
      align-items: center;
      justify-content: center;
-     gap: 100px;
+     gap: 80px;
 `
 export const ContactInfoWrap = styled.div`
      display: flex;

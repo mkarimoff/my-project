@@ -20,12 +20,17 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useAuth } from "../context/authContext";
+import { useCart } from "../context/cartContext";
+import { useFavorites } from "../context/favoritesContext";
 
 const Navbar = () => {
   const [open, setOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const { cart } = useCart();
+  const { favorites } = useFavorites();
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -39,7 +44,7 @@ const Navbar = () => {
   };
 
   const handleClickProfile = () => {
-    navigate("/profile");
+    navigate(isAuthenticated ? "/profile" : "/");
   };
 
   const toggleDropdown = () => {
@@ -48,7 +53,8 @@ const Navbar = () => {
 
   const handleSearch = () => {
     if (searchTerm.trim()) {
-      navigate(`/search?search=${searchTerm.trim()}`);
+      navigate(`/search?search=${encodeURIComponent(searchTerm.trim())}`);
+      handleClose();
     }
   };
 
@@ -57,8 +63,6 @@ const Navbar = () => {
       handleSearch();
     }
   };
-
-  const { cart, favorites } = useAuth();
 
   return (
     <>
@@ -85,17 +89,26 @@ const Navbar = () => {
               <Navlink to="/shop">
                 <p>Shop</p>
               </Navlink>
-              <NavbarItem onMouseEnter={toggleDropdown} onMouseLeave={toggleDropdown}>
+              <NavbarItem
+                onMouseEnter={toggleDropdown}
+                onMouseLeave={toggleDropdown}
+              >
                 <Navlink to="/pages">
-                  <p style={{ marginBottom: "32px", marginTop: "32px" }}>Pages</p>
+                  <p style={{ marginBottom: "32px", marginTop: "32px" }}>
+                    Pages
+                  </p>
                 </Navlink>
                 {isDropdownOpen && (
                   <DropdownContent data-aos="fade-up">
                     <DropdownLink to={"/about"}>About Us</DropdownLink>
-                    <DropdownLink to={"/terms-of-use"}>Terms of Sale & Use</DropdownLink>
-                    <DropdownLink to={"/privacy-policy"}>Privacy Policy</DropdownLink>
+                    <DropdownLink to={"/terms-of-use"}>
+                      Terms of Sale & Use
+                    </DropdownLink>
+                    <DropdownLink to={"/privacy-policy"}>
+                      Privacy Policy
+                    </DropdownLink>
                     <DropdownLink to={"/support"}>Support</DropdownLink>
-                    <DropdownLink to={"/signin"}>Get Started</DropdownLink>
+                    <DropdownLink to={"/register"}>Get Started</DropdownLink>
                   </DropdownContent>
                 )}
               </NavbarItem>
@@ -198,7 +211,6 @@ const Navbar = () => {
                   style={{ cursor: "pointer" }}
                 />
               </Badge>
-
               <PermIdentityOutlinedIcon
                 onClick={handleClickProfile}
                 className="icons"
@@ -225,5 +237,5 @@ const style = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  gap: "150px ",
+  gap: "150px",
 };

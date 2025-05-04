@@ -7,7 +7,8 @@ import "aos/dist/aos.css";
 import { useAuth } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import axios from "axios"; // ✅ import axios
+import axios from "axios"; 
+import { baseApi } from "../../../utils/api";
 
 const Profile = () => {
   const { logout, isAuthenticated, user } = useAuth();
@@ -30,6 +31,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (user) {
+      console.log("User object in Profile:", user);
       setFormData({
         firstName: user.firstName || "",
         lastName: user.lastName || "",
@@ -74,7 +76,7 @@ const Profile = () => {
         }
   
         const res = await axios.put(
-          `http://localhost:5050/dev-api/auth/users/${user.id}`,
+          `${baseApi}/auth/users/${user.id}`,
           updatedFields
         );
   
@@ -88,10 +90,7 @@ const Profile = () => {
     } else {
       setIsEditing(true);
     }
-  };
-  
-  
-  
+  };  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({

@@ -9,10 +9,9 @@ export const HomeContainer = styled.div`
 `;
 export const HomeMain = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
   width: 100%;
-  height: 600px;
 
   .bg-image-left {
     display: flex;
@@ -49,12 +48,17 @@ export const HomeMain = styled.div`
   .Home-left {
     display: flex;
     flex-direction: column;
+    margin-right: 100px;
   }
 `;
 export const HomeInfo = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  flex-wrap: wrap;
+  max-width: 1500px;
+  box-sizing: border-box;
 `;
 export const DelivCon = styled.div`
   display: flex;
@@ -166,8 +170,8 @@ export const CategoryDiv = styled(Link)`
   text-decoration: none;
   cursor: pointer;
   img {
-    width: 117px;
-    height: 101px;
+    width: 110px;
+    height: 103px;
   }
   b {
     color: var(--Text-Color, #252525);

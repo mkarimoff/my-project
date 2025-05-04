@@ -1,10 +1,11 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { baseApi } from '../../utils/api';
 
 export interface CartItem {
-  id: number;
-  name: string;
+  id: string;
+  title: string;
   photo?: string;
   price: number;
   quantity: number;
@@ -12,9 +13,9 @@ export interface CartItem {
 }
 
 export interface FavoriteItem {
-  id: number;
+  id: string;
   photo: string;
-  header: string;
+  title: string;
   price: number;
 }
 
@@ -48,35 +49,42 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const location = useLocation();
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    const storedUser = localStorage.getItem('user');
+    const controller = new AbortController();
+    const initializeAuth = async () => {
+      const token = localStorage.getItem('authToken');
+      const storedUser = localStorage.getItem('user');
 
-    if (token && storedUser) {
-      const userData = JSON.parse(storedUser);
-      setIsAuthenticated(true);
-      setUser(userData);
-
-      // Load from localStorage as fallback
-      const storedCart = localStorage.getItem(`cart_${userData.email}`);
-      const storedFavorites = localStorage.getItem(`favorites_${userData.email}`);
-      setCart(storedCart ? JSON.parse(storedCart) : []);
-      setFavorites(storedFavorites ? JSON.parse(storedFavorites) : []);
-
-      // Fetch from backend
-      const fetchData = async () => {
+      if (token && storedUser) {
         try {
-          const cartResponse = await axios.get('http://localhost:5050/dev-api/cart', {
+          const userData = JSON.parse(storedUser);
+          await axios.get(baseApi + '/auth/users', {
             headers: { Authorization: `Bearer ${token}` },
-          });
-          const favoritesResponse = await axios.get('http://localhost:5050/dev-api/cart/favorites', {
-            headers: { Authorization: `Bearer ${token}` },
+            signal: controller.signal,
           });
 
-          // Map backend favorites to frontend structure
+          setIsAuthenticated(true);
+          setUser(userData);
+
+          const storedCart = localStorage.getItem(`cart_${userData.email}`);
+          const storedFavorites = localStorage.getItem(`favorites_${userData.email}`);
+          setCart(storedCart ? JSON.parse(storedCart) : []);
+          setFavorites(storedFavorites ? JSON.parse(storedFavorites) : []);
+
+          const [cartResponse, favoritesResponse] = await Promise.all([
+            axios.get(baseApi + '/cart', {
+              headers: { Authorization: `Bearer ${token}` },
+              signal: controller.signal,
+            }),
+            axios.get(baseApi + '/cart/favorites', {
+              headers: { Authorization: `Bearer ${token}` },
+              signal: controller.signal,
+            }),
+          ]);
+
           const mappedFavorites = (favoritesResponse.data.favorites || []).map((item: any) => ({
             id: item.id,
             photo: item.photo || '',
-            header: item.name, // Map `name` to `header`
+            title: item.title,
             price: item.price || 0,
           }));
 
@@ -84,13 +92,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setFavorites(mappedFavorites);
           localStorage.setItem(`cart_${userData.email}`, JSON.stringify(cartResponse.data.cart || []));
           localStorage.setItem(`favorites_${userData.email}`, JSON.stringify(mappedFavorites));
-        } catch (error) {
-          console.error('Failed to fetch cart/favorites:', error);
+        } catch (error: any) {
+          if (error.name === 'AbortError') return; 
+          if (error.response?.status === 401) {
+            logout(); 
+           
+          }
         }
-      };
-      fetchData();
-    }
-  }, []);
+      }
+    };
+
+    initializeAuth();
+    return () => controller.abort(); 
+  }, []); 
 
   useEffect(() => {
     if (isAuthenticated && location.pathname === '/login') {
@@ -102,7 +116,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (email: string, password: string) => {
     try {
       const response = await axios.post(
-        'http://localhost:5050/dev-api/auth/login',
+        baseApi + '/auth/login',
         { email, password },
         { headers: { 'Content-Type': 'application/json' } }
       );
@@ -115,25 +129,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsAuthenticated(true);
         setUser(userData);
 
-        // Fetch cart/favorites
         const token = response.data.token;
-        const cartResponse = await axios.get('http://localhost:5050/dev-api/cart', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const favoritesResponse = await axios.get('http://localhost:5050/dev-api/cart/favorites', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const [cartResponse, favoritesResponse] = await Promise.all([
+          axios.get(baseApi + '/cart', {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          axios.get(baseApi + '/cart/favorites', {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
 
-        // Map backend favorites to frontend structure
         const userCart = cartResponse.data.cart || [];
         const userFavorites = (favoritesResponse.data.favorites || []).map((item: any) => ({
           id: item.id,
           photo: item.photo || '',
-          header: item.name, // Map `name` to `header`
+          title: item.title,
           price: item.price || 0,
         }));
 
-        // Merge guest data
         const guestCart = JSON.parse(localStorage.getItem('guestCart') || '[]') as CartItem[];
         const guestFavorites = JSON.parse(localStorage.getItem('guestFavorites') || '[]') as FavoriteItem[];
         if (guestCart.length > 0 || guestFavorites.length > 0) {
@@ -146,29 +159,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             ...guestFavorites.filter((gItem: FavoriteItem) => !userFavorites.some((uItem: FavoriteItem) => uItem.id === gItem.id)),
           ];
 
-          // Update backend
-          await axios.post(
-            'http://localhost:5050/dev-api/cart',
-            { cart: mergedCart },
-            { headers: { Authorization: `Bearer ${token}` } }
-          );
-          await axios.post(
-            'http://localhost:5050/dev-api/cart/favorites',
-            {
-              favorites: mergedFavorites.map((item: FavoriteItem) => ({
-                id: item.id,
-                name: item.header, // Map `header` to `name`
-                photo: item.photo,
-                price: item.price,
-              })),
-            },
-            { headers: { Authorization: `Bearer ${token}` } }
-          );
+          await axios.post(baseApi + '/cart', { cart: mergedCart }, { headers: { Authorization: `Bearer ${token}` } });
+          await axios.post(baseApi + '/cart/favorites', { favorites: mergedFavorites }, { headers: { Authorization: `Bearer ${token}` } });
+
           localStorage.removeItem('guestCart');
           localStorage.removeItem('guestFavorites');
         }
 
-        // Update state and localStorage
         setCart(userCart);
         setFavorites(userFavorites);
         localStorage.setItem(`cart_${userData.email}`, JSON.stringify(userCart));
@@ -184,10 +181,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     try {
       const userEmail = user?.email;
-  
+
       localStorage.removeItem('authToken');
       localStorage.removeItem('user');
       localStorage.removeItem(`cart_${userEmail}`);
@@ -195,18 +192,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       localStorage.removeItem('guestCart');
       localStorage.removeItem('guestFavorites');
       localStorage.removeItem('favorites');
-  
+
       setIsAuthenticated(false);
       setUser(null);
       setCart([]);
       setFavorites([]);
-  
+
       navigate('/');
     } catch (error: any) {
       console.error('Error during logout', error);
+
     }
-  };
-  
+  }, [user?.email, navigate]);
+
   return (
     <AuthContext.Provider value={{ isAuthenticated, user, cart, favorites, login, logout, setCart, setFavorites }}>
       {children}
