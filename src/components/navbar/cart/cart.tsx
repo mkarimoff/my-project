@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 import { baseApi } from "../../../utils/api";
 
 interface CartItem {
-  id: number;
+  id: string; // Changed from number to string to match AuthProvider
   title: string;
   photo?: string;
   price: number;
@@ -65,7 +65,6 @@ const CartComponent = () => {
             `cart_${user.email}`,
             JSON.stringify(response.data.cart)
           );
-        } else {
         }
       } catch (error: any) {
         toast.error("Failed to load cart");
@@ -75,7 +74,7 @@ const CartComponent = () => {
     fetchCart();
   }, [isAuthenticated, user, setCart]);
 
-  const updateQuantity = async (id: number, quantity: number) => {
+  const updateQuantity = async (id: string, quantity: number) => {
     if (quantity < 1) return;
 
     try {
@@ -104,7 +103,7 @@ const CartComponent = () => {
     }
   };
 
-  const removeFromCart = async (id: number) => {
+  const removeFromCart = async (id: string) => {
     try {
       if (!isAuthenticated) {
         const updatedCart = cart.filter((item) => item.id !== id);
@@ -113,12 +112,9 @@ const CartComponent = () => {
         toast.success("Removed from guest cart");
       } else {
         const token = localStorage.getItem("authToken");
-        const response = await axios.delete(
-          `${baseApi}/cart/${id}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await axios.delete(`${baseApi}/cart/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setCart(response.data.cart);
         localStorage.setItem(
           `cart_${user?.email}`,
@@ -151,11 +147,11 @@ const CartComponent = () => {
     navigate("/order");
   };
 
-  const handleIncrement = (id: number, currentQuantity: number) => {
+  const handleIncrement = (id: string, currentQuantity: number) => {
     updateQuantity(id, currentQuantity + 1);
   };
 
-  const handleDecrement = (id: number, currentQuantity: number) => {
+  const handleDecrement = (id: string, currentQuantity: number) => {
     if (currentQuantity > 1) {
       updateQuantity(id, currentQuantity - 1);
     } else {
@@ -163,7 +159,7 @@ const CartComponent = () => {
     }
   };
 
-  const handleRemove = (id: number) => {
+  const handleRemove = (id: string) => {
     removeFromCart(id);
   };
 
