@@ -9,6 +9,7 @@ import 'aos/dist/aos.css';
 import { useAuth } from '../../../context/authContext';
 import { BlogDetailCon } from './style';
 import { toast } from 'react-toastify'; 
+import { baseApi } from '../../../../utils/api';
 
 interface CommentType {
   _id: string;
@@ -37,7 +38,7 @@ const BlogDetail = () => {
 
   const fetchComments = async () => {
     try {
-      const res = await axios.get("http://localhost:5050/dev-api/comment/getComments");
+      const res = await axios.get( `${baseApi}/comment/getComments`);
       setComments(res.data.data);
     } catch (err) {
       console.error("Failed to fetch comments", err);
@@ -55,7 +56,7 @@ const BlogDetail = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:5050/dev-api/comment/createcomment", {
+      const res = await axios.post(`${baseApi}/comment/createcomment`, {
         userId: user?.id,
         userName: user?.firstName + " " + user?.lastName,
         text,
@@ -77,7 +78,7 @@ const BlogDetail = () => {
 
   const handleDelete = async (commentId: string) => {
     try {
-      await axios.delete(`http://localhost:5050/dev-api/comment/delete/${commentId}`);
+      await axios.delete(`${baseApi}/comment/delete/${commentId}`);
       fetchComments(); 
       toast.success("Comment deleted successfully.");
     } catch (err) {
@@ -160,8 +161,6 @@ const BlogDetail = () => {
                     </div>
                   </div>
                   <p className="comment-text">{comment.text}</p>
-
-                  {/* Show delete button only if the user is the comment owner or an admin */}
                   {(comment.userId === user?.id || user?.role === 'admin') && (
                     <button
                       className="delete-button"
