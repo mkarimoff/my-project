@@ -77,12 +77,9 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
 
     isSyncing.current = true;
     try {
-      console.log("Syncing favorites from /cart/favorites");
       const response = await axios.get(`${baseApi}/cart/favorites`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
-      console.log("GET /cart/favorites response:", response.data);
 
       if (!response.data.favorites || !Array.isArray(response.data.favorites)) {
         throw new Error("Invalid response structure from server");
@@ -115,7 +112,6 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
 
   const addToFavorites = (item: FavoriteItem, userEmail?: string) => {
     if (!validateFavoriteItem(item)) {
-      console.error("Invalid favorite item, not adding:", item);
       toast.error("Invalid item cannot be added to favorites");
       return;
     }
@@ -148,7 +144,6 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
           .then((response) => {
             console.log("POST /cart/favorites response:", response.data);
             if (!response.data.favorites || !Array.isArray(response.data.favorites)) {
-              console.error("Invalid response structure from server");
               return;
             }
             const syncedFavorites = response.data.favorites.map((fav: any) => ({
@@ -240,7 +235,6 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
 
   const toggleFavorite = (item: FavoriteItem, userEmail?: string): boolean => {
     if (!validateFavoriteItem(item)) {
-      console.error("Invalid favorite item, cannot toggle:", item);
       toast.error("Invalid item cannot be toggled");
       return false;
     }

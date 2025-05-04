@@ -55,10 +55,7 @@ export const HomeInfo = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  width: 100%;
-  flex-wrap: wrap;
-  max-width: 1500px;
-  box-sizing: border-box;
+
 `;
 export const DelivCon = styled.div`
   display: flex;
@@ -308,8 +305,8 @@ export const MainAddWrap = styled.div`
     font-weight: 300;
   }
   button {
-    width: 270px;
-    height: 60px;
+    width: 240px;
+    height: 55px;
     background-color: black;
     color: white;
     border: none;
@@ -359,11 +356,13 @@ export const AddingImgCon = styled.div`
   align-items: center;
   justify-content: center;
   gap: 20px;
+  margin-top: 50px;
 
   .little-imgs {
     display: flex;
+    align-items: center;
+    justify-content: center;
     flex-direction: column;
-    gap: 20px;
   }
 
   div {

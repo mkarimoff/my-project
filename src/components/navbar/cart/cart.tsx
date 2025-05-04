@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 import { baseApi } from "../../../utils/api";
 
 interface CartItem {
-  id: string; // Changed from number to string to match AuthProvider
+  id: string; 
   title: string;
   photo?: string;
   price: number;
@@ -37,7 +37,6 @@ const CartComponent = () => {
   }, []);
 
   useEffect(() => {
-    console.log("CartComponent - Current cart state:", cart);
   }, [cart]);
 
   useEffect(() => {

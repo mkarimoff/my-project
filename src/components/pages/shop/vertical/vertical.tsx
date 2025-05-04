@@ -67,7 +67,7 @@ const VerticalMenu = ({ products, isLoading, toggleCart, handleFavoriteToggle, f
                           style={{
                             textDecoration: "none",
                             color: "white",
-                            marginTop: "7px",
+                            marginTop: "2px",
                           }}
                         >
                           <VisibilityOutlinedIcon style={{ color: "black" }} />

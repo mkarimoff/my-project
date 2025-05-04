@@ -25,11 +25,11 @@ export default function Carousel() {
     return () => clearInterval(interval);
   }, []);
 
-  const visibleImages = [...images, ...images].slice(index, index + 5);
+  const visibleImages = [...images, ...images].slice(index, index + 32);
 
   return (
     <div className="relative w-full max-w-4xl mx-auto overflow-hidden">
-      <div className="flex gap-2" style={{ display: 'flex',marginBottom:'-10px' }}>
+      <div className="flex gap-2" style={{ display: 'flex' }}>
         <AnimatePresence initial={false} mode="popLayout">
           {visibleImages.map((src: string, i: number) => (
             <motion.div

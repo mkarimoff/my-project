@@ -82,7 +82,7 @@ const VerticalMenu = ({
                             style={{
                               textDecoration: "none",
                               color: "white",
-                              marginTop: "7px",
+                              marginTop: "2px",
                             }}
                           >
                             <VisibilityOutlinedIcon

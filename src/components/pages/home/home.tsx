@@ -38,13 +38,8 @@ import delivery from "../../../assets/svg/delivery.svg";
 import support from "../../../assets/svg/support.svg";
 import security from "../../../assets/svg/security.svg";
 import arrow from "../../../assets/svg/round-arrow.svg";
-import chair2 from "../../../assets/images/chair-category.png";
 import drawer from "../../../assets/images/drawer.png";
-import table from "../../../assets/images/wooden-table.avif";
 import stars from "../../../assets/svg/stars.svg";
-import colors from "../../../assets/svg/color container.svg";
-import WhiteChair from "../../../assets/images/white-chair.png";
-import blackchair from "../../../assets/images/black-chair.png";
 import google from "../../../assets/images/google.png";
 import app from "../../../assets/images/appstore.png";
 import { Box, TextField } from "@mui/material";
@@ -98,13 +93,17 @@ interface FavoriteItem {
 }
 
 const HomeComponent: React.FC = () => {
-  const [count, setCount] = useState<number>(0);
+  const [count, setCount] = useState<number>(1);
   const { isAuthenticated, user } = useAuth();
   const { cart, toggleCart, syncCart } = useCart();
   const navigate = useNavigate();
   const { favorites, toggleFavorite, syncFavorites } = useFavorites();
   const [filteredPopular, setFilteredPopular] = useState<Product[]>([]);
   const [filteredData, setFilteredData] = useState<Product[]>([]);
+  const [featuredProduct, setFeaturedProduct] = useState<Product | null>(null);
+  const [isCartButtonDisabled, setIsCartButtonDisabled] =
+    useState<boolean>(false);
+  const [mainImage, setMainImage] = useState<string>("");
   const hasSynced = useRef(false);
 
   const handleIncrement = () => {
@@ -112,7 +111,7 @@ const HomeComponent: React.FC = () => {
   };
 
   const handleDecrement = () => {
-    if (count > 0) {
+    if (count > 1) {
       setCount(count - 1);
     }
   };
@@ -140,6 +139,9 @@ const HomeComponent: React.FC = () => {
         const shuffled = products.sort(() => Math.random() - 0.5);
         setFilteredPopular(shuffled.slice(0, 8));
         setFilteredData(shuffled.slice(0, 12));
+        setFeaturedProduct(shuffled[0]);
+        setMainImage(shuffled[0]?.MainImage || "");
+        setIsCartButtonDisabled(false);
       } catch (err) {
         console.error("Error fetching products:", err);
         toast.error("Failed to load products");
@@ -171,12 +173,17 @@ const HomeComponent: React.FC = () => {
       return;
     }
 
+    if (count === 0) {
+      toast.error("Please select at least one item");
+      return;
+    }
+
     const cartItem: CartItem = {
       id: product._id,
       title: product.title,
       photo: product.MainImage || "",
       price: Number(product.price) || 0,
-      quantity: 1,
+      quantity: count,
       discount: product.discount || 0,
     };
 
@@ -194,6 +201,7 @@ const HomeComponent: React.FC = () => {
     try {
       const wasAdded = toggleCart(cartItem, user.email);
       toast.success(wasAdded ? "Added to Cart" : "Removed from Cart");
+      setIsCartButtonDisabled(true);
     } catch (error: any) {
       console.error("Backend Error:", error.response?.data);
       toast.error(error.response?.data?.error || "Failed to update cart");
@@ -235,6 +243,25 @@ const HomeComponent: React.FC = () => {
     } catch (error: any) {
       console.error("Failed to toggle favorite:", error.response?.data);
       toast.error(error.response?.data?.error || "Failed to update favorites");
+    }
+  };
+
+  const handleImageSwap = (clickedImage: string) => {
+    if (featuredProduct) {
+      const newImages = { ...featuredProduct };
+      const currentMainImage = mainImage;
+
+      setMainImage(clickedImage);
+
+      if (clickedImage === newImages.image2) {
+        newImages.image2 = currentMainImage;
+      } else if (clickedImage === newImages.image3) {
+        newImages.image3 = currentMainImage;
+      } else if (clickedImage === newImages.image4) {
+        newImages.image4 = currentMainImage;
+      }
+      newImages.MainImage = clickedImage;
+      setFeaturedProduct(newImages);
     }
   };
 
@@ -301,7 +328,7 @@ const HomeComponent: React.FC = () => {
         <MoneyCon>
           <div className="moneyback-div">
             <img src={arrow} alt="arrow-icon" />
-            <b>Moneyback Guarantee </b>
+            <b>Moneyback Guarantee</b>
             <p>
               Guaranteed money back in <br /> 30 days
             </p>
@@ -340,156 +367,186 @@ const HomeComponent: React.FC = () => {
           <h2>Featured Products</h2>
           <p>Choose your desired products from our featured product</p>
         </div>
-        <div style={{ display: "flex", gap: "60px" }}>
-          <FeaturedAdding>
-            <div className="featured-left">
-              <div className="first-part">
-                <h1>Single Cushioned Leather Chair </h1>
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
-                >
-                  <b>$120.00</b>
-                  <p>$25.00</p>
+        {featuredProduct && (
+          <div style={{ display: "flex", gap: "60px" }}>
+            <FeaturedAdding>
+              <div className="featured-left">
+                <div className="first-part">
+                  <h1>{featuredProduct.title}</h1>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                    }}
+                  >
+                    <b>${featuredProduct.price}.00</b>
+                    <p>
+                      {featuredProduct.discount &&
+                      featuredProduct.discount !== 0
+                        ? `$${featuredProduct.discount}.00`
+                        : ""}
+                    </p>
+                  </div>
+
+                  <img src={stars} alt="stars-icon" />
+                  <div
+                    style={{
+                      width: "590px",
+                      height: "2px",
+                      background: "var(--Border-Color, #E9E9E9)",
+                    }}
+                  ></div>
                 </div>
-                <img src={stars} alt="stars-icon" />
+              </div>
+              <div style={{ display: "flex", gap: "60px" }}>
+                <MainAddWrap>
+                  <div style={{ display: "flex", gap: "30px" }}>
+                    <b>Availability:</b>
+                    <p>Only {featuredProduct.quantity} Left In Stock</p>
+                  </div>
+                  <div style={{ display: "flex", gap: "30px" }}>
+                    <b>Product Type:</b>
+                    <p>{featuredProduct.type}</p>
+                  </div>
+                  <IncrDecrContainer>
+                    <b>Quantity:</b>
+                    <div>
+                      <button
+                        className="IncrDecrButtons"
+                        onClick={handleIncrement}
+                      >
+                        +
+                      </button>
+                      <p>{count}</p>
+                      <button
+                        className="IncrDecrButtons"
+                        onClick={handleDecrement}
+                      >
+                        -
+                      </button>
+                    </div>
+                  </IncrDecrContainer>
+                  <button
+                    onClick={() => handleCartToggle(featuredProduct)}
+                    disabled={isCartButtonDisabled}
+                    style={{
+                      opacity: isCartButtonDisabled ? 0.5 : 1,
+                      cursor: isCartButtonDisabled ? "not-allowed" : "pointer",
+                    }}
+                  >
+                    Add To Cart
+                  </button>
+                </MainAddWrap>
+                <MainAddWrap>
+                  <div className="social-media-icons">
+                    <a
+                      href="https://www.pinterest.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FaPinterest size={20} color="#080005" />
+                    </a>
+                    <a
+                      href="https://www.facebook.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FaFacebook size={20} color="#080005" />
+                    </a>
+                    <a
+                      href="https://www.instagram.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FaInstagram size={20} color="#080005" />
+                    </a>
+                    <a
+                      href="https://www.twitter.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FaTwitter size={20} color="#080005" />
+                    </a>
+                  </div>
+                </MainAddWrap>
+              </div>
+            </FeaturedAdding>
+            <AddingImgCon>
+              <div>
                 <div
                   style={{
-                    width: "590px",
-                    height: "2px",
-                    background: "var(--Border-Color, #E9E9E9)",
+                    width: "390px",
+                    height: "471px",
+                    background: mainImage ? "none" : "#e0e0e0",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
                   }}
-                ></div>
+                >
+                  {mainImage ? (
+                    <img
+                      src={mainImage}
+                      alt="featured-product"
+                      style={{
+                        width: "390px",
+                        height: "471px",
+                        objectFit: "cover",
+                      }}
+                    />
+                  ) : (
+                    <span style={{ color: "#666" }}>No Image</span>
+                  )}
+                </div>
               </div>
-            </div>
-            <div style={{ display: "flex" }}>
-              <MainAddWrap>
-                <div style={{ display: "flex", gap: "30px" }}>
-                  <b>Color:</b>
-                  <img src={colors} alt="colors-img" />
-                </div>
-                <div style={{ display: "flex", gap: "30px" }}>
-                  <b>Serial:</b>
-                  <p>W123D514XQ899</p>
-                </div>
-                <IncrDecrContainer>
-                  <b>Quantity:</b>
-                  <div>
-                    <button
-                      className="IncrDecrButtons"
-                      onClick={handleIncrement}
-                    >
-                      +
-                    </button>
-                    <p>{count}</p>
-                    <button
-                      className="IncrDecrButtons"
-                      onClick={handleDecrement}
-                    >
-                      -
-                    </button>
+              <div
+                className="little-imgs"
+                style={{ display: "flex", gap: "10px" }}
+              >
+                {[
+                  featuredProduct.image2,
+                  featuredProduct.image3,
+                  featuredProduct.image4,
+                ].map((image, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      width: "125px",
+                      height: "150px",
+                      background: image ? "none" : "#e0e0e0",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: image ? "pointer" : "default",
+                    }}
+                    onClick={() => image && handleImageSwap(image)}
+                  >
+                    {image ? (
+                      <img
+                        src={image}
+                        alt={`product-img${index + 2}`}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                        }}
+                      />
+                    ) : (
+                      <span style={{ color: "#666" }}>No Image</span>
+                    )}
                   </div>
-                </IncrDecrContainer>
-                <button>Add To Cart</button>
-              </MainAddWrap>
-              <MainAddWrap>
-                <div style={{ display: "flex", gap: "30px" }}>
-                  <b>Availability:</b>
-                  <p>Only 7 Left In Stock</p>
-                </div>
-                <div style={{ display: "flex", gap: "30px" }}>
-                  <b>Product Type:</b>
-                  <p>Furniture & Decor</p>
-                </div>
-                <div className="social-media-icons">
-                  <a
-                    href="https://www.pinterest.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaPinterest size={20} color="#080005" />
-                  </a>
-                  <a
-                    href="https://www.facebook.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaFacebook size={20} color="#080005" />
-                  </a>
-                  <a
-                    href="https://www.instagram.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaInstagram size={20} color="#080005" />
-                  </a>
-                  <a
-                    href="https://www.twitter.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaTwitter size={20} color="#080005" />
-                  </a>
-                </div>
-              </MainAddWrap>
-            </div>
-          </FeaturedAdding>
-          <AddingImgCon>
-            <div>
-              <div
-                style={{
-                  width: "310px",
-                  height: "385px",
-                  background:
-                    "url(<path-to-image>) lightgray 50% / cover no-repeat",
-                }}
-              >
-                <img src={chair2} alt="chair" />
+                ))}
               </div>
-            </div>
-            <div className="little-imgs">
-              <div
-                style={{
-                  width: "100px",
-                  height: "115px",
-                  background:
-                    "url(<path-to-image>) lightgray 50% / cover no-repeat",
-                }}
-              >
-                <img src={WhiteChair} alt="chair" style={{ width: "100px" }} />
-              </div>
-              <div
-                style={{
-                  width: "100px",
-                  height: "115px",
-                  background:
-                    "url(<path-to-image>) lightgray 50% / cover no-repeat",
-                }}
-              >
-                <img src={blackchair} alt="chair" style={{ width: "100px" }} />
-              </div>
-              <div
-                style={{
-                  width: "100px",
-                  height: "115px",
-                  background:
-                    "url(<path-to-image>) lightgray 50% / cover no-repeat",
-                }}
-              >
-                <img src={table} alt="chair" style={{ width: "100px" }} />
-              </div>
-            </div>
-          </AddingImgCon>
-        </div>
+            </AddingImgCon>
+          </div>
+        )}
       </FeaturedPros>
-      <SummerSale>
-        <div
-          style={{ display: "flex", alignItems: "center", gap: "5px" }}
-          data-aos="fade-right"
-        >
+      <SummerSale data-aos="fade-up">
+        <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
           <h2>35% Summer Sales Discount. Use Coupon Code:</h2>
           <p>Furnimart</p>
         </div>
-        <button data-aos="fade-left">Shop Now</button>
+        <button>Shop Now</button>
       </SummerSale>
       <LatestPickCon data-aos="fade-up">
         <div className="latest-header">
@@ -524,13 +581,12 @@ const HomeComponent: React.FC = () => {
                         />
                       )}
                     </button>
-
                     <Link
                       to={`/collection/${value._id}`}
                       style={{
                         textDecoration: "none",
                         color: "white",
-                        marginTop: "7px",
+                        marginTop: "2px",
                       }}
                     >
                       <VisibilityOutlinedIcon style={{ color: "black" }} />
@@ -620,7 +676,6 @@ const HomeComponent: React.FC = () => {
           </div>
         </div>
       </DownloadApp>
-      <SummerSale></SummerSale>
       <ReadAboutIndustry data-aos="fade-up">
         <div className="read-header">
           <h1>Blogs & Insights</h1>

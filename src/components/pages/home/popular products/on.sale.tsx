@@ -242,7 +242,7 @@ const OnSale = () => {
                             style={{
                               textDecoration: "none",
                               color: "white",
-                              marginTop: "6px",
+                              marginTop: "2px",
                             }}
                           >
                             <VisibilityOutlinedIcon />
