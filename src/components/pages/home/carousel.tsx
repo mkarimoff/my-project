@@ -25,7 +25,7 @@ export default function Carousel() {
     return () => clearInterval(interval);
   }, []);
 
-  const visibleImages = [...images, ...images].slice(index, index + 32);
+  const visibleImages = [...images, ...images].slice(index, index + 5);
 
   return (
     <div className="relative w-full max-w-4xl mx-auto overflow-hidden">

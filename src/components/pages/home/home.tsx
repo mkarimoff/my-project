@@ -42,7 +42,7 @@ import drawer from "../../../assets/images/drawer.png";
 import stars from "../../../assets/svg/stars.svg";
 import google from "../../../assets/images/google.png";
 import app from "../../../assets/images/appstore.png";
-import { Box, TextField } from "@mui/material";
+import { Box, Skeleton, TextField } from "@mui/material";
 import React, { useEffect, useState, useRef } from "react";
 import { BlogsMockData } from "../mockdata/blogs.mock";
 import Carousel from "./carousel";
@@ -101,9 +101,9 @@ const HomeComponent: React.FC = () => {
   const [filteredPopular, setFilteredPopular] = useState<Product[]>([]);
   const [filteredData, setFilteredData] = useState<Product[]>([]);
   const [featuredProduct, setFeaturedProduct] = useState<Product | null>(null);
-  const [isCartButtonDisabled, setIsCartButtonDisabled] =
-    useState<boolean>(false);
+  const [isCartButtonDisabled, setIsCartButtonDisabled] = useState<boolean>(false);
   const [mainImage, setMainImage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
   const hasSynced = useRef(false);
 
   const handleIncrement = () => {
@@ -134,6 +134,7 @@ const HomeComponent: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(`${baseApi}/products/getProducts`);
         const products = response.data.products || [];
         const shuffled = products.sort(() => Math.random() - 0.5);
@@ -145,6 +146,8 @@ const HomeComponent: React.FC = () => {
       } catch (err) {
         console.error("Error fetching products:", err);
         toast.error("Failed to load products");
+      } finally {
+        setLoading(false);
       }
     };
     fetchProducts();
@@ -155,7 +158,7 @@ const HomeComponent: React.FC = () => {
     .slice(0, 3);
 
   const handleScroll = () => {
-    window.scrollTo({ top: 3450, behavior: "smooth" });
+    window.scrollTo({ top: 3400, behavior: "smooth" });
   };
 
   const handleCartToggle = async (product: Product) => {
@@ -341,18 +344,30 @@ const HomeComponent: React.FC = () => {
           <p>Don't Miss The Most Popular Products!</p>
         </div>
         <CategoryWrap data-aos="fade-up">
-          {filteredPopular.map((value) => (
-            <CategoryDiv key={value._id} to={`/Collection/${value._id}`}>
-              <img src={value.MainImage} alt="popular-product-image" />
-              <div className="text-wrap">
-                <b>{value.title}</b>
-                <div className="price-wrap">
-                  <h6>Starts from</h6>
-                  <p>${value.price}.00</p>
+          {loading ? (
+            Array(8)
+              .fill(0)
+              .map((_, index) => (
+                <div key={index} style={{ width: "200px", margin: "10px" }}>
+                  <Skeleton variant="rectangular" width={200} height={200} />
+                  <Skeleton variant="text" width={150} height={20} />
+                  <Skeleton variant="text" width={100} height={20} />
                 </div>
-              </div>
-            </CategoryDiv>
-          ))}
+              ))
+          ) : (
+            filteredPopular.map((value) => (
+              <CategoryDiv key={value._id} to={`/Collection/${value._id}`}>
+                <img src={value.MainImage} alt="popular-product-image" />
+                <div className="text-wrap">
+                  <b>{value.title}</b>
+                  <div className="price-wrap">
+                    <h6>Starts from</h6>
+                    <p>${value.price}.00</p>
+                  </div>
+                </div>
+              </CategoryDiv>
+            ))
+          )}
         </CategoryWrap>
       </CategoryCon>
       <ProductsMain>
@@ -360,174 +375,186 @@ const HomeComponent: React.FC = () => {
           <h1>Popular Products</h1>
           <p>Don't Miss The Most Popular Products!</p>
         </div>
-        <LinkData />
+        {loading ? (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
+            {Array(4)
+              .fill(0)
+              .map((_, index) => (
+                <div key={index} style={{ width: "250px", margin: "10px" }}>
+                  <Skeleton variant="rectangular" width={250} height={250} />
+                  <Skeleton variant="text" width={200} height={20} />
+                  <Skeleton variant="text" width={100} height={20} />
+                </div>
+              ))}
+          </div>
+        ) : (
+          <LinkData />
+        )}
       </ProductsMain>
       <FeaturedPros data-aos="fade-up">
         <div className="Menu-featured-head">
           <h2>Featured Products</h2>
           <p>Choose your desired products from our featured product</p>
         </div>
-        {featuredProduct && (
+        {loading ? (
           <div style={{ display: "flex", gap: "60px" }}>
-            <FeaturedAdding>
-              <div className="featured-left">
-                <div className="first-part">
-                  <h1>{featuredProduct.title}</h1>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                    }}
-                  >
-                    <b>${featuredProduct.price}.00</b>
-                    <p>
-                      {featuredProduct.discount &&
-                      featuredProduct.discount !== 0
-                        ? `$${featuredProduct.discount}.00`
-                        : ""}
-                    </p>
-                  </div>
-
-                  <img src={stars} alt="stars-icon" />
-                  <div
-                    style={{
-                      width: "590px",
-                      height: "2px",
-                      background: "var(--Border-Color, #E9E9E9)",
-                    }}
-                  ></div>
+            <div style={{ width: "590px" }}>
+              <Skeleton variant="text" width={300} height={40} />
+              <Skeleton variant="text" width={200} height={30} />
+              <Skeleton variant="rectangular" width={200} height={20} />
+              <Skeleton variant="rectangular" width={590} height={2} />
+              <div style={{ display: "flex", gap: "60px", marginTop: "20px" }}>
+                <div>
+                  <Skeleton variant="text" width={200} height={20} />
+                  <Skeleton variant="text" width={200} height={20} />
+                  <Skeleton variant="rectangular" width={150} height={40} />
+                  <Skeleton variant="rectangular" width={150} height={40} />
+                </div>
+                <div>
+                  <Skeleton variant="rectangular" width={100} height={100} />
                 </div>
               </div>
-              <div style={{ display: "flex", gap: "60px" }}>
-                <MainAddWrap>
-                  <div style={{ display: "flex", gap: "30px" }}>
-                    <b>Availability:</b>
-                    <p>Only {featuredProduct.quantity} Left In Stock</p>
-                  </div>
-                  <div style={{ display: "flex", gap: "30px" }}>
-                    <b>Product Type:</b>
-                    <p>{featuredProduct.type}</p>
-                  </div>
-                  <IncrDecrContainer>
-                    <b>Quantity:</b>
-                    <div>
-                      <button
-                        className="IncrDecrButtons"
-                        onClick={handleIncrement}
-                      >
-                        +
-                      </button>
-                      <p>{count}</p>
-                      <button
-                        className="IncrDecrButtons"
-                        onClick={handleDecrement}
-                      >
-                        -
-                      </button>
-                    </div>
-                  </IncrDecrContainer>
-                  <button
-                    onClick={() => handleCartToggle(featuredProduct)}
-                    disabled={isCartButtonDisabled}
-                    style={{
-                      opacity: isCartButtonDisabled ? 0.5 : 1,
-                      cursor: isCartButtonDisabled ? "not-allowed" : "pointer",
-                    }}
-                  >
-                    Add To Cart
-                  </button>
-                </MainAddWrap>
-                <MainAddWrap>
-                  <div className="social-media-icons">
-                    <a
-                      href="https://www.pinterest.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FaPinterest size={20} color="#080005" />
-                    </a>
-                    <a
-                      href="https://www.facebook.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FaFacebook size={20} color="#080005" />
-                    </a>
-                    <a
-                      href="https://www.instagram.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FaInstagram size={20} color="#080005" />
-                    </a>
-                    <a
-                      href="https://www.twitter.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FaTwitter size={20} color="#080005" />
-                    </a>
-                  </div>
-                </MainAddWrap>
-              </div>
-            </FeaturedAdding>
-            <AddingImgCon>
-              <div>
-                <div
-                  style={{
-                    width: "390px",
-                    height: "471px",
-                    background: mainImage ? "none" : "#e0e0e0",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  {mainImage ? (
-                    <img
-                      src={mainImage}
-                      alt="featured-product"
-                      style={{
-                        width: "390px",
-                        height: "471px",
-                        objectFit: "cover",
-                      }}
+            </div>
+            <div>
+              <Skeleton variant="rectangular" width={390} height={471} />
+              <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+                {Array(3)
+                  .fill(0)
+                  .map((_, index) => (
+                    <Skeleton
+                      key={index}
+                      variant="rectangular"
+                      width={125}
+                      height={150}
                     />
-                  ) : (
-                    <span style={{ color: "#666" }}>No Image</span>
-                  )}
-                </div>
+                  ))}
               </div>
-              <div
-                className="little-imgs"
-                style={{ display: "flex", gap: "10px" }}
-              >
-                {[
-                  featuredProduct.image2,
-                  featuredProduct.image3,
-                  featuredProduct.image4,
-                ].map((image, index) => (
+            </div>
+          </div>
+        ) : (
+          featuredProduct && (
+            <div style={{ display: "flex", gap: "60px" }}>
+              <FeaturedAdding>
+                <div className="featured-left">
+                  <div className="first-part">
+                    <h1>{featuredProduct.title}</h1>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                      }}
+                    >
+                      <b>${featuredProduct.price}.00</b>
+                      <p>
+                        {featuredProduct.discount &&
+                        featuredProduct.discount !== 0
+                          ? `$${featuredProduct.discount}.00`
+                          : ""}
+                      </p>
+                    </div>
+                    <img src={stars} alt="stars-icon" />
+                    <div
+                      style={{
+                        width: "590px",
+                        height: "2px",
+                        background: "var(--Border-Color, #E9E9E9)",
+                      }}
+                    ></div>
+                  </div>
+                </div>
+                <div style={{ display: "flex", gap: "60px" }}>
+                  <MainAddWrap>
+                    <div style={{ display: "flex", gap: "30px" }}>
+                      <b>Availability:</b>
+                      <p>Only {featuredProduct.quantity} Left In Stock</p>
+                    </div>
+                    <div style={{ display: "flex", gap: "30px" }}>
+                      <b>Product Type:</b>
+                      <p>{featuredProduct.type}</p>
+                    </div>
+                    <IncrDecrContainer>
+                      <b>Quantity:</b>
+                      <div>
+                        <button
+                          className="IncrDecrButtons"
+                          onClick={handleIncrement}
+                        >
+                          +
+                        </button>
+                        <p>{count}</p>
+                        <button
+                          className="IncrDecrButtons"
+                          onClick={handleDecrement}
+                        >
+                          -
+                        </button>
+                      </div>
+                    </IncrDecrContainer>
+                    <button
+                      onClick={() => handleCartToggle(featuredProduct)}
+                      disabled={isCartButtonDisabled}
+                      style={{
+                        opacity: isCartButtonDisabled ? 0.5 : 1,
+                        cursor: isCartButtonDisabled ? "not-allowed" : "pointer",
+                      }}
+                    >
+                      Add To Cart
+                    </button>
+                  </MainAddWrap>
+                  <MainAddWrap>
+                    <div className="social-media-icons">
+                      <a
+                        href="https://www.pinterest.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FaPinterest size={20} color="#080005" />
+                      </a>
+                      <a
+                        href="https://www.facebook.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FaFacebook size={20} color="#080005" />
+                      </a>
+                      <a
+                        href="https://www.instagram.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FaInstagram size={20} color="#080005" />
+                      </a>
+                      <a
+                        href="https://www.twitter.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FaTwitter size={20} color="#080005" />
+                      </a>
+                    </div>
+                  </MainAddWrap>
+                </div>
+              </FeaturedAdding>
+              <AddingImgCon>
+                <div>
                   <div
-                    key={index}
                     style={{
-                      width: "125px",
-                      height: "150px",
-                      background: image ? "none" : "#e0e0e0",
+                      width: "390px",
+                      height: "471px",
+                      background: mainImage ? "none" : "#e0e0e0",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      cursor: image ? "pointer" : "default",
                     }}
-                    onClick={() => image && handleImageSwap(image)}
                   >
-                    {image ? (
+                    {mainImage ? (
                       <img
-                        src={image}
-                        alt={`product-img${index + 2}`}
+                        src={mainImage}
+                        alt="featured-product"
                         style={{
-                          width: "100%",
-                          height: "100%",
+                          width: "390px",
+                          height: "471px",
                           objectFit: "cover",
                         }}
                       />
@@ -535,10 +562,48 @@ const HomeComponent: React.FC = () => {
                       <span style={{ color: "#666" }}>No Image</span>
                     )}
                   </div>
-                ))}
-              </div>
-            </AddingImgCon>
-          </div>
+                </div>
+                <div
+                  className="little-imgs"
+                  style={{ display: "flex", gap: "10px" }}
+                >
+                  {[
+                    featuredProduct.image2,
+                    featuredProduct.image3,
+                    featuredProduct.image4,
+                  ].map((image, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        width: "125px",
+                        height: "150px",
+                        background: image ? "none" : "#e0e0e0",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        cursor: image ? "pointer" : "default",
+                      }}
+                      onClick={() => image && handleImageSwap(image)}
+                    >
+                      {image ? (
+                        <img
+                          src={image}
+                          alt={`product-img${index + 2}`}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          }}
+                        />
+                      ) : (
+                        <span style={{ color: "#666" }}>No Image</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </AddingImgCon>
+            </div>
+          )
         )}
       </FeaturedPros>
       <SummerSale data-aos="fade-up">
@@ -554,68 +619,80 @@ const HomeComponent: React.FC = () => {
           <p>Don't Miss The Most Popular Products!</p>
         </div>
         <LatestPickWrap>
-          {filteredData.map((value) => (
-            <LatestProducts key={value._id}>
-              <div className="product-image-hover">
-                <img
-                  src={value.MainImage}
-                  alt="image"
-                  className="product-image"
-                />
-                <div className="overlay">
-                  <div className="overlay-icons">
-                    <button
-                      onClick={() => handleFavoriteToggle(value)}
-                      style={{
-                        cursor: "pointer",
-                        opacity: 1,
-                        border: "none",
-                        background: "transparent",
-                      }}
-                    >
-                      {favorites.some((item) => item.id === value._id) ? (
-                        <FavoriteIcon style={{ color: "red" }} />
-                      ) : (
-                        <FavoriteBorderOutlinedIcon
-                          style={{ color: "black" }}
-                        />
-                      )}
-                    </button>
-                    <Link
-                      to={`/collection/${value._id}`}
-                      style={{
-                        textDecoration: "none",
-                        color: "white",
-                        marginTop: "2px",
-                      }}
-                    >
-                      <VisibilityOutlinedIcon style={{ color: "black" }} />
-                    </Link>
-                    <button
-                      onClick={() => handleCartToggle(value)}
-                      style={{
-                        cursor: "pointer",
-                        opacity: 1,
-                        border: "none",
-                        background: "transparent",
-                      }}
-                    >
-                      {cart.some((item) => item.id === value._id) ? (
-                        <ShoppingCartIcon style={{ color: "green" }} />
-                      ) : (
-                        <ShoppingCartOutlinedIcon style={{ color: "black" }} />
-                      )}
-                    </button>
+          {loading ? (
+            Array(12)
+              .fill(0)
+              .map((_, index) => (
+                <div key={index} style={{ width: "200px", margin: "10px" }}>
+                  <Skeleton variant="rectangular" width={200} height={200} />
+                  <Skeleton variant="text" width={150} height={20} />
+                  <Skeleton variant="text" width={100} height={20} />
+                </div>
+              ))
+          ) : (
+            filteredData.map((value) => (
+              <LatestProducts key={value._id}>
+                <div className="product-image-hover">
+                  <img
+                    src={value.MainImage}
+                    alt="image"
+                    className="product-image"
+                  />
+                  <div className="overlay">
+                    <div className="overlay-icons">
+                      <button
+                        onClick={() => handleFavoriteToggle(value)}
+                        style={{
+                          cursor: "pointer",
+                          opacity: 1,
+                          border: "none",
+                          background: "transparent",
+                        }}
+                      >
+                        {favorites.some((item) => item.id === value._id) ? (
+                          <FavoriteIcon style={{ color: "red" }} />
+                        ) : (
+                          <FavoriteBorderOutlinedIcon
+                            style={{ color: "black" }}
+                          />
+                        )}
+                      </button>
+                      <Link
+                        to={`/collection/${value._id}`}
+                        style={{
+                          textDecoration: "none",
+                          color: "white",
+                          marginTop: "2px",
+                        }}
+                      >
+                        <VisibilityOutlinedIcon style={{ color: "black" }} />
+                      </Link>
+                      <button
+                        onClick={() => handleCartToggle(value)}
+                        style={{
+                          cursor: "pointer",
+                          opacity: 1,
+                          border: "none",
+                          background: "transparent",
+                        }}
+                      >
+                        {cart.some((item) => item.id === value._id) ? (
+                          <ShoppingCartIcon style={{ color: "green" }} />
+                        ) : (
+                          <ShoppingCartOutlinedIcon style={{ color: "black" }} />
+                        )}
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="texts-wrap">
-                <img src={stars} alt="img" />
-                <h1>{value.title}</h1>
-                <p>${value.price}.00</p>
-              </div>
-            </LatestProducts>
-          ))}
+                <div className="texts-wrap">
+                  <img src={stars} alt="img" />
+                  <h1>{value.title}</h1>
+                  <p>${value.price}.00</p>
+                </div>
+              </LatestProducts>
+            ))
+          )}
         </LatestPickWrap>
       </LatestPickCon>
       <DownloadApp>
