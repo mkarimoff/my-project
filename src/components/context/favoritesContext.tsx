@@ -100,11 +100,10 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
       setFavorites(validFavorites);
       localStorage.setItem("favorites", JSON.stringify(validFavorites));
     } catch (error: any) {
-      console.error("Failed to sync favorites:", {
+        console.error("Failed to sync favorites:", {
         message: error.message,
         response: error.response?.data,
       });
-      toast.error(error.response?.data?.error || "Failed to sync favorites");
     } finally {
       isSyncing.current = false;
     }

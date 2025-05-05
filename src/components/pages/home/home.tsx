@@ -145,7 +145,6 @@ const HomeComponent: React.FC = () => {
         setIsCartButtonDisabled(false);
       } catch (err) {
         console.error("Error fetching products:", err);
-        toast.error("Failed to load products");
       } finally {
         setLoading(false);
       }

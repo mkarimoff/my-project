@@ -31,7 +31,6 @@ const Navbar = () => {
   const { isAuthenticated } = useAuth();
   const { cart } = useCart();
   const { favorites } = useFavorites();
-
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 

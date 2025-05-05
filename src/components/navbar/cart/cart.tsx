@@ -66,7 +66,6 @@ const CartComponent = () => {
           );
         }
       } catch (error: any) {
-        toast.error("Failed to load cart");
       }
     };
 

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import AOS from "aos";
-import "aos/dist/aos.css"; // Import AOS styles
+import "aos/dist/aos.css"; 
 import ReactPlayer from "react-player";
 import { AboutBgWrap, AboutCon, AboutTextWrap, MottoCon } from "./style";
 import arrow from "../../../assets/svg/smallarrow.svg";
@@ -14,7 +14,6 @@ import Carousel from "../home/carousel";
 import { ProductsImg } from "../home/style";
 
 const AboutComponent: React.FC = () => {
-  // Initialize AOS
   useEffect(() => {
     AOS.init({
       duration: 1000, 
@@ -57,7 +56,6 @@ const AboutComponent: React.FC = () => {
         data-aos="zoom-in"
         data-aos-duration="1000"
         onReady={() => {
-          console.log("Player is ready");
           AOS.refresh(); 
         }}
         config={{

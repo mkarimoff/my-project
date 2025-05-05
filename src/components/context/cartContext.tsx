@@ -78,7 +78,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       setCart(validCart);
       localStorage.setItem("cart", JSON.stringify(validCart));
     } catch (error: any) {
-      console.error("Failed to sync cart:", error);
       toast.error(error.response?.data?.error || "Failed to sync cart");
     }
   };

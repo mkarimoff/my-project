@@ -10,7 +10,6 @@ import { baseApi } from "../../utils/api";
 
 const Register = () => {
   const navigate = useNavigate();
-
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
