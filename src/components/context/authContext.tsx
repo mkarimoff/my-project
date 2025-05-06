@@ -54,57 +54,57 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const token = localStorage.getItem('authToken');
       const storedUser = localStorage.getItem('user');
 
-      if (token && storedUser) {
-        try {
-          const userData = JSON.parse(storedUser);
-          await axios.get(baseApi + '/auth/users', {
+      if (!token || !storedUser) {
+        logout(); // No token or user data, trigger logout
+        return;
+      }
+
+      try {
+        const userData = JSON.parse(storedUser);
+        await axios.get(baseApi + '/auth/users', {
+          headers: { Authorization: `Bearer ${token}` },
+          signal: controller.signal,
+        });
+
+        setIsAuthenticated(true);
+        setUser(userData);
+
+        const storedCart = localStorage.getItem(`cart_${userData.email}`);
+        const storedFavorites = localStorage.getItem(`favorites_${userData.email}`);
+        setCart(storedCart ? JSON.parse(storedCart) : []);
+        setFavorites(storedFavorites ? JSON.parse(storedFavorites) : []);
+
+        const [cartResponse, favoritesResponse] = await Promise.all([
+          axios.get(baseApi + '/cart', {
             headers: { Authorization: `Bearer ${token}` },
             signal: controller.signal,
-          });
+          }),
+          axios.get(baseApi + '/cart/favorites', {
+            headers: { Authorization: `Bearer ${token}` },
+            signal: controller.signal,
+          }),
+        ]);
 
-          setIsAuthenticated(true);
-          setUser(userData);
+        const mappedFavorites = (favoritesResponse.data.favorites || []).map((item: any) => ({
+          id: item.id,
+          photo: item.photo || '',
+          title: item.title,
+          price: item.price || 0,
+        }));
 
-          const storedCart = localStorage.getItem(`cart_${userData.email}`);
-          const storedFavorites = localStorage.getItem(`favorites_${userData.email}`);
-          setCart(storedCart ? JSON.parse(storedCart) : []);
-          setFavorites(storedFavorites ? JSON.parse(storedFavorites) : []);
-
-          const [cartResponse, favoritesResponse] = await Promise.all([
-            axios.get(baseApi + '/cart', {
-              headers: { Authorization: `Bearer ${token}` },
-              signal: controller.signal,
-            }),
-            axios.get(baseApi + '/cart/favorites', {
-              headers: { Authorization: `Bearer ${token}` },
-              signal: controller.signal,
-            }),
-          ]);
-
-          const mappedFavorites = (favoritesResponse.data.favorites || []).map((item: any) => ({
-            id: item.id,
-            photo: item.photo || '',
-            title: item.title,
-            price: item.price || 0,
-          }));
-
-          setCart(cartResponse.data.cart || []);
-          setFavorites(mappedFavorites);
-          localStorage.setItem(`cart_${userData.email}`, JSON.stringify(cartResponse.data.cart || []));
-          localStorage.setItem(`favorites_${userData.email}`, JSON.stringify(mappedFavorites));
-        } catch (error: any) {
-          if (error.name === 'AbortError') return; 
-          if (error.response?.status === 401) {
-            logout(); 
-           
-          }
-        }
+        setCart(cartResponse.data.cart || []);
+        setFavorites(mappedFavorites);
+        localStorage.setItem(`cart_${userData.email}`, JSON.stringify(cartResponse.data.cart || []));
+        localStorage.setItem(`favorites_${userData.email}`, JSON.stringify(mappedFavorites));
+      } catch (error: any) {
+        if (error.name === 'AbortError') return;
+        logout(); // Trigger logout on any error, including 401 for expired/invalid token
       }
     };
 
     initializeAuth();
-    return () => controller.abort(); 
-  }, []); 
+    return () => controller.abort();
+  }, []);
 
   useEffect(() => {
     if (isAuthenticated && location.pathname === '/login') {
@@ -181,7 +181,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const logout = useCallback(async () => {
+  const logout = useCallback(() => {
     try {
       const userEmail = user?.email;
 
@@ -201,7 +201,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       navigate('/');
     } catch (error: any) {
       console.error('Error during logout', error);
-
     }
   }, [user?.email, navigate]);
 
