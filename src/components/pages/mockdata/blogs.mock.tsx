@@ -57,7 +57,7 @@ export const BlogsMockData = [
       "id": 5,
       "type": "blogs",
       "price": "$100.00",
-      "photo": "https://www.carltonfurniture.co.uk/images/pages/534-3-Aero%20Bubble%20Sofa%20Set%20%20(19).jpg",
+      "photo": "https://images.app.goo.gl/KCfLo2YPefeWfUM97",
       "header": "Comfortable Lounge Chair",
       "date_name": "Date:",
       "date": "March 01, 2025",
