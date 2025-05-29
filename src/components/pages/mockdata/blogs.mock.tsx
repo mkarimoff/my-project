@@ -57,7 +57,7 @@ export const BlogsMockData = [
       "id": 5,
       "type": "blogs",
       "price": "$100.00",
-      "photo": "https://images.app.goo.gl/KCfLo2YPefeWfUM97",
+      "photo": "https://i5.walmartimages.com/asr/0a597ff4-4811-4bae-90cb-00090805a19a.6fedd833056d6823760eccccd1174a53.jpeg",
       "header": "Comfortable Lounge Chair",
       "date_name": "Date:",
       "date": "March 01, 2025",
